@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_bar_view"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp">
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="20dp"
+               android:layout_marginBottom="5dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="65dp"
+                   android:layout_height="wrap_content"
+                   android:text="钢瓶号/自编码："
+                   android:lines="2"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"/>
+
+               <EditText
+                   android:id="@+id/bottleorcompanyrelatecode"
+                   android:layout_width="match_parent"
+                   android:layout_height="34dp"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:layout_gravity="center_vertical"
+                   android:background="@drawable/text_edittext"/>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="80dp"
+               android:layout_marginBottom="5dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:text="气瓶类型："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"/>
+
+               <TextView
+                   android:id="@+id/cycategory"
+                   android:layout_width="match_parent"
+                   android:layout_height="34dp"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:background="@drawable/text_edittext"/>
+
+           </LinearLayout>
+
+           <Spinner
+               android:id="@+id/cycategory_spinner"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="81dp"
+               android:layout_marginLeft="113dp"
+               android:layout_marginRight="30dp"
+               android:background="@color/white"
+               android:popupBackground="@color/white"/>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="130dp"
+               android:layout_marginBottom="5dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:text="充装介质："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"/>
+
+               <TextView
+                   android:id="@+id/medium"
+                   android:layout_width="match_parent"
+                   android:layout_height="34dp"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:background="@drawable/text_edittext"/>
+
+           </LinearLayout>
+
+           <Spinner
+               android:id="@+id/medium_spinner"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="131dp"
+               android:layout_marginLeft="113dp"
+               android:layout_marginRight="30dp"
+               android:background="@color/white"
+               android:popupBackground="@color/white"/>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="180dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:text="气瓶制造单位代码："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"/>
+
+               <EditText
+                   android:id="@+id/cy_manufacturer"
+                   android:layout_width="match_parent"
+                   android:layout_gravity="center_vertical"
+                   android:layout_height="34dp"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:background="@drawable/text_edittext"/>
+           </LinearLayout>
+
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="230dp"
+               android:layout_marginBottom="5dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:text="气瓶生产日期："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"/>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:orientation="horizontal">
+                   <EditText
+                       android:id="@+id/year"
+                       android:layout_width="70dp"
+                       android:layout_height="34dp"
+                       android:textColor="@color/text_color"
+                       android:textSize="18dp"
+                       android:hint="年 "
+                       android:textAlignment="textEnd"
+                       android:inputType="number"
+                       android:textColorHint="@color/text_hint_color"
+                       android:background="@drawable/text_edittext"/>
+
+                   <EditText
+                       android:id="@+id/month"
+                       android:layout_width="50dp"
+                       android:layout_height="34dp"
+                       android:layout_marginLeft="10dp"
+                       android:textColor="@color/text_color"
+                       android:textSize="18dp"
+                       android:hint="月 "
+                       android:textAlignment="textEnd"
+                       android:inputType="number"
+                       android:textColorHint="@color/text_hint_color"
+                       android:background="@drawable/text_edittext"/>
+
+                   <EditText
+                       android:id="@+id/day"
+                       android:layout_width="50dp"
+                       android:layout_height="34dp"
+                       android:layout_marginLeft="10dp"
+                       android:textColor="@color/text_color"
+                       android:textSize="18dp"
+                       android:hint="日 "
+                       android:textAlignment="textEnd"
+                       android:inputType="number"
+                       android:textColorHint="@color/text_hint_color"
+                       android:background="@drawable/text_edittext"/>
+                </LinearLayout>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="280dp"
+               android:layout_marginBottom="5dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:text="气瓶下检日期："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"/>
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:orientation="horizontal">
+                   <EditText
+                       android:id="@+id/next_year"
+                       android:layout_width="70dp"
+                       android:layout_height="34dp"
+                       android:textColor="@color/text_color"
+                       android:textSize="18dp"
+                       android:hint="年 "
+                       android:textAlignment="textEnd"
+                       android:inputType="number"
+                       android:textColorHint="@color/text_hint_color"
+                       android:background="@drawable/text_edittext"/>
+
+                   <EditText
+                       android:id="@+id/next_month"
+                       android:layout_width="50dp"
+                       android:layout_height="34dp"
+                       android:layout_marginLeft="10dp"
+                       android:textColor="@color/text_color"
+                       android:textSize="18dp"
+                       android:hint="月 "
+                       android:textAlignment="textEnd"
+                       android:inputType="number"
+                       android:textColorHint="@color/text_hint_color"
+                       android:background="@drawable/text_edittext"/>
+
+                   <EditText
+                       android:id="@+id/next_day"
+                       android:layout_width="50dp"
+                       android:layout_height="34dp"
+                       android:layout_marginLeft="10dp"
+                       android:textColor="@color/text_color"
+                       android:textSize="18dp"
+                       android:hint="日 "
+                       android:textAlignment="textEnd"
+                       android:inputType="number"
+                       android:textColorHint="@color/text_hint_color"
+                       android:background="@drawable/text_edittext"/>
+               </LinearLayout>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="280dp"
+               android:layout_marginBottom="5dp"
+               android:layout_marginRight="20dp"
+               android:visibility="gone">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:text="产权(托管)方："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"/>
+
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical"
+                   android:layout_marginLeft="5dp">
+
+                   <LinearLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:orientation="horizontal">
+
+                       <ImageView
+                           android:id="@+id/cy_owner_comany"
+                           android:layout_width="30dp"
+                           android:layout_height="30dp"
+                           android:src="@mipmap/item_check_on"
+                           android:clickable="false"/>
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="自有"
+                           android:layout_marginLeft="10dp"
+                           android:layout_gravity="center_vertical"
+                           android:textColor="@color/text_color"
+                           android:textSize="16dp"/>
+
+                       <ImageView
+                           android:id="@+id/cy_owner_customer"
+                           android:layout_width="30dp"
+                           android:layout_height="30dp"
+                           android:layout_marginLeft="40dp"
+                           android:src="@mipmap/item_check_off"
+                           android:visibility="gone"/>
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="客户"
+                           android:layout_marginLeft="10dp"
+                           android:layout_gravity="center_vertical"
+                           android:textColor="@color/text_color"
+                           android:textSize="16dp"
+                           android:visibility="gone"/>
+
+                   </LinearLayout>
+
+                   <EditText
+                       android:id="@+id/cy_owner"
+                       android:layout_width="match_parent"
+                       android:layout_gravity="center_vertical"
+                       android:layout_height="34dp"
+                       android:layout_marginTop="15dp"
+                       android:textColor="@color/text_color"
+                       android:textSize="16dp"
+                       android:background="@drawable/text_edittext"
+                       android:visibility="gone"/>
+
+               </LinearLayout>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="330dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:text="所属集格编号："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp" />
+
+               <EditText
+                   android:id="@+id/cy_set"
+                   android:layout_width="match_parent"
+                   android:layout_gravity="center_vertical"
+                   android:layout_height="34dp"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:background="@drawable/text_edittext"/>
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="380dp"
+               android:layout_marginBottom="5dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="公称压力(Mpa)："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:layout_gravity="center_vertical"/>
+
+               <EditText
+                   android:id="@+id/work_pressure"
+                   android:layout_width="match_parent"
+                   android:layout_height="34dp"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:layout_gravity="center_vertical"
+                   android:inputType="numberDecimal"
+                   android:background="@drawable/text_edittext"
+                   android:hint="0.0"
+                   android:textColorHint="@color/text_hint_color"/>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="430dp"
+               android:layout_marginBottom="5dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="钢瓶重量(Kg)："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:layout_gravity="center_vertical"/>
+
+               <EditText
+                   android:id="@+id/cy_weight"
+                   android:layout_width="match_parent"
+                   android:layout_height="34dp"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:layout_gravity="center_vertical"
+                   android:inputType="numberDecimal"
+                   android:background="@drawable/text_edittext"
+                   android:hint="0.0"
+                   android:textColorHint="@color/text_hint_color"/>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="480dp"
+               android:layout_marginBottom="5dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="钢瓶水容积(L)："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:layout_gravity="center_vertical"/>
+
+               <EditText
+                   android:id="@+id/cy_volume"
+                   android:layout_width="match_parent"
+                   android:layout_height="34dp"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:layout_gravity="center_vertical"
+                   android:inputType="numberDecimal"
+                   android:background="@drawable/text_edittext"
+                   android:hint="0.0"
+                   android:textColorHint="@color/text_hint_color"/>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="530dp"
+               android:layout_marginBottom="5dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="钢瓶壁厚(mm)："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:layout_gravity="center_vertical"/>
+
+               <EditText
+                   android:id="@+id/cy_wallthickness"
+                   android:layout_width="match_parent"
+                   android:layout_height="34dp"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"
+                   android:layout_gravity="center_vertical"
+                   android:inputType="numberDecimal"
+                   android:hint="0"
+                   android:textColorHint="@color/text_hint_color"
+                   android:background="@drawable/text_edittext"/>
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="580dp"
+               android:layout_marginBottom="40dp"
+               android:layout_marginRight="20dp">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center_vertical"
+                   android:text="标签码："
+                   android:textColor="@color/text_color"
+                   android:textSize="16dp"/>
+
+               <TextView
+                   android:id="@+id/platform_cy_code"
+                   android:layout_width="match_parent"
+                   android:layout_height="34dp"
+                   android:layout_marginLeft="5dp"
+                   android:textColor="@color/text_color"
+                   android:textSize="18dp"
+                   android:background="@drawable/text_edittext"
+                   android:gravity="center_vertical"
+                   android:hint="点击扫描条码/二维码"
+                   android:textColorHint="@color/text_hint_color"/>
+           </LinearLayout>
+
+           <com.org.gascylindermng.view.WrapContentListView
+               android:id="@+id/customer_listview"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="309dp"
+               android:layout_marginLeft="96dp"
+               android:layout_marginRight="28dp"
+               android:background="@color/white"
+               android:visibility="gone">
+
+           </com.org.gascylindermng.view.WrapContentListView>
+
+           <com.org.gascylindermng.view.WrapContentListView
+               android:id="@+id/cyManu_listview"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="215dp"
+               android:layout_marginLeft="128dp"
+               android:layout_marginRight="28dp"
+               android:background="@color/white">
+
+           </com.org.gascylindermng.view.WrapContentListView>
+
+           <com.org.gascylindermng.view.WrapContentListView
+               android:id="@+id/cySet_listview"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="409dp"
+               android:layout_marginLeft="112dp"
+               android:layout_marginRight="28dp"
+               android:background="@color/white">
+
+           </com.org.gascylindermng.view.WrapContentListView>
+
+
+       </RelativeLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="确  定"
+        android:textColor="@color/white"
+        android:background="@color/myblue"
+        android:layout_alignParentBottom="true"
+        android:textSize="18sp"/>
+
+</RelativeLayout>

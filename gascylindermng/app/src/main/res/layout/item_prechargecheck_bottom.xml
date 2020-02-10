@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/text_color"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="16dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="检测通过："
+            android:textSize="16dp"
+            android:textColor="@color/text_color"/>
+
+        <ImageView
+            android:id="@+id/check_result_checkbox"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/item_check_off"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="56dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="检后流向："
+            android:textSize="16dp"
+            android:textColor="@color/text_color"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginLeft="80dp"
+            android:background="@drawable/text_edittext">
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <Spinner
+        android:id="@+id/next_process_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="57dp"
+        android:layout_marginLeft="108dp"
+        android:layout_marginRight="28dp"
+        android:background="@color/white"
+        android:popupBackground="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="106dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/text_edittext">
+
+        <EditText
+            android:id="@+id/edittext_remark"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="left"
+            android:hint="填写备注"
+            android:textColorHint="@color/text_hint_color"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:minHeight="80dp"
+            android:minLines="3"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+</RelativeLayout>

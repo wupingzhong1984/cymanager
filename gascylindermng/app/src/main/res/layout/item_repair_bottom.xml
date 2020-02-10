@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_color"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="维修成功："
+            android:textSize="16dp"
+            android:textColor="@color/text_color"/>
+
+        <ImageView
+            android:id="@+id/check_result_checkbox"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/item_check_off"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="注：如果维修失败，该瓶将被记录为报废，无需再重复录入“气瓶报废”记录！"
+        android:textSize="14dp"
+        android:textColor="@color/red"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="110dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="修后流向："
+            android:textSize="16dp"
+            android:textColor="@color/text_color"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginLeft="80dp"
+            android:background="@drawable/text_edittext">
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <Spinner
+        android:id="@+id/next_process_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="111dp"
+        android:layout_marginLeft="108dp"
+        android:layout_marginRight="28dp"
+        android:background="@color/white"
+        android:popupBackground="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/text_edittext">
+
+        <EditText
+            android:id="@+id/edittext_repair_remark"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:gravity="left"
+            android:hint="填写维修内容/维修失败理由"
+            android:textColorHint="@color/text_hint_color"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:minHeight="120dp"
+            android:minLines="4"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+</RelativeLayout>
+

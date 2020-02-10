@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/text_color"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/text_edittext">
+
+        <EditText
+            android:id="@+id/edittext_remark"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="left"
+            android:hint="填写报废理由"
+            android:textColorHint="@color/text_hint_color"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:minHeight="80dp"
+            android:minLines="3"
+            android:visibility="visible"/>
+    </LinearLayout>
+
+</RelativeLayout>

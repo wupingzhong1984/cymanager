@@ -61,6 +61,7 @@ public class RegularInspectionActivity extends BaseActivity implements ApiCallba
         titleName.setText("定期检测");
         userPresenter = new UserPresenter(this);
         listAdapter = new RegularInspectionAdapter(this);
+        listAdapter.addData(ServiceLogicUtils.getCheckListByProcessIdAndCyCategoryId(ServiceLogicUtils.process_id_regular_inspection));
         listview.setAdapter(listAdapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -157,11 +158,11 @@ public class RegularInspectionActivity extends BaseActivity implements ApiCallba
     @Override
     public <T> void successful(String api, T success) {
 
-        if (api.equals("getCylinderInfoByPlatformCyCode")) {
+        if (api.equals("getCylinderInfoByPlatformCyNumber")) {
 
             if (success != null && success instanceof CylinderInfoBean) {
                 listAdapter.cyInfo = (CylinderInfoBean) success;
-                listAdapter.addData(ServiceLogicUtils.getCheckListByProcessIdAndCyCategoryId(ServiceLogicUtils.process_id_regular_inspection, listAdapter.cyInfo.getCyCategoryId()));
+                listAdapter.notifyDataSetChanged();
             }
 
         } else if (api.equals("submitCyRegularInspectionRecord")) {
@@ -204,7 +205,7 @@ public class RegularInspectionActivity extends BaseActivity implements ApiCallba
             if (result == null || result.size() == 0) {
                 return;
             }
-            this.lastScanCyPlatformCode = ServiceLogicUtils.getCylinderPlatformCyCodeFromScanResult(result.get(0));
+            this.lastScanCyPlatformCode = result.get(0);
             if (TextUtils.isEmpty(lastScanCyPlatformCode)) {
                 showToast("异常二维码");
             } else {
@@ -213,7 +214,7 @@ public class RegularInspectionActivity extends BaseActivity implements ApiCallba
                     public void run() {
                         //在子线程中进行下载操作
                         try {
-                            userPresenter.getCylinderInfoByPlatformCyCode(lastScanCyPlatformCode);
+                            userPresenter.getCylinderInfoByPlatformCyNumber(lastScanCyPlatformCode);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -221,7 +222,7 @@ public class RegularInspectionActivity extends BaseActivity implements ApiCallba
                 }.start();
             }
         } else {
-            showToast("扫描失败");
+            //showToast("扫描失败");
         }
     }
 }

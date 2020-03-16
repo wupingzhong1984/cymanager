@@ -15,12 +15,17 @@ public class CyManufacturerBean implements Serializable {
     @SerializedName("name") //
     private String name;
 
+    @SerializedName("licenseNo") //
+    private String licenseNo;
+
 
     @SerializedName("unitId") //
     private String unitId;
 
     @SerializedName("unitName") //
     private String unitName;
+
+
 
     public String getId() {
         return id;
@@ -62,12 +67,21 @@ public class CyManufacturerBean implements Serializable {
         this.unitName = unitName;
     }
 
+    public String getLicenseNo() {
+        return licenseNo;
+    }
+
+    public void setLicenseNo(String licenseNo) {
+        this.licenseNo = licenseNo;
+    }
+
     @Override
     public String toString() {
         return "CyManufacturerBean{" +
                 "id='" + id + '\'' +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
+                ", licenseNo='" + licenseNo + '\'' +
                 ", unitId='" + unitId + '\'' +
                 ", unitName='" + unitName + '\'' +
                 '}';

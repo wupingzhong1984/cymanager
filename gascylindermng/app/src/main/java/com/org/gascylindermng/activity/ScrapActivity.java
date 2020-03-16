@@ -145,7 +145,7 @@ public class ScrapActivity extends BaseActivity implements ApiCallback {
     @Override
     public <T> void successful(String api, T success) {
 
-        if (api.equals("getCylinderInfoByPlatformCyCode")) {
+        if (api.equals("getCylinderInfoByPlatformCyNumber")) {
 
             if (success != null && success instanceof CylinderInfoBean) {
                 listAdapter.cyInfo = (CylinderInfoBean) success;
@@ -192,7 +192,7 @@ public class ScrapActivity extends BaseActivity implements ApiCallback {
             if (result == null || result.size() == 0) {
                 return;
             }
-            this.lastScanCyPlatformCode = ServiceLogicUtils.getCylinderPlatformCyCodeFromScanResult(result.get(0));
+            this.lastScanCyPlatformCode = result.get(0);
             if (TextUtils.isEmpty(lastScanCyPlatformCode)) {
                 showToast("异常二维码");
             } else {
@@ -201,7 +201,7 @@ public class ScrapActivity extends BaseActivity implements ApiCallback {
                     public void run() {
                         //在子线程中进行下载操作
                         try {
-                            userPresenter.getCylinderInfoByPlatformCyCode(lastScanCyPlatformCode);
+                            userPresenter.getCylinderInfoByPlatformCyNumber(lastScanCyPlatformCode);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -209,7 +209,7 @@ public class ScrapActivity extends BaseActivity implements ApiCallback {
                 }.start();
             }
         } else {
-            showToast("扫描失败");
+            //showToast("扫描失败");
         }
     }
 }

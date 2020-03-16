@@ -1,5 +1,6 @@
 package com.org.gascylindermng.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTabHost;
@@ -16,6 +17,10 @@ import com.org.gascylindermng.R;
 import com.org.gascylindermng.base.BaseActivity;
 import com.org.gascylindermng.fragment.AccountFragment;
 import com.org.gascylindermng.fragment.FunctionFragment;
+import com.org.gascylindermng.presenter.UserPresenter;
+import com.org.gascylindermng.tools.ServiceLogicUtils;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 
@@ -42,6 +47,7 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
 
     @Override
     protected void init(Bundle savedInstanceState) {
+
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realcontent);
         int count = fragmentArray.length;
         for (int i = 0; i < count; i++) {
@@ -91,4 +97,6 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
 
         return view;
     }
+
+
 }

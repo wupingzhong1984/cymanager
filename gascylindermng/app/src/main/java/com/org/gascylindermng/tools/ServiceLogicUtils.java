@@ -22,9 +22,9 @@ public class ServiceLogicUtils {
     public static String scan_single = "1"; //单扫
     public static String scan_multi = "2"; //连扫
 
-    public static int process_id_precharge_check = 1; //充前检测
+    public static int process_id_precharge_check = 1; //回厂验空
     public static int process_id_charge = 2; //充装
-    public static int process_id_postcharge_check = 3; //充后检测（质检）
+    public static int process_id_postcharge_check = 3; //充后验满（质检）
     public static int process_id_send = 4; //发瓶
     public static int process_id_receive = 5; //收瓶
     public static int process_id_repair = 6; //维修
@@ -65,7 +65,7 @@ public class ServiceLogicUtils {
         }
     }
 
-    public static ArrayList<CheckItemBean> getCheckListByProcessIdAndCyCategoryId(int processId, String categoryId) {
+    public static ArrayList<CheckItemBean> getCheckListByProcessIdAndCyCategoryId(int processId) {
 
         ArrayList<CheckItemBean> list = new ArrayList<CheckItemBean>();
         ArrayList<String> titleList = new ArrayList<String>();
@@ -89,20 +89,37 @@ public class ServiceLogicUtils {
 
         } else if (processId == process_id_charge) {
 
-            titleList.add("检漏");
-            apiParamList.add("checkLeak");
+            titleList.add("充前-瓶身颜色");
+            apiParamList.add("beforeColor");
 
-            titleList.add("设备正常");
-            apiParamList.add("ifNormal");
+            titleList.add("充前-气瓶外观");
+            apiParamList.add("beforeAppearance");
 
-            titleList.add("充装软管");
-            apiParamList.add("hose");
+            titleList.add("充前-安全附件");
+            apiParamList.add("beforeSafety");
 
-            titleList.add("夹具");
-            apiParamList.add("fixture");
+            titleList.add("充前-检测日期");
+            apiParamList.add("beforeRegularInspectionDate");
 
-            titleList.add("连接密封");
-            apiParamList.add("seal");
+            titleList.add("充前-瓶内余压");
+            apiParamList.add("beforeResidualPressure");
+
+
+            titleList.add("充装-是否正常");
+            apiParamList.add("fillingIfNormal");
+
+
+            titleList.add("充后-压力复查");
+            apiParamList.add("afterPressure");
+
+            titleList.add("充后-阀门泄露");
+            apiParamList.add("afterCheckLeak");
+
+            titleList.add("充后-外观检查");
+            apiParamList.add("afterAppearance");
+
+            titleList.add("充后-温度检查");
+            apiParamList.add("afterTemperature");
 
         } else if (processId == process_id_postcharge_check) {
 
@@ -173,48 +190,84 @@ public class ServiceLogicUtils {
         Pureness p1 = new Pureness();
         p1.setKeyValue("1");
         p1.setText("普");
+        list.add(p1);
+
         Pureness p2 = new Pureness();
         p2.setKeyValue("2");
         p2.setText("2N");
+        list.add(p2);
+
         Pureness p3 = new Pureness();
         p3.setKeyValue("3");
         p3.setText("3N");
+        list.add(p3);
+
         Pureness p4 = new Pureness();
         p4.setKeyValue("4");
         p4.setText("4N");
+        list.add(p4);
+
         Pureness p5 = new Pureness();
         p5.setKeyValue("5");
         p5.setText("5N");
+        list.add(p5);
+
         Pureness p6 = new Pureness();
         p6.setKeyValue("6");
         p6.setText("6N");
+        list.add(p6);
 
         return list;
     }
 
-    public static void getCylinderPlatformCyCodeFromScanResult(String result,
-                                                          ArrayList<String> lastScanCySetPlatformIdList,
-                                                          ArrayList<String> lastScanCyPlatformCodeList) {
+    public static Pureness getPurenessByKey(String key) {
+
+        for (Pureness p : getPurenessList()) {
+            if (p.getKeyValue().equals(key)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public static ArrayList<String> getTeamList() {
+
+        ArrayList<String> list = new ArrayList<>();
+
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        list.add("D");
+        list.add("E");
+
+        return list;
+    }
+
+
+    public static void getCylinderPlatformNumberOrSetIdFromScanResult(String result,
+                                                          ArrayList<String> lastScanCySetIdList,   //1,2,3
+                                                          ArrayList<String> lastScanCyPlatformNumberList) { //001xxxxxxxxx
 
 
         if (UrlUtils.strIsURL(result)) {
 
             if (result.contains("/set/code/")) {
-                lastScanCySetPlatformIdList.add((result.split("/set/code/"))[1]);
+                lastScanCySetIdList.add((result.split("/set/code/"))[1]);
             } else if (result.contains("t.ffqs.cn")) { // http://t.ffqs.cn/
-                lastScanCyPlatformCodeList.add(result.substring(" http://t.ffqs.cn/".length()-1,result.length()));
+                lastScanCyPlatformNumberList.add(result.substring(" http://t.ffqs.cn/".length()-1,result.length()));
             } else {
                 String code = UrlUtils.parse(result).params.get("id");
                 if (code != null && !code.equals("")) {
-                    lastScanCyPlatformCodeList.add(code);
+                    lastScanCyPlatformNumberList.add(code);
                 }
             }
-        } else {
-            lastScanCyPlatformCodeList.add(result);
+        } else {//条码
+
         }
     }
 
-    public static String getCylinderPlatformCyCodeFromScanResult(String result) {
+    //return 1,2,3 or  001xxxxxxxxx
+    public static String getCylinderPlatformNumberOrSetIdFromScanResult(String result) {
 
 
         if (UrlUtils.strIsURL(result)) {
@@ -245,18 +298,19 @@ public class ServiceLogicUtils {
         if (cal.get(Calendar.HOUR_OF_DAY) < 7) {
 
             cal.add(Calendar.DATE, -1);
-            cal.set(Calendar.HOUR_OF_DAY,21);
+            cal.set(Calendar.HOUR_OF_DAY,15);
             cal.set(Calendar.MINUTE,0);
             cal.set(Calendar.SECOND,0);
 
-        } else if (cal.get(Calendar.HOUR_OF_DAY) < 21) {
+        } else if (cal.get(Calendar.HOUR_OF_DAY) < 19) {
 
-            cal.set(Calendar.HOUR_OF_DAY,7);
+            cal.add(Calendar.DATE, -1);
+            cal.set(Calendar.HOUR_OF_DAY,17);
             cal.set(Calendar.MINUTE,0);
             cal.set(Calendar.SECOND,0);
 
         } else {
-            cal.set(Calendar.HOUR_OF_DAY,21);
+            cal.set(Calendar.HOUR_OF_DAY,0);
             cal.set(Calendar.MINUTE,0);
             cal.set(Calendar.SECOND,0);
         }
@@ -272,24 +326,42 @@ public class ServiceLogicUtils {
 
         if (cal.get(Calendar.HOUR_OF_DAY) < 7) {
 
-            cal.set(Calendar.HOUR_OF_DAY,7);
+            cal.set(Calendar.HOUR_OF_DAY,10);
             cal.set(Calendar.MINUTE,0);
             cal.set(Calendar.SECOND,0);
 
-        } else if (cal.get(Calendar.HOUR_OF_DAY) < 21) {
+        } else if (cal.get(Calendar.HOUR_OF_DAY) < 19) {
 
-            cal.set(Calendar.HOUR_OF_DAY,21);
+            cal.set(Calendar.HOUR_OF_DAY,22);
             cal.set(Calendar.MINUTE,0);
             cal.set(Calendar.SECOND,0);
 
         } else {
             cal.add(Calendar.DATE, 1);
-            cal.set(Calendar.HOUR_OF_DAY,7);
+            cal.set(Calendar.HOUR_OF_DAY,10);
             cal.set(Calendar.MINUTE,0);
             cal.set(Calendar.SECOND,0);
         }
         Log.i("ChargeClassEndTime:",cal.getTime().toString());
         return  cal.getTime();
+    }
+
+    //判断二维码是否合规有效
+    public static boolean isValidCyNumber(String number, String unitId) {
+
+        boolean valid = true;
+
+        if (number.length() != 11) {
+            valid = false;
+        } else {
+
+            String head = number.substring(0,4);
+            if (Integer.valueOf(unitId) != Integer.valueOf(head)) {
+                valid = false;
+            }
+        }
+
+        return valid;
     }
 }
 

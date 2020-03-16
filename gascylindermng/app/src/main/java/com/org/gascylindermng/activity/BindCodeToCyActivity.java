@@ -7,8 +7,10 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,6 +31,7 @@ import com.org.gascylindermng.bean.CyManufacturerBean;
 import com.org.gascylindermng.bean.CyMediumBean;
 import com.org.gascylindermng.bean.CySetBean;
 import com.org.gascylindermng.bean.CylinderInfoBean;
+import com.org.gascylindermng.bean.SetBean;
 import com.org.gascylindermng.callback.ApiCallback;
 import com.org.gascylindermng.presenter.UserPresenter;
 import com.org.gascylindermng.tools.CommonTools;
@@ -40,7 +43,9 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,8 +65,6 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
     EditText year;
     @BindView(R.id.month)
     EditText month;
-    @BindView(R.id.day)
-    EditText day;
     @BindView(R.id.platform_cy_code)
     TextView platformCyCode;
     @BindView(R.id.cy_owner_comany)
@@ -94,12 +97,11 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
     EditText nextYear;
     @BindView(R.id.next_month)
     EditText nextMonth;
-    @BindView(R.id.next_day)
-    EditText nextDay;
 
 
     //打开扫描界面请求码
-    private int REQUEST_CODE = 0x01;
+    private int REQUEST_CODE_1 = 0x01; //扫气瓶
+    private int REQUEST_CODE_2 = 0x02; //扫集格
     //扫描成功返回码
     private int RESULT_OK = 0xA1;
 
@@ -140,6 +142,7 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
 
         titleName.setText("气瓶绑码");
         userPresenter = new UserPresenter(this);
+
 
         cyCategorySpinnerAdapter = new MySimpleSpinnerAdapter(this);
         cycategorySpinner.setAdapter(cyCategorySpinnerAdapter);
@@ -190,7 +193,7 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 cySetDidSelected = true;
-                selectedCySet = cySetList.get(position);
+                setSelectedCySet(cySetList.get(position));
                 cySet.setText(selectedCySet.getSetNumber());
                 cySetListAdapter.deleteAllData();
                 cySetListview.setVisibility(View.GONE);
@@ -226,7 +229,8 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
 
             @Override
             public void afterTextChanged(final Editable s) {
-                if (!TextUtils.isEmpty(s)) {
+                if (!TextUtils.isEmpty(s) && s.toString().length() > 3) {
+
                     new Thread() {
                         @Override
                         public void run() {
@@ -294,7 +298,7 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
                     return;
                 }
 
-                if (!TextUtils.isEmpty(s)) {
+                if (!TextUtils.isEmpty(s) && s.toString().length() > 4) {
                     new Thread() {
                         @Override
                         public void run() {
@@ -309,7 +313,7 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
                 } else {
                     cySetList.clear();
                     cySetListAdapter.deleteAllData();
-                    selectedCySet = null;
+                    setSelectedCySet(null);
                 }
             }
         });
@@ -350,10 +354,151 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
             }
         });
 
+        year.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (s.toString().length() == 4) {
+                    month.requestFocus();
+                }
+            }
+        });
+
+        nextYear.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                if (s.toString().length() == 4) {
+                    nextMonth.requestFocus();
+                }
+            }
+        });
+
+        year.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    year.setText("");
+                }
+            }
+        });
+
+        month.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    month.setText("");
+                }
+            }
+        });
+
+        nextYear.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    nextYear.setText("");
+                }
+            }
+        });
+
+        nextMonth.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    nextMonth.setText("");
+                }
+            }
+        });
+
+        cyWorkPressure.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+
+                if (s.toString().length() == 2) {
+                    cyWeight.requestFocus();
+                }
+            }
+        });
+        cyWeight.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+
+                if(TextUtils.isEmpty(s.toString())) {
+                    return;
+                }
+
+                double d = Double.valueOf(s.toString());
+                if (d%1 > 0 || CommonTools.containPointAndIsInt(s.toString())) {
+                    cyVolume.requestFocus();
+                }
+
+//                if (s.toString().contains(".") && (s.toString().split(".")).length >1) {
+//                    cyVolume.requestFocus();
+//                }
+            }
+        });
+        cyVolume.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+
+                if(TextUtils.isEmpty(s.toString())) {
+                    return;
+                }
+
+                double d = Double.valueOf(s.toString());
+                if (d%1 > 0 || CommonTools.containPointAndIsInt(s.toString())) {
+                    cyWallthickness.requestFocus();
+                }
+
+//                if (s.toString().contains(".") && (s.toString().split(".")).length >1) {
+//                    cyWallthickness.requestFocus();
+//                }
+            }
+        });
+
         userPresenter.getCyCategoryListByCompanyId();
     }
 
-    @OnClick({R.id.back_img, R.id.cy_owner_comany, R.id.cy_owner_customer, R.id.platform_cy_code, R.id.submit})
+    @OnClick({R.id.back_img, R.id.cy_owner_comany, R.id.cy_owner_customer, R.id.platform_cy_code,R.id.scan_set, R.id.submit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_img:
@@ -375,7 +520,23 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
             case R.id.platform_cy_code:
                 if (CommonTools.isCameraCanUse()) {
                     Intent intent = new Intent(BindCodeToCyActivity.this, CaptureActivity.class);
-                    startActivityForResult(intent, REQUEST_CODE);
+                    startActivityForResult(intent, REQUEST_CODE_1);
+                } else {
+                    showToast("请打开此应用的摄像头权限！");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            PermissionPageUtils u = new PermissionPageUtils(getBaseContext());
+                            u.jumpPermissionPage();
+                        }
+                    }, 1000);
+                }
+                break;
+
+            case R.id.scan_set:
+                if (CommonTools.isCameraCanUse()) {
+                    Intent intent = new Intent(BindCodeToCyActivity.this, CaptureActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_2);
                 } else {
                     showToast("请打开此应用的摄像头权限！");
                     new Handler().postDelayed(new Runnable() {
@@ -408,23 +569,16 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
 
                 if (TextUtils.isEmpty(year.getText().toString()) ||
                         year.getText().toString().length() < 4 ||
-                        TextUtils.isEmpty(month.getText().toString()) ||
-                        TextUtils.isEmpty(day.getText().toString())) {
+                        TextUtils.isEmpty(month.getText().toString())) {
                     showToast("请正确输入气瓶生产日期。");
                     return;
                 }
 
-                if(!TextUtils.isEmpty(nextYear.getText().toString()) ||
-                        !TextUtils.isEmpty(nextMonth.getText().toString()) ||
-                        !TextUtils.isEmpty(nextDay.getText().toString())) {
-
-                    if (TextUtils.isEmpty(nextYear.getText().toString()) ||
-                            TextUtils.isEmpty(nextMonth.getText().toString()) ||
-                            TextUtils.isEmpty(nextDay.getText().toString())) {
-                        showToast("请完整输入下检日期。");
-                        return;
-                    }
-
+                if (TextUtils.isEmpty(nextYear.getText().toString()) ||
+                        nextYear.getText().toString().length() < 4 ||
+                        TextUtils.isEmpty(nextMonth.getText().toString())) {
+                    showToast("请正确输入下检日期。");
+                    return;
                 }
 
 //                if (customerOwnCy) {
@@ -436,8 +590,8 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
 //                    return;
 //                }
 
-                if (platformCyCode.getText().toString().equals("")) {
-                    showToast("请扫描条码/二维码。");
+                if (platformCyCode.getText().toString().length() != 11) {
+                    showToast("二维码异常，请正确填写或联系气瓶管理员");
                     return;
                 }
                 LinearLayout llname = (LinearLayout) getLayoutInflater()
@@ -456,7 +610,7 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
                 btnConfirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showLoading("绑定中...", "绑定成功", "绑定失败");
+                        //showLoading("绑定中...", "绑定成功", "绑定失败");
                         if (cyInfo == null) {
                             //create cy
                             String code = bottleorcompanyrelatecode.getText().toString();
@@ -464,7 +618,7 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
                             String yearStr = year.getText().toString();
                             String monthStr, dayStr;
                             int monthInt = Integer.valueOf(month.getText().toString());
-                            int dayInt = Integer.valueOf(day.getText().toString());
+                            int dayInt = CommonTools.getMonthLastDay(Integer.valueOf(yearStr),monthInt);
                             if (monthInt > 9) {
                                 monthStr = String.valueOf(monthInt);
                             } else {
@@ -481,7 +635,7 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
                             String nextDayStr = "";
                             if (!TextUtils.isEmpty(nextYearStr)) {
                                 monthInt = Integer.valueOf(nextMonth.getText().toString());
-                                dayInt = Integer.valueOf(nextDay.getText().toString());
+                                dayInt = CommonTools.getMonthLastDay(Integer.valueOf(nextYearStr),monthInt);
                                 if (monthInt > 9) {
                                     nextMonthStr = String.valueOf(monthInt);
                                 } else {
@@ -552,7 +706,8 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
 
         year.setText("");
         month.setText("");
-        day.setText("");
+        nextYear.setText("");
+        nextMonth.setText("");
         customerOwnCy = false;
         cyOwnerComany.setImageResource(R.mipmap.item_check_on);
         cyOwnerCustomer.setImageResource(R.mipmap.item_check_off);
@@ -572,7 +727,7 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
 
         cySet.setText("");
         cySetList.clear();
-        selectedCySet = null;
+        this.selectedCySet = null;
         cySetListAdapter.deleteAllData();
         cySetListview.setVisibility(View.GONE);
 
@@ -584,9 +739,43 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
 
     @Override
     public <T> void successful(String api, T success) {
-        if (api.equals("addNumber")) {
 
-            loadingDialog.loadSuccess();
+        if (api.equals("getSetWithCylinderListBySetId")) {
+
+            if (success != null && success instanceof SetBean) {
+
+                SetBean set = (SetBean) success;
+
+                CySetBean newBean = new CySetBean();
+                newBean.setSetId(set.getSetId());
+                newBean.setSetNumber(set.getSetNumber());
+                cySetList.clear();
+                cySetListAdapter.deleteAllData();
+                cySetListview.setVisibility(View.GONE);
+                this.selectedCySet = newBean;
+                cySetDidSelected = true;
+                cySet.setText(selectedCySet.getSetNumber());
+
+            } else {
+                LinearLayout llname = (LinearLayout) getLayoutInflater()
+                        .inflate(R.layout.view_scan_success_dialog, null);
+                final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
+                img.setImageResource(R.mipmap.scan_success);
+                final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
+                text.setText("未知集格");
+                AlertDialog.Builder builder = new AlertDialog.Builder(BindCodeToCyActivity.this);
+                final AlertDialog dialog = builder.setView(llname).create();
+                dialog.show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.dismiss();
+                    }
+                }, 3000);
+            }
+
+        } else if (api.equals("addNumber")) {
+
             LinearLayout llname = (LinearLayout) getLayoutInflater()
                     .inflate(R.layout.view_operation_dialog, null);
             final TextView textView = (TextView) llname.findViewById(R.id.message);
@@ -687,7 +876,7 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
 //            }
             ArrayList<String> manuList = new ArrayList<String>();
             for (CyManufacturerBean bean : cyManuList) {
-                manuList.add(bean.getCode() + "-" + bean.getName());
+                manuList.add(bean.getCode() + "-" + bean.getLicenseNo() + "-" + bean.getName());
             }
             if (manuList.size() > 0) {
                 cyManuListview.setVisibility(View.VISIBLE);
@@ -699,7 +888,7 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
 
         } else if (api.equals("searchUnitsSet")) {
 
-            selectedCySet = null;
+            this.selectedCySet = null;
             cySetList.clear();
 
             List<LinkedTreeMap> list = (List<LinkedTreeMap>) success;
@@ -774,72 +963,117 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
             }
 
         } else if (api.equals("getCylinderInfoByCyCode")) {
+
+            cleanAllInfoInUI(false);
+            this.cyInfo = null;
+
             if (success != null && success instanceof CylinderInfoBean) {
+
                 this.cyInfo = (CylinderInfoBean) success;
 
-                ArrayList cateList = new ArrayList();
-                cateList.add(cyInfo.getCyCategoryName());
-                cyCategorySpinnerAdapter.updateData(cateList);
-
-                ArrayList mediumList = new ArrayList();
-                mediumList.add(cyInfo.getCyMediumName());
-                cyMediumSpinnerAdapter.updateData(mediumList);
-
-                if (!TextUtils.isEmpty(cyInfo.getPlatformCyCode())) {
-                    cyManufacturer.setText(cyInfo.getManufacturerCode());
-                }
-
-                String[] strs1 = cyInfo.getManuDate().split(" ");
-                String[] strs2 = strs1[0].split("-");
-                year.setText(strs2[0]);
-                month.setText(strs2[1]);
-                day.setText(strs2[2]);
-
-                if (cyInfo.getUnitId().equals(userPresenter.querComapny().getCompanyId())) { //我司自有瓶子
-                    customerOwnCy = false;
-                    cyOwnerComany.setImageResource(R.mipmap.item_check_on);
-                    cyOwnerCustomer.setImageResource(R.mipmap.item_check_off);
-                    cyOwner.setText("");
-                    cyOwner.setVisibility(View.INVISIBLE);
+                String cyCode;
+                if (userPresenter.querComapny().getPinlessObject() == "0") {
+                    cyCode = cyInfo.getBottleCode();
                 } else {
-                    customerOwnCy = true;
-                    cyOwnerComany.setImageResource(R.mipmap.item_check_off);
-                    cyOwnerCustomer.setImageResource(R.mipmap.item_check_on);
-                    cyOwner.setText(cyInfo.getUnitName());
-                    cyOwner.setVisibility(View.VISIBLE);
+                    cyCode = cyInfo.getCompanyRelateCode();
                 }
-                customerList.clear();
-                selectedCustomer = null;
-                customerListAdapter.deleteAllData();
-                customerListview.setVisibility(View.GONE);
+                if (!TextUtils.isEmpty(cyInfo.getPlatformCyCode())){
 
-                if (!TextUtils.isEmpty(cyInfo.getSetNumber())) {
-                    cySet.setText(cyInfo.getSetNumber());
+                    showToast("钢印号/自编码："+cyCode+"，该气瓶已绑定二维码！");
+                    return;
                 }
 
-                if (!TextUtils.isEmpty(cyInfo.getWorkPressure())) {
-                    cyWorkPressure.setText(cyInfo.getWorkPressure());
-                }
+                LinearLayout llname = (LinearLayout) getLayoutInflater()
+                        .inflate(R.layout.view_operation_dialog, null);
+                final TextView textView = (TextView) llname.findViewById(R.id.message);
+                textView.setText("钢印号/自编码:"+cyCode+"已录入系统，但还未绑定二维码。");
 
-                if (!TextUtils.isEmpty(cyInfo.getWeight())) {
-                    cyWeight.setText(cyInfo.getWeight());
-                }
+                final TextView btnConfirm = (TextView) llname.findViewById(R.id.dialog_btn_confirm);
+                btnConfirm.setText("开始绑定");
+                final TextView btnCancel = (TextView) llname.findViewById(R.id.dialog_btn_cancel);
 
-                if (!TextUtils.isEmpty(cyInfo.getVolume())) {
-                    cyVolume.setText(cyInfo.getVolume());
-                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(BindCodeToCyActivity.this);
+                final AlertDialog dialog = builder.setView(llname).create();
+                dialog.show();
 
-                if (!TextUtils.isEmpty(cyInfo.getWallThickness())) {
-                    cyWallthickness.setText(cyInfo.getWallThickness());
-                }
-
-                if (!TextUtils.isEmpty(cyInfo.getPlatformCyCode())) {
-                    platformCyCode.setText(cyInfo.getPlatformCyCode());
-                }
+                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
 
-            } else {
-                cleanAllInfoInUI(false);
+                        ArrayList cateList = new ArrayList();
+                        cateList.add(cyInfo.getCyCategoryName());
+                        cyCategorySpinnerAdapter.updateData(cateList);
+
+                        ArrayList mediumList = new ArrayList();
+                        mediumList.add(cyInfo.getCyMediumName());
+                        cyMediumSpinnerAdapter.updateData(mediumList);
+
+                        if (!TextUtils.isEmpty(cyInfo.getPlatformCyCode())) {
+                            cyManufacturer.setText(cyInfo.getManufacturerCode());
+                        }
+
+                        String[] strs1 = cyInfo.getManuDate().split(" ");
+                        String[] strs2 = strs1[0].split("-");
+                        year.setText(strs2[0]);
+                        month.setText(strs2[1]);
+
+                        String[] strs3 = cyInfo.getNextRegularInspectionDate().split(" ");
+                        String[] strs4 = strs3[0].split("-");
+                        nextYear.setText(strs4[0]);
+                        nextMonth.setText(strs4[1]);
+
+                        if (cyInfo.getUnitId().equals(userPresenter.querComapny().getCompanyId())) { //我司自有瓶子
+                            customerOwnCy = false;
+                            cyOwnerComany.setImageResource(R.mipmap.item_check_on);
+                            cyOwnerCustomer.setImageResource(R.mipmap.item_check_off);
+                            cyOwner.setText("");
+                            cyOwner.setVisibility(View.INVISIBLE);
+                        } else {
+                            customerOwnCy = true;
+                            cyOwnerComany.setImageResource(R.mipmap.item_check_off);
+                            cyOwnerCustomer.setImageResource(R.mipmap.item_check_on);
+                            cyOwner.setText(cyInfo.getUnitName());
+                            cyOwner.setVisibility(View.VISIBLE);
+                        }
+                        customerList.clear();
+                        selectedCustomer = null;
+                        customerListAdapter.deleteAllData();
+                        customerListview.setVisibility(View.GONE);
+
+                        if (!TextUtils.isEmpty(cyInfo.getSetNumber())) {
+                            cySet.setText(cyInfo.getSetNumber());
+                        }
+
+                        if (!TextUtils.isEmpty(cyInfo.getWorkPressure())) {
+                            cyWorkPressure.setText(cyInfo.getWorkPressure());
+                        }
+
+                        if (!TextUtils.isEmpty(cyInfo.getWeight())) {
+                            cyWeight.setText(cyInfo.getWeight());
+                        }
+
+                        if (!TextUtils.isEmpty(cyInfo.getVolume())) {
+                            cyVolume.setText(cyInfo.getVolume());
+                        }
+
+                        if (!TextUtils.isEmpty(cyInfo.getWallThickness())) {
+                            cyWallthickness.setText(cyInfo.getWallThickness());
+                        }
+
+                        if (!TextUtils.isEmpty(cyInfo.getPlatformCyCode())) {
+                            platformCyCode.setText(cyInfo.getPlatformCyCode());
+                        }
+                        dialog.dismiss();
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
             }
         }
     }
@@ -853,7 +1087,6 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
             return;
         }
 
-        loadingDialog.loadFailed();
         showToast("接口报错，" + (String) failure);
     }
 
@@ -861,21 +1094,72 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //扫描结果回调
-        if (resultCode == RESULT_OK) { //RESULT_OK = -1F
+        if (resultCode == RESULT_OK) { //RESULT_OK = -1
             Bundle bundle = data.getExtras();
+
             ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
             if (result == null || result.size() == 0) {
                 return;
             }
-            String lastScanCyPlatformCode = ServiceLogicUtils.getCylinderPlatformCyCodeFromScanResult(result.get(0));
-            if (TextUtils.isEmpty(lastScanCyPlatformCode)) {
-                showToast("异常二维码");
-            } else {
-                platformCyCode.setText(lastScanCyPlatformCode);
+            if (requestCode == REQUEST_CODE_1) {
+
+                String cyNumber = result.get(0);
+                ArrayList<CylinderInfoBean> cys = (ArrayList<CylinderInfoBean>)bundle.getSerializable("qr_scan_result_all_cy_list");
+                if (cys != null && cys.size() > 0) {
+                    LinearLayout llname = (LinearLayout) getLayoutInflater()
+                            .inflate(R.layout.view_scan_success_dialog, null);
+                    final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
+                    img.setImageResource(R.mipmap.scan_success);
+                    final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
+                    text.setText("该二维码："+ cyNumber+", 已绑定气瓶。");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BindCodeToCyActivity.this);
+                    final AlertDialog dialog = builder.setView(llname).create();
+                    dialog.show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                        }
+                    }, 3000);
+                    return;
+                }
+
+                if (ServiceLogicUtils.isValidCyNumber(cyNumber,userPresenter.queryUser().getUnitId())) {
+                    platformCyCode.setText(cyNumber);
+                } else {
+                    LinearLayout llname = (LinearLayout) getLayoutInflater()
+                            .inflate(R.layout.view_scan_success_dialog, null);
+                    final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
+                    img.setImageResource(R.mipmap.scan_success);
+                    final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
+                    text.setText("不合规二维码："+ cyNumber+", 请马上联系标签管理人员");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BindCodeToCyActivity.this);
+                    final AlertDialog dialog = builder.setView(llname).create();
+                    dialog.show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                        }
+                    }, 3000);
+                }
+            } else if (requestCode == REQUEST_CODE_2) {
+                final String lastScanSetId = result.get(0);
+                new Thread() {
+                    @Override
+                    public void run() {
+                        //在子线程中进行下载操作
+                        try {
+                            userPresenter.getSetWithCylinderListBySetId(lastScanSetId);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
             }
 
         } else {
-            showToast("扫描失败");
+            //showToast("扫描失败");
         }
     }
 
@@ -884,5 +1168,13 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    public CySetBean getSelectedCySet() {
+        return selectedCySet;
+    }
+
+    public void setSelectedCySet(CySetBean selectedCySet) {
+        this.selectedCySet = selectedCySet;
     }
 }

@@ -22,6 +22,7 @@ import com.org.gascylindermng.bean.CheckItemBean;
 import com.org.gascylindermng.bean.CylinderInfoBean;
 import com.org.gascylindermng.bean.ProcessBean;
 import com.org.gascylindermng.bean.ProcessNextAreaBean;
+import com.org.gascylindermng.bean.SetBean;
 import com.org.gascylindermng.bean.UrlEntity;
 import com.org.gascylindermng.callback.ApiCallback;
 import com.org.gascylindermng.presenter.UserPresenter;
@@ -52,12 +53,16 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
 
     //打开扫描界面请求码
     private int REQUEST_CODE = 0x01;
+    private int REQUEST_CODE_2 = 0x02;
     //扫描成功返回码
     private int RESULT_OK = 0xA1;
 
     private PrechargeCheckAdapter listAdapter;
     private UserPresenter userPresenter;
-    private String lastScanCyPlatformCode;
+
+    private ArrayList<CylinderInfoBean> newCyList; //new mission cy
+    private ArrayList<SetBean> newSetList;
+    private ArrayList<CylinderInfoBean> newAllCyList; //new mission cy
 
     @Override
     protected void initLayout(Bundle savedInstanceState) {
@@ -67,34 +72,25 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
     @Override
     protected void init(Bundle savedInstanceState) {
 
-        titleName.setText("充前检测");
+        titleName.setText("回厂验空");
         userPresenter = new UserPresenter(this);
-        listAdapter = new PrechargeCheckAdapter(this);
+
+        this.newCyList = new ArrayList<CylinderInfoBean>();
+        this.newSetList = new ArrayList<SetBean>();
+        this.newAllCyList = new ArrayList<CylinderInfoBean>();
+
+        listAdapter = new PrechargeCheckAdapter(this,ServiceLogicUtils.getCheckListByProcessIdAndCyCategoryId(ServiceLogicUtils.process_id_precharge_check));
         listview.setAdapter(listAdapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0) {
-                    if (listAdapter.cyInfo == null) {
-                        if (CommonTools.isCameraCanUse()) {
-                            Intent intent = new Intent(PrechargeCheckActivity.this, CaptureActivity.class);
-                            startActivityForResult(intent, REQUEST_CODE);
-                        } else {
-                            showToast("请打开此应用的摄像头权限！");
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    PermissionPageUtils u = new PermissionPageUtils(getBaseContext());
-                                    u.jumpPermissionPage();
-                                }
-                            }, 1000);
-                        }
-                    } else {
-                        if (listAdapter.cyInfo == null) return;
-                        Intent intent = new Intent(PrechargeCheckActivity.this, CylinderInfoActivity.class);
-                        intent.putExtra("CylinderInfoBean", listAdapter.cyInfo);
-                        startActivity(intent);
-                    }
+                    if (listAdapter.allCyCount == 0) return;
+                    Intent intent = new Intent(PrechargeCheckActivity.this, CyListActivity.class);
+                    intent.putExtra("CyBeanlist", newAllCyList);
+                    intent.putExtra("canDeleteCy", "1");
+                    startActivityForResult(intent,REQUEST_CODE_2);
+
                 }
             }
         });
@@ -102,30 +98,34 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
         userPresenter.getCompanyProcessListByCompanyId();
     }
 
-    @OnClick({R.id.back_img, R.id.submit})
+    @OnClick({R.id.back_img, R.id.submit, R.id.start_scanner})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back_img:
                 finish();
                 break;
+            case R.id.start_scanner:
+                if (CommonTools.isCameraCanUse()) {
+                    Intent intent = new Intent(PrechargeCheckActivity.this, CaptureActivity.class);
+                    intent.putExtra("mode", ServiceLogicUtils.scan_multi);
+                    startActivityForResult(intent, REQUEST_CODE);
+                } else {
+                    showToast("请打开此应用的摄像头权限！");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            PermissionPageUtils u = new PermissionPageUtils(getBaseContext());
+                            u.jumpPermissionPage();
+                        }
+                    }, 1000);
+                }
+                break;
             case R.id.submit:
-                if (listAdapter.cyInfo == null) {
+                if (listAdapter.allCyCount == 0) {
                     showToast("请先扫描检测对象气瓶二维码");
                     return;
                 }
                 hideSoftInput();
-
-                boolean itemOK= true;
-                for (CheckItemBean check : listAdapter.getData()) {
-                    if (!check.isState()) {
-                        itemOK = false;
-                        break;
-                    }
-                }
-                if (itemOK && !listAdapter.checkOK && TextUtils.isEmpty(listAdapter.remark)) {
-                    showToast("请在备注中填写检测未通过的理由。");
-                    return;
-                }
 
                 LinearLayout llname = (LinearLayout) getLayoutInflater()
                         .inflate(R.layout.view_operation_dialog, null);
@@ -145,7 +145,7 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
                     public void onClick(View v) {
 
                         userPresenter.submitPrechargeCheckResult(
-                                listAdapter.cyInfo.getCyId(),
+                                newAllCyList.get(0).getCyId(),
                                 listAdapter.getData(),
                                 listAdapter.checkOK,
                                 listAdapter.nextAreaId,
@@ -166,7 +166,46 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
     @Override
     public <T> void successful(String api, T success) {
 
-        if (api.equals("getCompanyProcessListByCompanyId")) {
+        if (api.equals("submitPrechargeCheckResult")) {
+            HttpResponseResult httpResponseResult = (HttpResponseResult) success;
+            if (!httpResponseResult.getCode().equals("200")) {
+                listAdapter.allCyCount = newAllCyList.size();
+                listAdapter.notifyDataSetChanged();
+                showToast("提交失败，" + httpResponseResult.getMessage() + "，请重新尝试提交。");
+            } else {
+                newAllCyList.remove(0);
+                if (newAllCyList.size() == 0) {
+                    showToast("提交成功");
+                    listAdapter.allCyCount = newAllCyList.size();
+                    listAdapter.notifyDataSetChanged();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+
+                    }, 1500);
+                } else {
+                    new Thread(){
+                        @Override
+                        public void run() {
+                            //在子线程中进行下载操作
+                            try {
+
+                                userPresenter.submitPrechargeCheckResult(
+                                        newAllCyList.get(0).getCyId(),
+                                        listAdapter.getData(),
+                                        listAdapter.checkOK,
+                                        listAdapter.nextAreaId,
+                                        listAdapter.remark);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+            }
+        } else if (api.equals("getCompanyProcessListByCompanyId")) {
 
             List<LinkedTreeMap> datas = (List<LinkedTreeMap>) success;
             if (datas != null && datas.size() > 0) {
@@ -212,28 +251,8 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
                 if (beans.size() > 0) {
                     listAdapter.nextAreaList.addAll(beans);
                     listAdapter.nextAreaId = beans.get(0).getAreaId();
+                    listAdapter.notifyDataSetChanged();
                 }
-            }
-
-        } else if (api.equals("getCylinderInfoByPlatformCyCode")) {
-
-            if (success != null && success instanceof CylinderInfoBean) {
-                listAdapter.cyInfo = (CylinderInfoBean) success;
-                listAdapter.addData(ServiceLogicUtils.getCheckListByProcessIdAndCyCategoryId(ServiceLogicUtils.process_id_precharge_check, listAdapter.cyInfo.getCyCategoryId()));
-            }
-
-        } else if (api.equals("submitPrechargeCheckResult")) {
-            HttpResponseResult httpResponseResult = (HttpResponseResult) success;
-            if (!httpResponseResult.getCode().equals("200")) {
-                super.showToast(httpResponseResult.getMessage());
-            } else {
-                showToast("提交成功");
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
-                    }
-                }, 1500);
             }
         }
     }
@@ -246,7 +265,9 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
             return;
         }
         if (api.equals("submitPrechargeCheckResult")) {
-            showToast("提交失败，" + (String) failure);
+            listAdapter.allCyCount = newAllCyList.size();
+            listAdapter.notifyDataSetChanged();
+            showToast("提交失败，" + (String) failure + "，请重新尝试提交。");
         } else {
             showToast("接口报错，" + (String) failure);
         }
@@ -255,34 +276,108 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //扫描结果回调
-        if (resultCode == RESULT_OK) { //RESULT_OK = -1
-            Bundle bundle = data.getExtras();
-            ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
-            if (result == null || result.size() == 0) {
-                return;
-            }
+        Bundle bundle = data.getExtras();
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
 
-            this.lastScanCyPlatformCode = ServiceLogicUtils.getCylinderPlatformCyCodeFromScanResult(result.get(0));
-            if (TextUtils.isEmpty(lastScanCyPlatformCode)) {
-                showToast("异常二维码");
+                ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
+                if (result != null && result.size() > 0) {
+                    listAdapter.scanCount += result.size();
+                }
+
+                ArrayList<SetBean> setList = (ArrayList<SetBean>) bundle.getSerializable("qr_scan_result_set_list");
+                if (setList != null && setList.size() > 0) {
+                    getNewSetList().addAll(setList);
+                    listAdapter.setCount = getNewSetList().size();
+                }
+
+                ArrayList<CylinderInfoBean> cyList = (ArrayList<CylinderInfoBean>) bundle.getSerializable("qr_scan_result_cy_list");
+                if (cyList != null && cyList.size() > 0) {
+                    getNewCyList().addAll(cyList);
+                    listAdapter.cyCount = getNewCyList().size();
+                }
+
+                ArrayList<CylinderInfoBean> allCyList = (ArrayList<CylinderInfoBean>) bundle.getSerializable("qr_scan_result_all_cy_list");
+                if (allCyList != null && allCyList.size() > 0) {
+                    getNewAllCyList().addAll(allCyList);
+                    listAdapter.allCyCount = getNewAllCyList().size();
+
+                }
+                listAdapter.notifyDataSetChanged();
+
             } else {
-                new Thread(){
-                    @Override
-                    public void run() {
-                        //在子线程中进行下载操作
-                        try {
-                            userPresenter.getCylinderInfoByPlatformCyCode(lastScanCyPlatformCode);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                //showToast("扫描失败");
+            }
+        } else if (requestCode == REQUEST_CODE_2) {
+
+            ArrayList<CylinderInfoBean> result = (ArrayList<CylinderInfoBean>)bundle.getSerializable("CyBeanlist");
+            newAllCyList.clear();
+            if (result != null && result.size() > 0) {
+                newAllCyList.addAll(result);
+            }
+            if (newAllCyList.size() > 0) {
+
+                for (int i = newSetList.size()-1; i > -1; i--) {
+                    boolean hasSet = false;
+                    for (CylinderInfoBean c : newAllCyList) {
+                        if (!TextUtils.isEmpty(c.getSetId()) && c.getSetId().equals(newSetList.get(i).getSetId())) {
+                            hasSet = true;
+                            break;
                         }
                     }
-                }.start();
+                    if (!hasSet) {
+                        newSetList.remove(i);
+                    }
+                }
+
+                for (int i = newCyList.size()-1; i > -1; i--) {
+
+                    boolean hasCy = false;
+                    for (CylinderInfoBean c : newAllCyList) {
+                        if (c.getCyId().equals(newCyList.get(i).getCyId())) {
+                            hasCy = true;
+                            break;
+                        }
+                    }
+                    if (!hasCy) {
+                        newCyList.remove(i);
+                    }
+                }
+
+            } else {
+                newCyList.clear();
+                newSetList.clear();
             }
 
-
-        } else {
-            showToast("扫描失败");
+            listAdapter.scanCount = newSetList.size() + newCyList.size();
+            listAdapter.setCount = newSetList.size();
+            listAdapter.cyCount = newCyList.size();
+            listAdapter.allCyCount = newAllCyList.size();
+            listAdapter.notifyDataSetChanged();
         }
+    }
+
+    public ArrayList<CylinderInfoBean> getNewCyList() {
+        return newCyList;
+    }
+
+    public void setNewCyList(ArrayList<CylinderInfoBean> newCyList) {
+        this.newCyList = newCyList;
+    }
+
+    public ArrayList<SetBean> getNewSetList() {
+        return newSetList;
+    }
+
+    public void setNewSetList(ArrayList<SetBean> newSetList) {
+        this.newSetList = newSetList;
+    }
+
+    public ArrayList<CylinderInfoBean> getNewAllCyList() {
+        return newAllCyList;
+    }
+
+    public void setNewAllCyList(ArrayList<CylinderInfoBean> newAllCyList) {
+        this.newAllCyList = newAllCyList;
     }
 }

@@ -7,22 +7,19 @@
 
     <include layout="@layout/title_bar_view"/>
 
+    <TextView
+        android:id="@+id/scan_result_count"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:text=""/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/scan_result_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_gravity="center_horizontal"
-            android:background="#88323232"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:padding="4sp"
-            android:textAlignment="center"
-            android:text="本次累计扫描0个"/>
 
         <SurfaceView
             android:id="@+id/scanner_view"

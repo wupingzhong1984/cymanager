@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="80dp"
         android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -118,6 +118,29 @@
             android:background="@color/text_color"/>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="50dp"
+        android:layout_height="160dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="35dp">
+
+    <TextView
+        android:id="@+id/mission_list_delete_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:text=" 删除 "
+        android:textColor="@color/text_color"
+        android:background="@drawable/text_edittext"
+        android:padding="5dp"
+        android:textSize="16dp"
+        android:visibility="gone"/>
+
+    </RelativeLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

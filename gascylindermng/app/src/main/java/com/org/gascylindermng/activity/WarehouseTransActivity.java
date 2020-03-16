@@ -602,7 +602,7 @@ public class WarehouseTransActivity extends BaseActivity implements ApiCallback 
                 }.start();
             }
 
-        } else if (api.equals("getCylinderInfoByPlatformCyCode")) {
+        } else if (api.equals("getCylinderInfoByPlatformCyNumber")) {
 
             if (success != null && success instanceof CylinderInfoBean) {
 
@@ -616,7 +616,7 @@ public class WarehouseTransActivity extends BaseActivity implements ApiCallback 
                         public void run() {
                             //在子线程中进行下载操作
                             try {
-                                userPresenter.getCylinderInfoByPlatformCyCode(lastScanCyPlatformCodeList.get(0));
+                                userPresenter.getCylinderInfoByPlatformCyNumber(lastScanCyPlatformCodeList.get(0));
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -904,69 +904,61 @@ public class WarehouseTransActivity extends BaseActivity implements ApiCallback 
         //扫描结果回调
         if (resultCode == RESULT_OK) { //RESULT_OK = -1
 
+            Bundle bundle = data.getExtras();
+            ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
+
             if (requestCode == REQUEST_CODE_1) {
-                Bundle bundle = data.getExtras();
-                String result = bundle.getString("qr_scan_result");
-                edittextTransOrder.setText(result);
+                if(result != null && result.size() > 0) {
+
+                    edittextTransOrder.setText(result.get(0));
+                }
             } else if (requestCode == REQUEST_CODE_2) {
-                Bundle bundle = data.getExtras();
-                String result = bundle.getString("qr_scan_result");
-                //edittextCustomerOrder.setText(result);
+                if(result != null && result.size() > 0) {
+
+                    //edittextCustomerOrder.setText(result.get(0));
+                }
             } else if (requestCode == REQUEST_CODE_3) {
 
-                Bundle bundle = data.getExtras();
-                ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
-                if (result == null || result.size() == 0) {
-                    return;
+                ArrayList<CylinderInfoBean> allCyList = (ArrayList<CylinderInfoBean>)bundle.getSerializable("qr_scan_result_all_cy_list");
+                if (allCyList != null && allCyList.size() > 0) {
+                    cyList.addAll(allCyList);
                 }
-                for (String r: result) {
-                    ServiceLogicUtils.getCylinderPlatformCyCodeFromScanResult(r, lastScanCySetPlatformIdList, lastScanCyPlatformCodeList);
-                }
+                cyCountTextview.setText("已扫描气瓶 " + cyList.size() + " 个");
 
-//                if (UrlUtils.strIsURL(result)) {
-//
-//                    if (result.contains("/set/code/")) {
-//                        lastScanCySetPlatformIdList.add((result.split("/set/code/"))[1]);
-//                    } else {
-//                        String code = UrlUtils.parse(result).params.get("id");
-//                        if (code != null && !code.equals("")) {
-//                            lastScanCyPlatformCodeList.add(code);
-//                        }
-//                    }
-//                } else {
-//                    lastScanCyPlatformCodeList.add(result);
+//                for (String r: result) {
+//                    ServiceLogicUtils.getCylinderPlatformNumberOrSetIdFromScanResult(r, lastScanCySetPlatformIdList, lastScanCyPlatformCodeList);
 //                }
-
-                if (lastScanCyPlatformCodeList.size() > 0) {
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            //在子线程中进行下载操作
-                            try {
-                                userPresenter.getCylinderInfoByPlatformCyCode(lastScanCyPlatformCodeList.get(0));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }.start();
-                } else if (lastScanCySetPlatformIdList.size() > 0) {
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            //在子线程中进行下载操作
-                            try {
-                                userPresenter.getCylinderListBySetId(lastScanCySetPlatformIdList.get(0));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }.start();
-                } else  {
-                    showToast("无有效气瓶二维码");
-                }
+//
+//                if (lastScanCyPlatformCodeList.size() > 0) {
+//                    new Thread() {
+//                        @Override
+//                        public void run() {
+//                            //在子线程中进行下载操作
+//                            try {
+//                                userPresenter.getCylinderInfoByPlatformCyNumber(lastScanCyPlatformCodeList.get(0));
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }.start();
+//                } else if (lastScanCySetPlatformIdList.size() > 0) {
+//                    new Thread() {
+//                        @Override
+//                        public void run() {
+//                            //在子线程中进行下载操作
+//                            try {
+//                                userPresenter.getCylinderListBySetId(lastScanCySetPlatformIdList.get(0));
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }.start();
+//                } else  {
+//                    showToast("无有效气瓶二维码");
+//                }
             }
         } else {
-            showToast("扫描失败");
+            //showToast("扫描失败");
         }
     }
 }

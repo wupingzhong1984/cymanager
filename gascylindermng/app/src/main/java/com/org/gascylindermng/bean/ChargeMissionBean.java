@@ -5,6 +5,7 @@ import com.loopj.android.http.PreemptiveAuthorizationHttpRequestInterceptor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ChargeMissionBean implements Serializable {
@@ -36,8 +37,29 @@ public class ChargeMissionBean implements Serializable {
     @SerializedName("productionBatch")
     private String productionBatch;
 
+    @SerializedName("pureness")
+    private String pureness; //纯度id  1 2 3
 
-    private ArrayList<String> cyPlatformIdList;
+    @SerializedName("team")
+    private String team; //班组  ABCDE
+
+    @SerializedName("cylinderIdList")
+    private ArrayList<String> cylinderIdList;
+
+    @SerializedName("yqDetectionVoList")
+    private ArrayList<LinkedHashMap> cyCheckList;
+
+//    private ArrayList<String> cylinderNumberList; //0001xxxxx
+
+    private ArrayList<CylinderInfoBean> cyInfoList;
+
+    private ArrayList<CyChargeCheckRecordBean> cyCheckRecordList;
+
+    public ChargeMissionBean(){
+
+        this.cyInfoList = new ArrayList<CylinderInfoBean>();
+        this.cyCheckRecordList = new ArrayList<CyChargeCheckRecordBean>();
+    }
 
 
     public String getMissionId() {
@@ -112,12 +134,81 @@ public class ChargeMissionBean implements Serializable {
         this.productionBatch = productionBatch;
     }
 
-
-    public ArrayList<String> getCyPlatformIdList() {
-        return cyPlatformIdList;
+    public ArrayList<String> getCylinderIdList() {
+        return cylinderIdList;
     }
 
-    public void setCyPlatformIdList(ArrayList<String> cyPlatformIdList) {
-        this.cyPlatformIdList = cyPlatformIdList;
+    public void setCylinderIdList(ArrayList<String> cylinderIdList) {
+        this.cylinderIdList = cylinderIdList;
+    }
+
+    public ArrayList<LinkedHashMap> getCyCheckList() {
+        return cyCheckList;
+    }
+
+    public void setCyCheckList(ArrayList<LinkedHashMap> cyCheckList) {
+        this.cyCheckList = cyCheckList;
+    }
+
+    public String getPureness() {
+        return pureness;
+    }
+
+    public void setPureness(String pureness) {
+        this.pureness = pureness;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
+
+    public ArrayList<CylinderInfoBean> getCyInfoList() {
+        return cyInfoList;
+    }
+
+    public void setCyInfoList(ArrayList<CylinderInfoBean> cyInfoList) {
+        this.cyInfoList = cyInfoList;
+    }
+
+//    public ArrayList<String> getCylinderNumberList() {
+//        return cylinderNumberList;
+//    }
+//
+//    public void setCylinderNumberList(ArrayList<String> cylinderNumberList) {
+//        this.cylinderNumberList = cylinderNumberList;
+//    }
+
+
+    public ArrayList<CyChargeCheckRecordBean> getCyCheckRecordList() {
+        return cyCheckRecordList;
+    }
+
+    public void setCyCheckRecordList(ArrayList<CyChargeCheckRecordBean> cyCheckRecordList) {
+        this.cyCheckRecordList = cyCheckRecordList;
+    }
+
+    @Override
+    public String toString() {
+        return "ChargeMissionBean{" +
+                "missionId='" + missionId + '\'' +
+                ", mediemId='" + mediemId + '\'' +
+                ", mediemName='" + mediemName + '\'' +
+                ", cylinderCount='" + cylinderCount + '\'' +
+                ", status='" + status + '\'' +
+                ", beginDate='" + beginDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", remark='" + remark + '\'' +
+                ", productionBatch='" + productionBatch + '\'' +
+                ", pureness='" + pureness + '\'' +
+                ", team='" + team + '\'' +
+                ", cylinderIdList=" + cylinderIdList +
+                ", cyCheckList=" + cyCheckList +
+ //               ", cylinderNumberList=" + cylinderNumberList +
+                ", cyInfoList=" + cyInfoList +
+                '}';
     }
 }

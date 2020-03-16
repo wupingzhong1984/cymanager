@@ -10,20 +10,359 @@
 
     <include layout="@layout/title_bar_view"></include>
 
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical">
 
-        <com.org.gascylindermng.view.WrapContentListView
-            android:id="@+id/listview"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white">
 
-        </com.org.gascylindermng.view.WrapContentListView>
+            <TextView
+                android:id="@+id/cy_count"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="扫描：0，散瓶：0，集格：0，总气瓶数：0"
+                android:textSize="18dp"
+                android:textColor="@color/text_color"
+                android:gravity="center"/>
 
-    </ScrollView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="50dp"
+                android:layout_height="1dp"
+                android:background="@color/text_color"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="充装信息："
+                android:textStyle="bold"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/text_color"
+                android:textSize="16dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="86dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="介质："
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="85dp"
+                    android:background="@drawable/text_edittext">
+
+                    <TextView
+                        android:id="@+id/medium_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:textColor="@color/text_color"
+                        android:layout_centerInParent="true"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="136dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="开始时间："
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="85dp"
+                    android:background="@drawable/text_edittext">
+
+                    <TextView
+                        android:id="@+id/start_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00:00"
+                        android:textSize="18dp"
+                        android:textColor="@color/text_color"
+                        android:layout_centerInParent="true"/>
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/charge_start"
+                    android:layout_width="80dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/btn_shape_blue"
+                    android:layout_alignParentRight="true"
+                    android:text="开始"
+                    android:textSize="16dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="185dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="结束时间："
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="85dp"
+                    android:background="@drawable/text_edittext">
+
+                    <TextView
+                        android:id="@+id/end_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00:00"
+                        android:textSize="18dp"
+                        android:textColor="@color/text_color"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/charge_end"
+                    android:layout_width="80dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/btn_shape_blue"
+                    android:layout_alignParentRight="true"
+                    android:text="结束"
+                    android:textSize="16dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="235dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="生产批次："
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"/>
+
+                <EditText
+                    android:id="@+id/edittext_product_batch"
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="80dp"
+                    android:background="@drawable/text_edittext"
+                    android:hint=" 输入生产批次编号"
+                    android:textColorHint="@color/text_hint_color"
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="285dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="纯度："
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="50dp"
+                    android:background="@drawable/text_edittext">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="285dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="班组："
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="50dp"
+                    android:background="@drawable/text_edittext">
+
+                </TextView>
+
+            </RelativeLayout>
+
+            <com.org.gascylindermng.view.WrapContentListView
+                android:id="@+id/batch_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="269dp"
+                android:layout_marginLeft="105dp"
+                android:layout_marginRight="28dp"
+                android:background="@color/white">
+
+            </com.org.gascylindermng.view.WrapContentListView>
+
+
+            <Spinner
+                android:id="@+id/pureness_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="286dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="30dp"
+                android:background="@color/white"
+                android:popupBackground="@color/white"/>
+
+            <Spinner
+                android:id="@+id/team_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="286dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="30dp"
+                android:background="@color/white"
+                android:popupBackground="@color/white"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/text_color"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="充后流向："
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="80dp"
+                    android:background="@drawable/text_edittext">
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <Spinner
+                android:id="@+id/next_area_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:layout_marginLeft="108dp"
+                android:layout_marginRight="28dp"
+                android:background="@color/white"
+                android:popupBackground="@color/white"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/text_edittext">
+
+                <EditText
+                    android:id="@+id/edittext_charge_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:gravity="left"
+                    android:hint="填写备注"
+                    android:textColorHint="@color/text_hint_color"
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"
+                    android:minHeight="80dp"
+                    android:minLines="3"
+                    android:visibility="visible"/>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/create_mission_bottom"

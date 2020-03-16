@@ -86,6 +86,11 @@
             android:screenOrientation = "portrait"  >
         </activity>
         <activity
+            android:name=".activity.ChargeCyListActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation = "portrait"  >
+        </activity>
+        <activity
             android:name=".activity.PostchargeCheckActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation = "portrait"  >

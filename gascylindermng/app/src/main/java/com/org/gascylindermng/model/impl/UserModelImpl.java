@@ -124,8 +124,8 @@ public class UserModelImpl implements UserModel {
     }
 
     @Override
-    public Observable<HttpResponseResult> getCylinderInfoByPlatformCyCode(Map<String, Object> params) {
-        return httpRequestService.getCylinderInfoByPlatformCyCode(params);
+    public Observable<HttpResponseResult> getCylinderInfoByPlatformCyNumber(Map<String, Object> params) {
+        return httpRequestService.getCylinderInfoByPlatformCyNumber(params);
     }
 
     @Override
@@ -156,6 +156,11 @@ public class UserModelImpl implements UserModel {
     @Override
     public Observable<HttpResponseResult> updateChargeMission(Map<String, Object> params) {
         return httpRequestService.updateChargeMission(params);
+    }
+
+    @Override
+    public Observable<HttpResponseResult> updateChargeMissionV2(Map<String, Object> params) {
+        return httpRequestService.updateChargeMissionV2(params);
     }
 
     @Override
@@ -225,5 +230,30 @@ public class UserModelImpl implements UserModel {
     @Override
     public Observable<HttpResponseResult>searchCylinderManufacturer(Map<String, Object> params) {
         return httpRequestService.searchCylinderManufacturer(params);
+    }
+
+    @Override
+    public Observable<HttpResponseResult>searchBatchNumber(Map<String, Object> params) {
+        return httpRequestService.searchBatchNumber(params);
+    }
+
+    @Override
+    public Observable<HttpResponseResult>getCylinderLastChargeRecord(Map<String, Object> params) {
+        return httpRequestService.getCylinderLastChargeRecord(params);
+    }
+
+    @Override
+    public Observable<HttpResponseResult>getSetWithCylinderListBySetId(Map<String, Object> params) {
+        return httpRequestService.getSetWithCylinderListBySetId(params);
+    }
+
+    @Override
+    public Observable<HttpResponseResult>getChargeMissionByMissionId(Map<String, Object> params) {
+        return httpRequestService.getChargeMissionByMissionId(params);
+    }
+
+    @Override
+    public Observable<HttpResponseResult>deleteChargeMissionByMissionId(Map<String, Object> params) {
+        return httpRequestService.deleteChargeMissionByMissionId(params);
     }
 }

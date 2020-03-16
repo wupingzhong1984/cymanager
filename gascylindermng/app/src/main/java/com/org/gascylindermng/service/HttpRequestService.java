@@ -45,7 +45,7 @@ public interface HttpRequestService {
 
     @FormUrlEncoded
     @POST("getCylinderByNumber")
-    Observable<HttpResponseResult> getCylinderInfoByPlatformCyCode(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> getCylinderInfoByPlatformCyNumber(@FieldMap Map<String, Object> params);
 
     @FormUrlEncoded
     @POST("getCylinderByCode")
@@ -124,10 +124,34 @@ public interface HttpRequestService {
     Observable<HttpResponseResult> getCylinderListBySetId(@FieldMap Map<String, Object> params);
 
     @FormUrlEncoded
+    @POST("getSetCylinderBySetId")
+    Observable<HttpResponseResult> getSetWithCylinderListBySetId(@FieldMap Map<String, Object> params);
+
+    @FormUrlEncoded
     @POST("getCylinderManufacturer")
     Observable<HttpResponseResult> searchCylinderManufacturer(@FieldMap Map<String, Object> params);
 
     @FormUrlEncoded
     @POST("getCylinderLastTransmitRecord")
     Observable<HttpResponseResult> getCylinderLastTransmitRecord(@FieldMap Map<String, Object> params);
+
+    @FormUrlEncoded
+    @POST("getDetectionCylinderId")
+    Observable<HttpResponseResult> getCylinderLastChargeRecord(@FieldMap Map<String, Object> params);
+
+    @FormUrlEncoded
+    @POST("getBatchNumber")
+    Observable<HttpResponseResult> searchBatchNumber(@FieldMap Map<String, Object> params);
+
+    @FormUrlEncoded
+    @POST("getDetectionMissionVoById")
+    Observable<HttpResponseResult> getChargeMissionByMissionId(@FieldMap Map<String, Object> params);
+
+    @FormUrlEncoded
+    @POST("v2/updateDetection")
+    Observable<HttpResponseResult> updateChargeMissionV2(@FieldMap Map<String, Object> params);
+
+    @FormUrlEncoded
+    @POST("deleteDetection")
+    Observable<HttpResponseResult> deleteChargeMissionByMissionId(@FieldMap Map<String, Object> params);
 }

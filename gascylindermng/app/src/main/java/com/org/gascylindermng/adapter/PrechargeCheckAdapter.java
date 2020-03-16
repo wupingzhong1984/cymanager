@@ -24,7 +24,10 @@ import java.util.ArrayList;
 
 public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
 
-    public CylinderInfoBean cyInfo;
+    public int scanCount;
+    public int setCount;
+    public int cyCount;
+    public int allCyCount;
 
     public ArrayList<ProcessNextAreaBean> nextAreaList;
 
@@ -35,32 +38,24 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
 
     private UserPresenter userPresenter;
 
-    public PrechargeCheckAdapter(Context context) {
+    public PrechargeCheckAdapter(Context context,ArrayList<CheckItemBean> items) {
         super(context);
         this.context = context;
         this.remark = "";
         this.userPresenter = new UserPresenter(null);
         this.nextAreaList = new ArrayList<ProcessNextAreaBean>();
+        this.mData.addAll(items);
     }
 
     @Override
     public int getCount() {
-
-        if (cyInfo == null) {
-            return 1;
-        } else {
-            return mData.size()+2;
-        }
+        return mData.size()+2;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
-            if (cyInfo == null) {
-                return R.layout.item_start_scanner;
-            } else {
-                return R.layout.item_cylinder_baseinfo;
-            }
+            return R.layout.item_pre_pro_charge_header;
         } else if(position == mData.size()+1) {
             return R.layout.item_prechargecheck_bottom;
         } else {
@@ -108,7 +103,7 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
                     adapterData.add(p.getAreaName());
                 }
                 spinnerAdapter.addData(adapterData);
-                Spinner spinner = (Spinner)viewHolder.get(R.id.next_process_spinner);
+                Spinner spinner = (Spinner)viewHolder.get(R.id.next_area_spinner);
                 spinner.setAdapter(spinnerAdapter);
                 spinner.setSelection(0, true);
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -173,27 +168,10 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
     public void handleItem(int itemViewType, int position, CheckItemBean item, ViewHolder holder, boolean isRecycle) {
 
         if (position == 0) {
-            if (cyInfo == null) {
 
-            } else {
-                TextView cylinderPlatformCode = (TextView)holder.get(R.id.platform_cy_code);
-                cylinderPlatformCode.setText(cyInfo.getPlatformCyCode());
-                TextView companyRelateCode = (TextView)holder.get(R.id.company_relate_code);
-                if (userPresenter.querComapny().getPinlessObject().equals("0")) {
-                    companyRelateCode.setText(cyInfo.getBottleCode());
-                } else {
-                    companyRelateCode.setText(cyInfo.getCompanyRelateCode());
-                }
+            TextView scanResultCount = (TextView)holder.get(R.id.scan_result_count);
+            scanResultCount.setText("扫描："+scanCount+" 散瓶："+cyCount+" 集格："+setCount+" 总气瓶数："+allCyCount);
 
-                TextView medium = (TextView)holder.get(R.id.medium);
-                medium.setText(cyInfo.getCyMediumName());
-                TextView category = (TextView)holder.get(R.id.cy_category);
-                category.setText(cyInfo.getCyCategoryName());
-                TextView regularDate = (TextView)holder.get(R.id.next_regular_date);
-                regularDate.setText(cyInfo.getNextRegularInspectionDate().substring(0,7));
-                TextView expiryDate = (TextView)holder.get(R.id.expiry_date);
-                expiryDate.setText(cyInfo.getScrapDate().substring(0,7));
-            }
         } else if(position == mData.size()+1) {
             ImageView cb = holder.get(R.id.check_result_checkbox);
             if (checkOK == true) {

@@ -101,7 +101,7 @@ public class ChargeAdapter extends BaseAdapter<CheckItemBean> {
             checkTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    parentActivity.showCyListActivity();
+                    //parentActivity.showCyListActivity();
                 }
             });
 
@@ -197,7 +197,7 @@ public class ChargeAdapter extends BaseAdapter<CheckItemBean> {
                     adapterData.add(p.getAreaName());
                 }
                 spinnerAdapter.addData(adapterData);
-                Spinner spinner = (Spinner)viewHolder.get(R.id.next_process_spinner);
+                Spinner spinner = (Spinner)viewHolder.get(R.id.next_area_spinner);
                 spinner.setAdapter(spinnerAdapter);
                 spinner.setSelection(0, true);
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

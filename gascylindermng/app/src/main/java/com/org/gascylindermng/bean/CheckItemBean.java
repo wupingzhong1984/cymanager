@@ -7,23 +7,12 @@ import java.io.Serializable;
 public class CheckItemBean implements Serializable {
 
 
-    @SerializedName("itemId")
-    private String itemId;
-    @SerializedName("title")
     private String title;
 
     private String apiParam;
 
     private boolean state = true; //false NO， true OK
 
-
-    public String getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
-    }
 
     public String getTitle() {
         return title;

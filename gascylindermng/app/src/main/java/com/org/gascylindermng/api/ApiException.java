@@ -31,7 +31,7 @@ public class ApiException {
             }
         } else {
             if ("".equals(massage) || null == massage)
-                massage = "操作失败，请仔细检查填写内容";
+                massage = "操作失败，未知异常";
             setErrormessage(massage);
             setErrorCode(555);
             return;

@@ -72,6 +72,7 @@ public class ChangeMediumActivity extends BaseActivity implements ApiCallback {
         userPresenter = new UserPresenter(this);
         cyCategoryList = new ArrayList<CyCategoryBean>();
         listAdapter = new ChangeMediumAdapter(this);
+        listAdapter.addData(ServiceLogicUtils.getCheckListByProcessIdAndCyCategoryId(ServiceLogicUtils.process_id_change_medium));
         listview.setAdapter(listAdapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -190,7 +191,7 @@ public class ChangeMediumActivity extends BaseActivity implements ApiCallback {
             }
 
 
-        } else if (api.equals("getCylinderInfoByPlatformCyCode")) {
+        } else if (api.equals("getCylinderInfoByPlatformCyNumber")) {
 
             if (success != null && success instanceof CylinderInfoBean) {
                 listAdapter.cyInfo = (CylinderInfoBean) success;
@@ -199,7 +200,7 @@ public class ChangeMediumActivity extends BaseActivity implements ApiCallback {
                         listAdapter.mediumList.addAll(b.getCyMediumList());
                     }
                 }
-                listAdapter.addData(ServiceLogicUtils.getCheckListByProcessIdAndCyCategoryId(ServiceLogicUtils.process_id_change_medium, listAdapter.cyInfo.getCyCategoryId()));
+                listAdapter.notifyDataSetChanged();
             }
 
         } else if (api.equals("submitCyChangeMediumRecord")) {
@@ -242,7 +243,7 @@ public class ChangeMediumActivity extends BaseActivity implements ApiCallback {
             if (result == null || result.size() == 0) {
                 return;
             }
-            this.lastScanCyPlatformCode = ServiceLogicUtils.getCylinderPlatformCyCodeFromScanResult(result.get(0));
+            this.lastScanCyPlatformCode = result.get(0);
             if (TextUtils.isEmpty(lastScanCyPlatformCode)) {
                 showToast("异常二维码");
             } else {
@@ -251,7 +252,7 @@ public class ChangeMediumActivity extends BaseActivity implements ApiCallback {
                     public void run() {
                         //在子线程中进行下载操作
                         try {
-                            userPresenter.getCylinderInfoByPlatformCyCode(lastScanCyPlatformCode);
+                            userPresenter.getCylinderInfoByPlatformCyNumber(lastScanCyPlatformCode);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -259,7 +260,7 @@ public class ChangeMediumActivity extends BaseActivity implements ApiCallback {
                 }.start();
             }
         } else {
-            showToast("扫描失败");
+            //showToast("扫描失败");
         }
     }
 }

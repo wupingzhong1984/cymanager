@@ -2,6 +2,7 @@ package com.org.gascylindermng.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -13,8 +14,12 @@ import com.org.gascylindermng.R;
 import com.org.gascylindermng.adapter.ChargeMissionListAdapter;
 import com.org.gascylindermng.base.BaseActivity;
 import com.org.gascylindermng.bean.ChargeMissionBean;
+import com.org.gascylindermng.bean.CheckItemBean;
+import com.org.gascylindermng.bean.CyChargeCheckRecordBean;
+import com.org.gascylindermng.bean.SetBean;
 import com.org.gascylindermng.callback.ApiCallback;
 import com.org.gascylindermng.presenter.UserPresenter;
+import com.org.gascylindermng.tools.ServiceLogicUtils;
 import com.org.gascylindermng.view.WrapContentListView;
 
 import org.json.JSONObject;
@@ -29,7 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ChargeMissionListActivity extends BaseActivity implements ApiCallback {
+public class ChargeMissionListActivity extends BaseActivity implements ApiCallback, ChargeMissionListAdapter.AdapterClickListener {
 
 
     @BindView(R.id.title_name)
@@ -41,11 +46,12 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
     @BindView(R.id.right_text)
     TextView rightText;
 
-
     private ChargeMissionListAdapter listAdapter;
     private UserPresenter userPresenter;
 
     private ArrayList<ChargeMissionBean> missionList;
+
+    private int lastDeleteMissionPosition = 0;
 
     @Override
     protected void initLayout(Bundle savedInstanceState) {
@@ -60,7 +66,7 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
         rightText.setText("刷新");
         missionList = new ArrayList<ChargeMissionBean>();
         userPresenter = new UserPresenter(this);
-        listAdapter = new ChargeMissionListAdapter(this);
+        listAdapter = new ChargeMissionListAdapter(this, this);
         listview.setAdapter(listAdapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,13 +74,14 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
 
                 Intent intent = new Intent(ChargeMissionListActivity.this, ChargeActivity.class);
                 intent.putExtra("ChargeMissionBean", listAdapter.getData().get(position));
-                startActivity(intent);
+                startActivityForResult(intent,0x01);
             }
         });
         requestMissionList();
     }
 
     private void requestMissionList() {
+        loading("加载中","取得成功","取得失败");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         userPresenter.getChargeMissionListNow();
         //userPresenter.getChargeMissionList("2020-01-15"); //test
@@ -83,9 +90,14 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
     @Override
     public <T> void successful(String api, T success) {
 
+        if (api.equals("deleteChargeMissionByMissionId")) {
 
-        if (api.equals("getChargeMissionList") && !(success instanceof String)) {
+            missionList.remove(lastDeleteMissionPosition);
+            listAdapter.notifyDataSetChanged();
 
+        } else if (api.equals("getChargeMissionList") && !(success instanceof String)) {
+
+            loadingDialog.loadSuccess();
             missionList.clear();
             listAdapter.deleteAllData();
             todayBottleCount.setText("今日充装：" + 0 + "（集格以集格内瓶数算）");
@@ -94,34 +106,60 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
             if (datas != null && datas.size() > 0) {
 
                 ArrayList<ChargeMissionBean> beans = new ArrayList<>();
-                int count = 0;
+                int cyCount = 0;
                 for (LinkedTreeMap tm : datas) {
                     JSONObject object = new JSONObject((LinkedTreeMap) tm);
                     String mData = object.toString();
                     Type type = new TypeToken<ChargeMissionBean>() {
                     }.getType();
                     Gson gson = new Gson();
-                    ChargeMissionBean bean = gson.fromJson(mData, type);
-                    if (bean != null) {
-                        bean.setCyPlatformIdList(new ArrayList<String>());
-                        List<LinkedTreeMap> beans2 = (List<LinkedTreeMap>) tm.get("yqDetectionVoList");
-                        if (beans2 != null && beans2.size() > 0) {
-                            for (LinkedTreeMap s : beans2) {
-                                bean.getCyPlatformIdList().add((String) s.get("cylinderNumber"));
+                    ChargeMissionBean mission = gson.fromJson(mData, type);
+                    if (mission != null) {
+                        mission.setCylinderIdList(new ArrayList<String>());
+
+                        List<LinkedTreeMap> checkDataList = (List<LinkedTreeMap>) tm.get("yqDetectionVoList");
+                        if (checkDataList != null && checkDataList.size() > 0) {
+                            for (LinkedTreeMap cyCheckData : checkDataList) {
+                                double id = (double)cyCheckData.get("cylinderId");
+                                int i = (new Double(id)).intValue();
+                                mission.getCylinderIdList().add(String.valueOf(i));
+
+                                JSONObject object2 = new JSONObject(cyCheckData);
+                                String mData2 = object2.toString();
+                                Type type2 = new TypeToken<CyChargeCheckRecordBean>() {
+                                }.getType();
+                                Gson gson2 = new Gson();
+                                CyChargeCheckRecordBean record = gson2.fromJson(mData2, type2);
+                                if (record != null) {
+
+                                    mission.getCyCheckRecordList().add(record);
+                                    for (CheckItemBean checkItem : ServiceLogicUtils.getCheckListByProcessIdAndCyCategoryId(ServiceLogicUtils.process_id_charge)) {
+
+                                        Object result = cyCheckData.get(checkItem.getApiParam());
+
+                                        if (result != null && (double)result == 1) {
+                                            checkItem.setState(true);
+                                        } else {
+                                            checkItem.setState(false);
+                                        }
+                                        record.getCheckItemResultList().add(checkItem);
+
+                                    }
+                                }
                             }
                         }
-                        if(bean.getStatus().equals("1")) {
-                            missionList.add(0,bean);
+                        if(mission.getStatus().equals("1")) {
+                            missionList.add(0,mission);
                         } else {
-                            missionList.add(bean);
+                            missionList.add(mission);
                         }
-                        count += Integer.valueOf(bean.getCylinderCount());
+                        cyCount += Integer.valueOf(mission.getCylinderCount());
                     }
                 }
 
                 if (missionList.size() > 0) {
                     listAdapter.updateData(missionList);
-                    todayBottleCount.setText("今日充装：" + count + "（集格以集格内瓶数算）");
+                    todayBottleCount.setText("今日充装：" + cyCount + "（集格以集格内瓶数算）");
                 }
             }
 
@@ -139,6 +177,7 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
         showToast("接口报错，" + (String) failure);
 
         if (api.equals("getChargeMissionList")) {
+            loadingDialog.loadFailed();
             missionList.clear();
             listAdapter.deleteAllData();
             todayBottleCount.setText("今日充装：" + 0 + "（集格以集格内瓶数算）");
@@ -153,7 +192,7 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
                 break;
             case R.id.create_mission:
                 Intent intent = new Intent(ChargeMissionListActivity.this, ChargeActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,0x01);
                 break;
             case R.id.right_text:
                 requestMissionList();
@@ -170,7 +209,31 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
+        if (data != null) {
+
+            Bundle bundle = data.getExtras();
+            String refresh = bundle.getString("needRefresh");
+            if (refresh != null && refresh.equals("1")) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        //在子线程中进行下载操作
+                        requestMissionList();
+                    }
+                }.start();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void deleteClicked(int postision) {
+
+
+
+        lastDeleteMissionPosition = postision;
+        userPresenter.deleteChargeMissionByMissionId(missionList.get(postision).getMissionId());
     }
 }

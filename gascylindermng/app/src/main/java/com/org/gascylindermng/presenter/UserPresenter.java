@@ -15,6 +15,7 @@ import com.org.gascylindermng.bean.ChargeMissionBean;
 import com.org.gascylindermng.bean.CheckItemBean;
 import com.org.gascylindermng.bean.CompanyInfoBean;
 import com.org.gascylindermng.bean.CylinderInfoBean;
+import com.org.gascylindermng.bean.SetBean;
 import com.org.gascylindermng.bean.User;
 import com.org.gascylindermng.callback.ApiCallback;
 import com.org.gascylindermng.model.ChargeMission;
@@ -407,11 +408,11 @@ public class UserPresenter extends BasePresenter {
      *通过标签码获取气瓶信息
      * @param
      */
-    public void getCylinderInfoByPlatformCyCode(final String platformCyCode) {
+    public void getCylinderInfoByPlatformCyNumber(final String platformCyNum) {
         Map<String, Object> subParam = new HashMap<>();
-        subParam.put("cylinderNumber", platformCyCode);
+        subParam.put("cylinderNumber", platformCyNum);
 
-        Observable<HttpResponseResult> userObservable = userModel.getCylinderInfoByPlatformCyCode(subParam);
+        Observable<HttpResponseResult> userObservable = userModel.getCylinderInfoByPlatformCyNumber(subParam);
         userObservable.observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<HttpResponseResult>() {
@@ -424,24 +425,24 @@ public class UserPresenter extends BasePresenter {
                     public void onNext(HttpResponseResult httpResult) {
                         if (httpResult.getCode().equals("200")) {
                             if (httpResult.getData() == null)
-                                callback.successful("getCylinderInfoByCyCode",null);
+                                callback.successful("getCylinderInfoByPlatformCyNumber",null);
                             Type type = new TypeToken<CylinderInfoBean>(){}.getType();
                             Gson gson = new Gson();
                             JSONObject object=new JSONObject((LinkedTreeMap)httpResult.getData());
                             String mData = object.toString();
                             CylinderInfoBean infoBean =gson.fromJson(mData,type);
-                            callback.successful("getCylinderInfoByPlatformCyCode",infoBean);
+                            callback.successful("getCylinderInfoByPlatformCyNumber",infoBean);
                         } else if(httpResult.getCode().equals("501")){
-                            callback.failure("getCylinderInfoByPlatformCyCode","needUpdate");
+                            callback.failure("getCylinderInfoByPlatformCyNumber","needUpdate");
                         } else {
-                            callback.failure("getCylinderInfoByPlatformCyCode",httpResult.getMessage());
+                            callback.failure("getCylinderInfoByPlatformCyNumber",httpResult.getMessage());
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
 
-                        callback.failure("getCylinderInfoByPlatformCyCode",errorMassage(e));
+                        callback.failure("getCylinderInfoByPlatformCyNumber",errorMassage(e));
                     }
 
                     @Override
@@ -570,6 +571,8 @@ public class UserPresenter extends BasePresenter {
 
         Map<String, Object> subParam = new HashMap<>();
         subParam.put("unitId", queryUser().getUnitId());
+        subParam.put("fillingUnit", queryUser().getUnitName());
+
         if (querComapny().getPinlessObject().equals("0")) {
             subParam.put("cylinderCode", cylinderOrOwnCode);
         } else {
@@ -637,7 +640,7 @@ public class UserPresenter extends BasePresenter {
     }
 
     /***
-     *提交充前检测结果
+     *提交回厂验空结果
      * @param
      */
     public void submitPrechargeCheckResult(String cylinderId,
@@ -697,6 +700,8 @@ public class UserPresenter extends BasePresenter {
      */
     public void createChargeMission(Date beginTime,
                                     String productionBatch,
+                                    String pureness,
+//                                    String team,
                                     String remark,
                                     ArrayList<String> cyIdList) {
 
@@ -704,13 +709,16 @@ public class UserPresenter extends BasePresenter {
         subParam.put("unitId", queryUser().getUnitId());
         subParam.put("employeeId", queryUser().getId());
         subParam.put("creator", queryUser().getEmployeeName());
-        if (remark != null) {
-            subParam.put("remark", remark);
-        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         subParam.put("beginDate", sdf.format(beginTime));
         if (productionBatch != null) {
             subParam.put("productionBatch", productionBatch);
+        }
+        if (pureness != null) {
+            subParam.put("pureness", pureness);
+        }
+        if (remark != null) {
+            subParam.put("remark", remark);
         }
         StringBuilder cyStr = new StringBuilder();
         for(String cyId : cyIdList) {
@@ -798,7 +806,7 @@ public class UserPresenter extends BasePresenter {
         subParam.put("employeeId", queryUser().getId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         subParam.put("begin", sdf.format(ServiceLogicUtils.getChargeClassBeginTime(new Date())));
-        subParam.put("end", sdf.format(ServiceLogicUtils.getChargeClassEndTime(new Date())));
+        subParam.put("end", sdf.format(new Date()));
 
         Observable<HttpResponseResult> userObservable = userModel.getChargeMissionList(subParam);
         userObservable.observeOn(AndroidSchedulers.mainThread())
@@ -833,11 +841,60 @@ public class UserPresenter extends BasePresenter {
     }
 
     /***
+     *获取未完成的充装任务列表
+     * @param
+     */
+    public void getChargeMissionByMissionId(String missionId) {
+
+        Map<String, Object> subParam = new HashMap<>();
+        subParam.put("detectionMissionId",missionId);
+
+        Observable<HttpResponseResult> userObservable = userModel.getChargeMissionByMissionId(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            if (httpResult.getData() == null)
+                                callback.successful("getChargeMissionByMissionId",null);
+                            Type type = new TypeToken<ChargeMissionBean>(){}.getType();
+                            Gson gson = new Gson();
+                            JSONObject object=new JSONObject((LinkedTreeMap)httpResult.getData());
+                            String mData = object.toString();
+                            ChargeMissionBean infoBean =gson.fromJson(mData,type);
+                            callback.successful("getChargeMissionByMissionId",infoBean);
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("getChargeMissionByMissionId","needUpdate");
+                        } else {
+                            callback.failure("getChargeMissionByMissionId",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("getChargeMissionByMissionId",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
+
+    /***
      *更新充装任务
      * @param
      */
     public void updateDetection(String missionId,
                                 String remark,
+                                String nextAreaId,
                                 Date endTime,
                                 boolean pass,
                                 List<CheckItemBean> checkItems) {
@@ -845,6 +902,7 @@ public class UserPresenter extends BasePresenter {
         Map<String, Object> subParam = new HashMap<>();
         subParam.put("detectionMissionId", missionId);
         subParam.put("remark", remark);
+        subParam.put("companyAreaId", nextAreaId);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         subParam.put("endDate", sdf.format(endTime));
         subParam.put("ifPass", pass?"1":"0");
@@ -885,7 +943,64 @@ public class UserPresenter extends BasePresenter {
     }
 
     /***
-     *提交充后检测结果
+     *更新充装任务
+     * @param
+     */
+    public void updateChargeMissionV2(String missionId,
+                                String remark,
+                                String nextAreaId,
+                                Date endTime,
+                                List<Map> checkItems) {
+
+        Map<String, Object> subParam = new HashMap<>();
+        subParam.put("detectionMissionId", missionId);
+        if (!TextUtils.isEmpty(remark)) {
+            subParam.put("remark", remark);
+        } else {
+            subParam.put("remark", "");
+        }
+    //    subParam.put("companyAreaId", nextAreaId);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        subParam.put("endDate", sdf.format(endTime));
+
+        Gson gson = new Gson();
+        String jsonStr = gson.toJson(checkItems);
+        subParam.put("cylinderCheckList",jsonStr);
+
+        Observable<HttpResponseResult> userObservable = userModel.updateChargeMissionV2(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            callback.successful("updateChargeMissionV2",httpResult);
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("updateChargeMissionV2","needUpdate");
+                        } else {
+                            callback.failure("updateChargeMissionV2",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("updateChargeMissionV2",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
+
+    /***
+     *提交充后验满结果
      * @param
      */
     public void submitPostchargeCheckResult(String cylinderId,
@@ -1508,16 +1623,14 @@ public class UserPresenter extends BasePresenter {
     }
 
     /***
-     *查询气瓶制造商
+     *查询气瓶最后一次收发记录
      * @param
      */
-    public void getCylinderLastTransmitRecord(String cyCode) {
+    public void getCylinderLastTransmitRecord(String cyId, String transceiverType) {
 
         Map<String, Object> subParam = new HashMap<>();
-        subParam.put("unitId",queryUser().getUnitId());
-        if (!TextUtils.isEmpty(cyCode)) {
-            subParam.put("code", cyCode);
-        }
+        subParam.put("cylinderId",cyId);
+        subParam.put("transceiverType",transceiverType);
 
         Observable<HttpResponseResult> userObservable = userModel.getCylinderLastTransmitRecord(subParam);
         userObservable.observeOn(AndroidSchedulers.mainThread())
@@ -1550,4 +1663,194 @@ public class UserPresenter extends BasePresenter {
                     }
                 });
     }
+
+    /***
+     *查询气瓶最后一次充装记录
+     * @param
+     */
+    public void getCylinderLastChargeRecord(String cyId) {
+
+        Map<String, Object> subParam = new HashMap<>();
+        subParam.put("cylinderId",cyId);
+
+        Observable<HttpResponseResult> userObservable = userModel.getCylinderLastChargeRecord(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            callback.successful("getCylinderLastChargeRecord",httpResult.getData());
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("getCylinderLastChargeRecord","needUpdate");
+                        } else {
+                            callback.failure("getCylinderLastChargeRecord",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("getCylinderLastTransmitRecord",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
+
+    /***
+     *查询气瓶批次号
+     * @param
+     */
+    public void searchBatchNumber(String batchNumber) {
+
+        Map<String, Object> subParam = new HashMap<>();
+        subParam.put("batchNumber",batchNumber);
+
+        Observable<HttpResponseResult> userObservable = userModel.searchBatchNumber(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            callback.successful("searchBatchNumber",httpResult.getData());
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("searchBatchNumber","needUpdate");
+                        } else {
+                            callback.failure("searchBatchNumber",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("searchBatchNumber",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
+
+    /***
+     *查询气瓶批次号
+     * @param
+     */
+    public void getSetWithCylinderListBySetId(String setId) {
+
+        Map<String, Object> subParam = new HashMap<>();
+        subParam.put("setId",setId);
+
+        Observable<HttpResponseResult> userObservable = userModel.getSetWithCylinderListBySetId(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            if (httpResult.getData() == null)
+                                callback.successful("getSetWithCylinderListBySetId",null);
+                            Type type = new TypeToken<SetBean>(){}.getType();
+                            Gson gson = new Gson();
+                            JSONObject object=new JSONObject((LinkedTreeMap)httpResult.getData());
+                            String mData = object.toString();
+                            SetBean setBean = gson.fromJson(mData,type);
+
+//                            ArrayList<LinkedTreeMap> cyList = (ArrayList<LinkedTreeMap>)((LinkedTreeMap)httpResult.getData()).get("cylinderList");
+//                            for (LinkedTreeMap c : cyList) {
+//                                Type type2 = new TypeToken<CylinderInfoBean>(){}.getType();
+//                                Gson gson2 = new Gson();
+//                                JSONObject object2 = new JSONObject(c);
+//                                String mData2 = object2.toString();
+//                                CylinderInfoBean cylinderInfoBean = gson2.fromJson(mData2,type2);
+//                                setBean.getCylinderList().add(cylinderInfoBean);
+//                            }
+
+                            callback.successful("getSetWithCylinderListBySetId",setBean);
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("getSetWithCylinderListBySetId","needUpdate");
+                        } else {
+                            callback.failure("getSetWithCylinderListBySetId",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("getSetWithCylinderListBySetId",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
+
+    /***
+     *获取未完成的充装任务列表
+     * @param
+     */
+    public void deleteChargeMissionByMissionId(String missionId) {
+
+        Map<String, Object> subParam = new HashMap<>();
+        subParam.put("id",missionId);
+
+        Observable<HttpResponseResult> userObservable = userModel.deleteChargeMissionByMissionId(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            if (httpResult.getData() == null)
+                                callback.successful("deleteChargeMissionByMissionId",null);
+                            Type type = new TypeToken<ChargeMissionBean>(){}.getType();
+                            Gson gson = new Gson();
+                            JSONObject object=new JSONObject((LinkedTreeMap)httpResult.getData());
+                            String mData = object.toString();
+                            ChargeMissionBean infoBean =gson.fromJson(mData,type);
+                            callback.successful("deleteChargeMissionByMissionId",infoBean);
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("deleteChargeMissionByMissionId","needUpdate");
+                        } else {
+                            callback.failure("deleteChargeMissionByMissionId",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("deleteChargeMissionByMissionId",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
+
 }

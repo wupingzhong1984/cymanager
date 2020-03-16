@@ -10,24 +10,27 @@ import com.org.gascylindermng.R;
 import com.org.gascylindermng.base.BaseAdapter;
 import com.org.gascylindermng.bean.CylinderInfoBean;
 
-public class CyListAdapter extends BaseAdapter<CylinderInfoBean> {
+public class ChargeCyListAdapter extends BaseAdapter<CylinderInfoBean> {
 
     public Context context;
-    private CyListAdapter.AdapterClickListener listener;
+    private AdapterClickListener listener;
     public String pinlessObject;
 
-    public boolean canDeleteCy;
+    public boolean canCheck = false;
+    public boolean canDeleteCy = false;
 
     public interface AdapterClickListener{
         public void deleteClicked(int position);  //自行配置参数  需要传递到activity的值
 //        public void checkEditClicked(int position);  //自行配置参数  需要传递到activity的值
     }
 
-    public CyListAdapter(Context context, String pinlessObject, boolean deleteCy, AdapterClickListener listener) {
+
+    public ChargeCyListAdapter(Context context, String pinlessObject, boolean check, boolean deleteCy, AdapterClickListener listener) {
         super(context);
         this.context = context;
         this.listener = listener;
         this.pinlessObject = pinlessObject;
+        canCheck = check;
         canDeleteCy = deleteCy;
     }
 
@@ -80,7 +83,11 @@ public class CyListAdapter extends BaseAdapter<CylinderInfoBean> {
     public void handleItem(int itemViewType, int position, CylinderInfoBean item, ViewHolder holder, boolean isRecycle) {
 
         TextView number = holder.get(R.id.platform_cy_code);
-        number.setText(item.getPlatformCyCode());
+        if (!TextUtils.isEmpty(item.getSetNumber())){
+            number.setText(item.getPlatformCyCode()+" 集格:"+item.getSetNumber());
+        } else {
+            number.setText(item.getPlatformCyCode());
+        }
 
         TextView code = holder.get(R.id.company_relate_code);
         if (pinlessObject.equals("0")) {

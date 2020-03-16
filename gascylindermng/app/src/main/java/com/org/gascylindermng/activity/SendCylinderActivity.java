@@ -87,7 +87,7 @@ public class SendCylinderActivity extends BaseActivity implements ApiCallback {
     private UserPresenter userPresenter;
     private ArrayList<String> lastScanCyPlatformCodeList;
     private ArrayList<String> lastScanCySetPlatformIdList;
-    private ArrayList<CylinderInfoBean> sendCyList;
+    private ArrayList<CylinderInfoBean> cyList;
 
     //打开扫描界面请求码
     private int REQUEST_CODE_1 = 0x01;
@@ -135,7 +135,7 @@ public class SendCylinderActivity extends BaseActivity implements ApiCallback {
         carList = new ArrayList<CarBean>();
         lastScanCyPlatformCodeList = new ArrayList<String>();
         lastScanCySetPlatformIdList = new ArrayList<String>();
-        sendCyList = new ArrayList<CylinderInfoBean>();
+        cyList = new ArrayList<CylinderInfoBean>();
 
         customerListAdapter = new MySimpleSpinnerAdapter(this);
         customerListview.setAdapter(customerListAdapter);
@@ -428,12 +428,12 @@ public class SendCylinderActivity extends BaseActivity implements ApiCallback {
                 break;
             case R.id.cy_count_layout:
                 Intent intent = new Intent(SendCylinderActivity.this, CyListActivity.class);
-                intent.putExtra("CyBeanlist", sendCyList);
+                intent.putExtra("CyBeanlist", cyList);
                 startActivity(intent);
                 break;
             case R.id.submit:
 
-                if (sendCyList.size() == 0) {
+                if (cyList.size() == 0) {
                     showToast("您还未扫描任何气瓶！");
                     return;
                 }
@@ -610,8 +610,8 @@ public class SendCylinderActivity extends BaseActivity implements ApiCallback {
                 String mData = object.toString();
                 CylinderInfoBean cyBean = gson.fromJson(mData, type);
                 if (cyBean != null) {
-                    sendCyList.add(cyBean);
-                    cyCountTextview.setText("已扫描气瓶 " + sendCyList.size() + " 个");
+                    cyList.add(cyBean);
+                    cyCountTextview.setText("已扫描气瓶 " + cyList.size() + " 个");
                 }
             }
             lastScanCySetPlatformIdList.remove(0);
@@ -629,12 +629,12 @@ public class SendCylinderActivity extends BaseActivity implements ApiCallback {
                 }.start();
             }
 
-        } else if (api.equals("getCylinderInfoByPlatformCyCode")) {
+        } else if (api.equals("getCylinderInfoByPlatformCyNumber")) {
 
             if (success != null && success instanceof CylinderInfoBean) {
 
-                sendCyList.add((CylinderInfoBean) success);
-                cyCountTextview.setText("已扫描气瓶 "+sendCyList.size()+" 个");
+                cyList.add((CylinderInfoBean) success);
+                cyCountTextview.setText("已扫描气瓶 "+cyList.size()+" 个");
                 lastScanCyPlatformCodeList.remove(0);
                 if (lastScanCyPlatformCodeList.size() > 0) {
 
@@ -643,7 +643,7 @@ public class SendCylinderActivity extends BaseActivity implements ApiCallback {
                         public void run() {
                             //在子线程中进行下载操作
                             try {
-                                userPresenter.getCylinderInfoByPlatformCyCode(lastScanCyPlatformCodeList.get(0));
+                                userPresenter.getCylinderInfoByPlatformCyNumber(lastScanCyPlatformCodeList.get(0));
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -890,7 +890,7 @@ public class SendCylinderActivity extends BaseActivity implements ApiCallback {
                     //在子线程中进行下载操作
                     try {
                         final ArrayList<String> cyIdList = new ArrayList<>();
-                            for (CylinderInfoBean info : sendCyList) {
+                            for (CylinderInfoBean info : cyList) {
                                 cyIdList.add(info.getCyId());
                             }
                     userPresenter.submitTransmitReceiveRecord(isEmptyCy ? "1" : "0", //0否1是
@@ -931,69 +931,61 @@ public class SendCylinderActivity extends BaseActivity implements ApiCallback {
         //扫描结果回调
         if (resultCode == RESULT_OK) { //RESULT_OK = -1
 
+            Bundle bundle = data.getExtras();
+            ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
+
             if (requestCode == REQUEST_CODE_1) {
-                Bundle bundle = data.getExtras();
-                String result = bundle.getString("qr_scan_result");
-                edittextTransOrder.setText(result);
+                if(result != null && result.size() > 0) {
+
+                    edittextTransOrder.setText(result.get(0));
+                }
             } else if (requestCode == REQUEST_CODE_2) {
-                Bundle bundle = data.getExtras();
-                String result = bundle.getString("qr_scan_result");
-                edittextCustomerOrder.setText(result);
+                if(result != null && result.size() > 0) {
+
+                    //edittextCustomerOrder.setText(result.get(0));
+                }
             } else if (requestCode == REQUEST_CODE_3) {
 
-                Bundle bundle = data.getExtras();
-                ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
-                if (result == null || result.size() == 0) {
-                    return;
+                ArrayList<CylinderInfoBean> allCyList = (ArrayList<CylinderInfoBean>)bundle.getSerializable("qr_scan_result_all_cy_list");
+                if (allCyList != null && allCyList.size() > 0) {
+                    cyList.addAll(allCyList);
                 }
-                for (String r: result) {
-                    ServiceLogicUtils.getCylinderPlatformCyCodeFromScanResult(r, lastScanCySetPlatformIdList, lastScanCyPlatformCodeList);
-                }
+                cyCountTextview.setText("已扫描气瓶 " + cyList.size() + " 个");
 
-//                    if (UrlUtils.strIsURL(result)) {
-//
-//                        if (result.contains("/set/code/")) {
-//                            lastScanCySetPlatformIdList.add((result.split("/set/code/"))[1]);
-//                        } else {
-//                            String code = UrlUtils.parse(result).params.get("id");
-//                            if (code != null && !code.equals("")) {
-//                                lastScanCyPlatformCodeList.add(code);
+//                for (String r: result) {
+//                    ServiceLogicUtils.getCylinderPlatformNumberOrSetIdFromScanResult(r, lastScanCySetPlatformIdList, lastScanCyPlatformCodeList);
+//                }
+
+//                if (lastScanCyPlatformCodeList.size() > 0) {
+//                    new Thread() {
+//                        @Override
+//                        public void run() {
+//                            //在子线程中进行下载操作
+//                            try {
+//                                userPresenter.getCylinderInfoByPlatformCyNumber(lastScanCyPlatformCodeList.get(0));
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
 //                            }
 //                        }
-//                    } else {
-//                        lastScanCyPlatformCodeList.add(result);
-//                    }
-
-                if (lastScanCyPlatformCodeList.size() > 0) {
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            //在子线程中进行下载操作
-                            try {
-                                userPresenter.getCylinderInfoByPlatformCyCode(lastScanCyPlatformCodeList.get(0));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }.start();
-                } else if (lastScanCySetPlatformIdList.size() > 0) {
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            //在子线程中进行下载操作
-                            try {
-                                userPresenter.getCylinderListBySetId(lastScanCySetPlatformIdList.get(0));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }.start();
-                } else {
-                    showToast("无有效气瓶二维码");
-                }
+//                    }.start();
+//                } else if (lastScanCySetPlatformIdList.size() > 0) {
+//                    new Thread() {
+//                        @Override
+//                        public void run() {
+//                            //在子线程中进行下载操作
+//                            try {
+//                                userPresenter.getCylinderListBySetId(lastScanCySetPlatformIdList.get(0));
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }.start();
+//                } else {
+//                    showToast("无有效气瓶二维码");
+//                }
             }
         } else {
-            showToast("扫描失败");
+            //showToast("扫描失败");
         }
     }
 }

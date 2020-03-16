@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/scan_result_count"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textColor="@color/text_color"
+        android:textSize="16dp"
+        android:text="扫描：0，散瓶：0，集格：0，总气瓶数：0"
+        android:gravity="center"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="49dp"
+        android:background="@color/text_color"/>
+
+    </RelativeLayout>
+</LinearLayout>

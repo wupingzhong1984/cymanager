@@ -39,14 +39,19 @@ public interface UserModel {
     Observable<HttpResponseResult> getNextAreaListByPreProcessId(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> updatePassword(@FieldMap Map<String, Object> params);
 
-    Observable<HttpResponseResult> getCylinderInfoByPlatformCyCode(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> getCylinderInfoByPlatformCyNumber(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> getCylinderInfoByCyCode(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> getSetWithCylinderListBySetId(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> getCylinderLastTransmitRecord(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> getCylinderLastChargeRecord(@FieldMap Map<String, Object> params);
 
     Observable<HttpResponseResult> submitPrechargeCheckResult(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> createChargeMission(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> getChargeMissionList(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> getChargeMissionByMissionId(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> updateChargeMission(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> updateChargeMissionV2(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> deleteChargeMissionByMissionId(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> submitPostchargeCheckResult(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> submitTransmitReceiveRecord(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> submitCyRegularInspectionRecord(@FieldMap Map<String, Object> params);
@@ -65,4 +70,5 @@ public interface UserModel {
     Observable<HttpResponseResult> searchUnitsSet(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> getCylinderListBySetId(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> searchCylinderManufacturer(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> searchBatchNumber(@FieldMap Map<String, Object> params);
 }

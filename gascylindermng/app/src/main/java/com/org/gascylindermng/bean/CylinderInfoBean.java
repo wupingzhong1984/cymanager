@@ -53,6 +53,10 @@ public class CylinderInfoBean implements Serializable {
     @SerializedName("regularInspectionDate") //下次定检日期
     private String nextRegularInspectionDate;
 
+
+    @SerializedName("lastFillTime") //最近一次充装日期
+    private String lastFillTime;
+
     @SerializedName("unitId") //产权（托管）公司id
     private String unitId;
     @SerializedName("unitName") //产权（托管）公司
@@ -219,6 +223,14 @@ public class CylinderInfoBean implements Serializable {
         this.nextRegularInspectionDate = nextRegularInspectionDate;
     }
 
+    public String getLastFillTime() {
+        return lastFillTime;
+    }
+
+    public void setLastFillTime(String lastFillTime) {
+        this.lastFillTime = lastFillTime;
+    }
+
     public String getUnitId() {
         return unitId;
     }
@@ -234,6 +246,7 @@ public class CylinderInfoBean implements Serializable {
     public void setUnitName(String unitName) {
         this.unitName = unitName;
     }
+
 
 
 
@@ -260,6 +273,7 @@ public class CylinderInfoBean implements Serializable {
                 ", manuDate='" + manuDate + '\'' +
                 ", scrapDate='" + scrapDate + '\'' +
                 ", nextRegularInspectionDate='" + nextRegularInspectionDate + '\'' +
+                ", lastFillTime='" + lastFillTime + '\'' +
                 ", unitId='" + unitId + '\'' +
                 ", unitName='" + unitName + '\'' +
                 '}';

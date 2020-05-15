@@ -154,4 +154,16 @@ public interface HttpRequestService {
     @FormUrlEncoded
     @POST("deleteDetection")
     Observable<HttpResponseResult> deleteChargeMissionByMissionId(@FieldMap Map<String, Object> params);
+
+    @FormUrlEncoded
+    @POST("searchTransOrderNumber")
+    Observable<HttpResponseResult> searchTransOrderNumber(@FieldMap Map<String, Object> params);
+
+    @FormUrlEncoded
+    @POST("getPreDetectionListByEmployeeId")
+    Observable<HttpResponseResult> getPreChargeDetectionBatchList(@FieldMap Map<String, Object> params);
+
+    @FormUrlEncoded
+    @POST("getAfterDetectionListByEmployeeId")
+    Observable<HttpResponseResult> getPostChargeDetectionBatchList(@FieldMap Map<String, Object> params);
 }

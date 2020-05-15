@@ -16,12 +16,12 @@ public class ChargeCyListAdapter extends BaseAdapter<CylinderInfoBean> {
     private AdapterClickListener listener;
     public String pinlessObject;
 
-    public boolean canCheck = false;
+    public boolean canCheckEdit = false;
     public boolean canDeleteCy = false;
 
     public interface AdapterClickListener{
         public void deleteClicked(int position);  //自行配置参数  需要传递到activity的值
-//        public void checkEditClicked(int position);  //自行配置参数  需要传递到activity的值
+        public void checkEditClicked(int position);  //自行配置参数  需要传递到activity的值
     }
 
 
@@ -30,7 +30,7 @@ public class ChargeCyListAdapter extends BaseAdapter<CylinderInfoBean> {
         this.context = context;
         this.listener = listener;
         this.pinlessObject = pinlessObject;
-        canCheck = check;
+        canCheckEdit = check;
         canDeleteCy = deleteCy;
     }
 
@@ -72,6 +72,26 @@ public class ChargeCyListAdapter extends BaseAdapter<CylinderInfoBean> {
                     }
                 }
             });
+        } else {
+            delete.setVisibility(View.GONE);
+        }
+
+        final TextView editCheck = (TextView)viewHolder.get(R.id.cy_list_edit_check_btn);
+        if (canCheckEdit) {
+            editCheck.setVisibility(View.VISIBLE);
+            editCheck.setTag(position);
+            editCheck.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View view) {
+                    final int position = (int) view.getTag();
+
+                    if (listener != null) {
+                        listener.checkEditClicked(position);
+                    }
+                }
+            });
+        } else {
+            editCheck.setVisibility(View.GONE);
         }
 
         handleItem(itemLayoutType, position, mData.get(position), viewHolder, isRecycle);
@@ -96,11 +116,8 @@ public class ChargeCyListAdapter extends BaseAdapter<CylinderInfoBean> {
             code.setText(item.getCompanyRelateCode());
         }
 
-        TextView medium = holder.get(R.id.medium);
-        medium.setText(item.getCyMediumName());
-
-        TextView category = holder.get(R.id.cy_category);
-        category.setText(item.getCyCategoryName());
+        TextView mediumCategory = holder.get(R.id.medium_category);
+        mediumCategory.setText(item.getCyMediumName() + " / " + item.getCyCategoryName());
 
         TextView next = holder.get(R.id.next_regular_date);
         next.setText(item.getNextRegularInspectionDate().substring(0,7));

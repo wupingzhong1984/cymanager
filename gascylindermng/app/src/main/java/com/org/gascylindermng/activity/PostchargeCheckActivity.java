@@ -143,8 +143,13 @@ public class PostchargeCheckActivity extends BaseActivity implements ApiCallback
                     @Override
                     public void onClick(View v) {
 
+                        ArrayList<String> cyIdList = new ArrayList<String>();
+                        for (CylinderInfoBean c : newAllCyList) {
+                            cyIdList.add(c.getCyId());
+                        }
+
                         userPresenter.submitPostchargeCheckResult(
-                                newAllCyList.get(0).getCyId(),
+                                cyIdList,
                                 listAdapter.getData(),
                                 listAdapter.checkOK,
                                 listAdapter.nextAreaId,
@@ -168,42 +173,32 @@ public class PostchargeCheckActivity extends BaseActivity implements ApiCallback
         if (api.equals("submitPostchargeCheckResult")) {
             HttpResponseResult httpResponseResult = (HttpResponseResult) success;
             if (!httpResponseResult.getCode().equals("200")) {
-                listAdapter.allCyCount = newAllCyList.size();
-                listAdapter.notifyDataSetChanged();
                 showToast("提交失败，" + httpResponseResult.getMessage() + "，请重新尝试提交。");
             } else {
-                newAllCyList.remove(0);
-                if (newAllCyList.size() == 0) {
-                    showToast("提交成功");
-                    listAdapter.allCyCount = newAllCyList.size();
-                    listAdapter.notifyDataSetChanged();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            finish();
-                        }
+                LinearLayout llname = (LinearLayout) this.getLayoutInflater()
+                        .inflate(R.layout.view_common_dialog, null);
+                final TextView textView = (TextView) llname.findViewById(R.id.message);
+                textView.setText("提交成功。");
 
-                    }, 1500);
-                } else {
-                    newAllCyList.remove(0);
-                    new Thread(){
-                        @Override
-                        public void run() {
-                            //在子线程中进行下载操作
-                            try {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                final AlertDialog dialog = builder.setView(llname).create();
+                dialog.show();
+                final TextView btnConfirm = (TextView) llname.findViewById(R.id.dialog_btn_confirm);
+                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        closeAndRefreshBatchList();
+                    }
+                });
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.dismiss();
+                        closeAndRefreshBatchList();
+                    }
+                }, 1500);
 
-                                userPresenter.submitPostchargeCheckResult(
-                                        newAllCyList.get(0).getCyId(),
-                                        listAdapter.getData(),
-                                        listAdapter.checkOK,
-                                        listAdapter.nextAreaId,
-                                        listAdapter.remark);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }.start();
-                }
             }
         } else if (api.equals("getCompanyProcessListByCompanyId")) {
 
@@ -271,6 +266,15 @@ public class PostchargeCheckActivity extends BaseActivity implements ApiCallback
         } else {
             showToast("接口报错，" + (String) failure);
         }
+    }
+
+    private void closeAndRefreshBatchList() {
+        Intent resultIntent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putString("needRefresh", "1");
+        resultIntent.putExtras(bundle);
+        this.setResult(0xA1, resultIntent);
+        finish();
     }
 
     @Override

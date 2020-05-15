@@ -13,13 +13,16 @@ import com.org.gascylindermng.R;
 import com.org.gascylindermng.adapter.ChargeCyListAdapter;
 import com.org.gascylindermng.adapter.CyListAdapter;
 import com.org.gascylindermng.base.BaseActivity;
+import com.org.gascylindermng.bean.CheckItemBean;
 import com.org.gascylindermng.bean.CylinderInfoBean;
+import com.org.gascylindermng.bean.ProcessNextAreaBean;
 import com.org.gascylindermng.callback.ApiCallback;
 import com.org.gascylindermng.presenter.UserPresenter;
 import com.org.gascylindermng.tools.ServiceLogicUtils;
 import com.org.gascylindermng.view.WrapContentListView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,13 +37,19 @@ public class ChargeCyListActivity extends BaseActivity implements ApiCallback, C
     private ChargeCyListAdapter listAdapter;
     private UserPresenter userPresenter;
 
-    private ArrayList<String> platformIdList;
-    private ArrayList<CylinderInfoBean> cyList;
+    private ArrayList<String> cyNumberList; //new mission
+    private ArrayList<CylinderInfoBean> cyList; //created mission
 
     private boolean canCheck = false;
     private boolean canDeleteCy = false;
 
     private String deleteSetId;
+
+    private ArrayList<ProcessNextAreaBean> nextAreaList;
+    private ArrayList<String> checkOKList;
+    private ArrayList<String> nextAreaIdList;
+    private ArrayList<String> remarkList;
+    private ArrayList<ArrayList<CheckItemBean>> checkItemResultListList;
 
     @Override
     protected void initLayout(Bundle savedInstanceState) {
@@ -54,14 +63,30 @@ public class ChargeCyListActivity extends BaseActivity implements ApiCallback, C
         this.cyList = new ArrayList<CylinderInfoBean>();
         userPresenter = new UserPresenter(this);
 
-        Object checkFlag = getIntent().getSerializableExtra("canCheck");
-        if (checkFlag != null && checkFlag.equals("1")) {
-            canCheck = true;
-        }
+        Object idList = getIntent().getSerializableExtra("CyNumberlist");
+        if (idList != null) {
+            this.cyNumberList = (ArrayList<String>) getIntent().getSerializableExtra("CyNumberlist");
 
-        Object deleteFlag = getIntent().getSerializableExtra("canDeleteCy");
-        if (deleteFlag != null && deleteFlag.equals("1")) {
-            canDeleteCy = true;
+            Object checkFlag = getIntent().getSerializableExtra("canCheck");
+            if (checkFlag != null && checkFlag.equals("1")) {
+                canCheck = true;
+            }
+
+            this.nextAreaList = (ArrayList<ProcessNextAreaBean>) getIntent().getSerializableExtra("nextAreaList");
+            this.checkOKList = (ArrayList<String>) getIntent().getSerializableExtra("checkOKList");
+            this.nextAreaIdList = (ArrayList<String>) getIntent().getSerializableExtra("nextAreaIdList");
+            this.remarkList = (ArrayList<String>) getIntent().getSerializableExtra("remarkList");
+            this.checkItemResultListList =(ArrayList<ArrayList<CheckItemBean>>) getIntent().getSerializableExtra("checkItemResultListList");
+            userPresenter.getCylinderInfoByPlatformCyNumber(cyNumberList.get(0));
+        } else {
+            this.cyList = (ArrayList<CylinderInfoBean>) getIntent().getSerializableExtra("CyBeanlist");
+            listAdapter.updateData(cyList);
+
+            Object deleteFlag = getIntent().getSerializableExtra("canDeleteCy");
+            if (deleteFlag != null && deleteFlag.equals("1")) {
+                canDeleteCy = true;
+            }
+
         }
 
         listAdapter =  new ChargeCyListAdapter(this,userPresenter.querComapny().getPinlessObject(),canCheck,canDeleteCy, this);
@@ -75,22 +100,6 @@ public class ChargeCyListActivity extends BaseActivity implements ApiCallback, C
                 startActivity(intent);
             }
         });
-
-        Object idList = getIntent().getSerializableExtra("CyPlatformIdlist");
-        if (idList != null) {
-            this.platformIdList = (ArrayList<String>) getIntent().getSerializableExtra("CyPlatformIdlist");
-            userPresenter.getCylinderInfoByPlatformCyNumber(platformIdList.get(0));
-        } else {
-            this.cyList = (ArrayList<CylinderInfoBean>) getIntent().getSerializableExtra("CyBeanlist");
-            listAdapter.updateData(cyList);
-        }
-
-        Intent resultIntent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("CyBeanlist", getCyList());
-        resultIntent.putExtras(bundle);
-        ChargeCyListActivity.this.setResult(0xA1, resultIntent);
-
     }
 
     @Override
@@ -102,14 +111,14 @@ public class ChargeCyListActivity extends BaseActivity implements ApiCallback, C
 
                 cyList.add((CylinderInfoBean)success);
                 listAdapter.updateData(cyList);
-                platformIdList.remove(0);
-                if (platformIdList.size() > 0) {
+                cyNumberList.remove(0);
+                if (cyNumberList.size() > 0) {
                     new Thread() {
                         @Override
                         public void run() {
                             //在子线程中进行下载操作
                             try {
-                                userPresenter.getCylinderInfoByPlatformCyNumber(platformIdList.get(0));
+                                userPresenter.getCylinderInfoByPlatformCyNumber(cyNumberList.get(0));
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -138,6 +147,15 @@ public class ChargeCyListActivity extends BaseActivity implements ApiCallback, C
 
         switch (view.getId()) {
             case R.id.back_img:
+                Intent resultIntent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("CyBeanlist", getCyList());
+                bundle.putStringArrayList("nextAreaIdList", nextAreaIdList);
+                bundle.putStringArrayList("checkOKList", checkOKList);
+                bundle.putStringArrayList("remarkList",remarkList);
+                bundle.putSerializable("checkItemResultListList", checkItemResultListList);
+                resultIntent.putExtras(bundle);
+                ChargeCyListActivity.this.setResult(0xA1, resultIntent);
                 finish();
                 break;
         }
@@ -180,12 +198,12 @@ public class ChargeCyListActivity extends BaseActivity implements ApiCallback, C
                 } else {
                     getCyList().remove(postision);
                 }
-                Intent resultIntent = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("CyBeanlist", getCyList());
-                resultIntent.putExtras(bundle);
-                ChargeCyListActivity.this.setResult(0xA1, resultIntent);
-                listAdapter.updateData(getCyList());
+
+                if(getCyList().size() == 0) {
+                    listAdapter.deleteAllData();
+                } else {
+                    listAdapter.updateData(getCyList());
+                }
                 dialog.dismiss();
             }
         });
@@ -196,6 +214,55 @@ public class ChargeCyListActivity extends BaseActivity implements ApiCallback, C
             }
         });
     }
+
+    @Override
+    public void checkEditClicked(final int postision) {
+
+        CylinderInfoBean cylinderInfoBean = cyList.get(postision);
+
+        Intent intent = new Intent(ChargeCyListActivity.this, ChargeCheckActivity.class);
+        if (!TextUtils.isEmpty(cylinderInfoBean.getSetNumber())) {
+            intent.putExtra("setNumber", cylinderInfoBean.getSetNumber());
+        } else {
+            intent.putExtra("cyNumber", cylinderInfoBean.getPlatformCyCode());
+        }
+        intent.putExtra("nextAreaList", nextAreaList);
+        intent.putExtra("checkOK", checkOKList.get(postision));
+        intent.putExtra("remark", remarkList.get(postision));
+        intent.putExtra("nextAreaId", nextAreaIdList.get(postision));
+        intent.putExtra("checkItemList", checkItemResultListList.get(postision));
+        startActivityForResult(intent,ChargeCheckActivity.RESULT_CODE_CHARGE_CHECK);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //扫描结果回调
+
+        Bundle bundle = data.getExtras();
+        if (requestCode == ChargeCheckActivity.RESULT_CODE_CHARGE_CHECK) {
+
+            String setNumber = bundle.getString("setNumber");
+            String cyNumber = bundle.getString("cyNumber");
+            String checkOK = bundle.getString("checkOK");
+            String nextAreaId = bundle.getString("nextAreaId");
+            String remark = bundle.getString("remark");
+            ArrayList<CheckItemBean> checkItemList = (ArrayList<CheckItemBean>)bundle.getSerializable("checkItemList");
+
+            for (int i = 0; i < cyList.size(); i++) {
+
+                if ((!TextUtils.isEmpty(setNumber) && cyList.get(i).getSetNumber().equals(setNumber)) ||
+                        (!TextUtils.isEmpty(cyNumber) && cyList.get(i).getPlatformCyCode().equals(cyNumber))) {
+                    checkOKList.set(i,checkOK);
+                    nextAreaIdList.set(i,nextAreaId);
+                    remarkList.set(i,remark);
+                    checkItemResultListList.set(i,checkItemList);
+                }
+            }
+        }
+    }
+
 
     public String getDeleteSetId() {
         return deleteSetId;
@@ -212,4 +279,6 @@ public class ChargeCyListActivity extends BaseActivity implements ApiCallback, C
     public void setCyList(ArrayList<CylinderInfoBean> cyList) {
         this.cyList = cyList;
     }
+
+
 }

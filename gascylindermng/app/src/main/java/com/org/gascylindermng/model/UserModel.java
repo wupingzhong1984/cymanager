@@ -32,6 +32,10 @@ public interface UserModel {
 
     void saveCompany(CompanyInfoBean company);
 
+    void saveNewLocalTransOrderCode(String code);
+    ArrayList<String> getLocalTransOrderList();
+
+
     Observable<HttpResponseResult> login(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> getCompanyById(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> getCyCategoryListByCompanyId(@FieldMap Map<String, Object> params);
@@ -58,7 +62,8 @@ public interface UserModel {
     Observable<HttpResponseResult> submitCyRepairRecord(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> submitCyScrapRecord(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> submitCyChangeMediumRecord(@FieldMap Map<String, Object> params);
-
+    Observable<HttpResponseResult> getPreChargeDetectionBatchList(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> getPostChargeDetectionBatchList(@FieldMap Map<String, Object> params);
 
     Observable<HttpResponseResult> addCylinder(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> addNumber(@FieldMap Map<String, Object> params);
@@ -71,4 +76,5 @@ public interface UserModel {
     Observable<HttpResponseResult> getCylinderListBySetId(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> searchCylinderManufacturer(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> searchBatchNumber(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> searchTransOrderNumber(@FieldMap Map<String, Object> params);
 }

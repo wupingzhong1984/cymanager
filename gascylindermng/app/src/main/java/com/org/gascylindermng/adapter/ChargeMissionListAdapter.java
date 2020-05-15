@@ -72,7 +72,7 @@ public class ChargeMissionListAdapter extends BaseAdapter<ChargeMissionBean> {
         return view;
     }
 
-            @Override
+    @Override
     public void handleItem(int itemViewType, int position, ChargeMissionBean item, ViewHolder holder, boolean isRecycle) {
 
         TextView startTime = holder.get(R.id.start_time);

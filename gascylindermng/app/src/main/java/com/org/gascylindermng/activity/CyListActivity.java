@@ -152,7 +152,11 @@ public class CyListActivity extends BaseActivity implements ApiCallback, CyListA
                 bundle.putSerializable("CyBeanlist", getCyList());
                 resultIntent.putExtras(bundle);
                 CyListActivity.this.setResult(0xA1, resultIntent);
-                listAdapter.updateData(getCyList());
+                if (getCyList().size() == 0) {
+                    listAdapter.deleteAllData();
+                } else {
+                    listAdapter.updateData(getCyList());
+                }
                 dialog.dismiss();
             }
         });

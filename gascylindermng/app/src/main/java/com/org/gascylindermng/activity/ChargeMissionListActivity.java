@@ -93,7 +93,12 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
         if (api.equals("deleteChargeMissionByMissionId")) {
 
             missionList.remove(lastDeleteMissionPosition);
-            listAdapter.notifyDataSetChanged();
+            listAdapter.updateData(missionList);
+            int cyCount = 0;
+            for (ChargeMissionBean chargeMissionBean : missionList) {
+                cyCount += Integer.valueOf(chargeMissionBean.getCylinderCount());
+            }
+            todayBottleCount.setText("今日充装：" + cyCount + "（集格以集格内瓶数算）");
 
         } else if (api.equals("getChargeMissionList") && !(success instanceof String)) {
 
@@ -105,7 +110,6 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
             List<LinkedTreeMap> datas = (List<LinkedTreeMap>) success;
             if (datas != null && datas.size() > 0) {
 
-                ArrayList<ChargeMissionBean> beans = new ArrayList<>();
                 int cyCount = 0;
                 for (LinkedTreeMap tm : datas) {
                     JSONObject object = new JSONObject((LinkedTreeMap) tm);
@@ -123,6 +127,9 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
                                 double id = (double)cyCheckData.get("cylinderId");
                                 int i = (new Double(id)).intValue();
                                 mission.getCylinderIdList().add(String.valueOf(i));
+
+                                String number = (String)cyCheckData.get("cylinderNumber");
+                                mission.getCylinderNumberList().add(number);
 
                                 JSONObject object2 = new JSONObject(cyCheckData);
                                 String mData2 = object2.toString();
@@ -230,8 +237,6 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
 
     @Override
     public void deleteClicked(int postision) {
-
-
 
         lastDeleteMissionPosition = postision;
         userPresenter.deleteChargeMissionByMissionId(missionList.get(postision).getMissionId());

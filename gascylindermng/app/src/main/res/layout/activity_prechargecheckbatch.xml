@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="100dp">
 
         <com.org.gascylindermng.view.WrapContentListView
             android:id="@+id/listview"
@@ -27,27 +27,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginBottom="50dp"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/start_scanner"
+        android:gravity="center">
+
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="添加气瓶"
+            android:layout_height="wrap_content"
+            android:id="@+id/today_bottle_count"
             android:textColor="@color/text_color"
-            android:background="@color/white"
-            android:textSize="18sp"/>
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="确  定"
-            android:textColor="@color/white"
-            android:background="@color/myblue"
-            android:textSize="18sp"/>
+            android:textSize="14dp"
+            android:layout_gravity="center"
+            android:text="今日回厂：0（集格以集格内瓶数算）"
+            />
+
     </LinearLayout>
 
-
+    <Button
+        android:id="@+id/create"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:text="新建回厂验空"
+        android:textColor="@color/white"
+        android:background="@color/myblue"
+        android:textSize="18sp"/>
 </RelativeLayout>

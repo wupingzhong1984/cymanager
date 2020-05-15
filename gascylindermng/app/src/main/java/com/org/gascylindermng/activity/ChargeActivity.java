@@ -24,6 +24,7 @@ import com.org.gascylindermng.api.HttpResponseResult;
 import com.org.gascylindermng.base.BaseActivity;
 import com.org.gascylindermng.bean.BatchNumberBean;
 import com.org.gascylindermng.bean.ChargeMissionBean;
+import com.org.gascylindermng.bean.CheckItemBean;
 import com.org.gascylindermng.bean.CySetBean;
 import com.org.gascylindermng.bean.CylinderInfoBean;
 import com.org.gascylindermng.bean.ProcessBean;
@@ -68,8 +69,8 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
     TextView endTimeTV;
     @BindView(R.id.edittext_product_batch)
     EditText edittextProductBatch;
-    @BindView(R.id.edittext_charge_remark)
-    EditText edittextChargeRemark;
+//    @BindView(R.id.edittext_charge_remark)
+//    EditText edittextChargeRemark;
 
     @BindView(R.id.batch_listview)
     WrapContentListView batchListview;
@@ -77,8 +78,8 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
     Spinner purenessSpinner;
     //    @BindView(R.id.team_spinner)
 //    Spinner teamSpinner;
-    @BindView(R.id.next_area_spinner)
-    Spinner nextAreaSpinner;
+//    @BindView(R.id.next_area_spinner)
+//    Spinner nextAreaSpinner;
     @BindView(R.id.medium_name)
     TextView mediumName;
 
@@ -86,14 +87,14 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
     //打开扫描界面请求码
     private int REQUEST_CODE = 0x01;
 
-    //打开气瓶列表页
+    //打开气瓶列表页-新任务
     private int REQUEST_CODE_2 = 0x02;
+    //打开气瓶列表页-已开始任务
+    private int REQUEST_CODE_3 = 0x03;
     //扫描成功返回码
     private int RESULT_OK = 0xA1;
 
     private UserPresenter userPresenter;
-//    private ArrayList<String> lastScanCyPlatformCodeList;
-//    private ArrayList<String> lastScanCySetIdList;
 
     private int scanCount = 0;
     private ArrayList<CylinderInfoBean> newMissionCyList; //new mission cy
@@ -105,15 +106,20 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
     private Date endTime;
 
     private ArrayList<ProcessNextAreaBean> nextAreaList;
+
     private ArrayList<BatchNumberBean> productBatchList;
     private BatchNumberBean selectedProductBatch;
 
     MySimpleSpinnerAdapter batchListViewAdapter;
     MySimpleSpinnerAdapter purenessSpinnerAdapter;
-    //    MySimpleSpinnerAdapter teamSpinnerAdapter;
-    MySimpleSpinnerAdapter nextAreaSpinnerAdapter;
 
     private boolean batchDidSelected = false;
+
+    //charge check
+    private ArrayList<String> nextAreaIdList;
+    private ArrayList<String> checkOKList;
+    private ArrayList<String> remarkList;
+    private ArrayList<ArrayList<CheckItemBean>> checkItemResultListList;
 
     @Override
     protected void initLayout(Bundle savedInstanceState) {
@@ -124,16 +130,18 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
     protected void init(Bundle savedInstanceState) {
 
         titleName.setText("充装");
-//        this.lastScanCyPlatformCodeList = new ArrayList<String>();
-//        this.lastScanCySetIdList = new ArrayList<String>();
+
         this.newMissionCyList = new ArrayList<CylinderInfoBean>();
         this.newMissionSetList = new ArrayList<SetBean>();
         this.newMissionAllCyList = new ArrayList<CylinderInfoBean>();
         this.nextAreaList = new ArrayList<ProcessNextAreaBean>();
         this.productBatchList = new ArrayList<BatchNumberBean>();
+        this.checkOKList = new ArrayList<String>();
+        this.nextAreaIdList = new ArrayList<String>();
+        this.remarkList = new ArrayList<String>();
+        this.checkItemResultListList = new ArrayList<ArrayList<CheckItemBean>>();
 
         userPresenter = new UserPresenter(this);
-
 
         purenessSpinnerAdapter = new MySimpleSpinnerAdapter(this);
         ArrayList<String> purenessTitleList = new ArrayList<String>();
@@ -143,16 +151,6 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
         purenessSpinnerAdapter.addData(purenessTitleList);
         purenessSpinner.setAdapter(purenessSpinnerAdapter);
 
-//        teamSpinnerAdapter = new MySimpleSpinnerAdapter(this);
-//        ArrayList<String> teamTitleList = new ArrayList<String>();
-//        for (String t : ServiceLogicUtils.getTeamList()) {
-//            teamTitleList.add(t);
-//        }
-//        teamSpinnerAdapter.addData(teamTitleList);
-//        teamSpinner.setAdapter(teamSpinnerAdapter);
-
-        nextAreaSpinnerAdapter = new MySimpleSpinnerAdapter(this);
-        nextAreaSpinner.setAdapter(nextAreaSpinnerAdapter);
 
         final ChargeMissionBean missionInfo = (ChargeMissionBean) getIntent().getSerializableExtra("ChargeMissionBean");
         if (missionInfo == null) { //create mission
@@ -161,6 +159,13 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
         } else {
             this.missionInfo = missionInfo;
             this.missionRemark = missionInfo.getRemark();
+
+            for (String cyNumber : missionInfo.getCylinderNumberList()) {
+                checkOKList.add("1");
+                remarkList.add("");
+                checkItemResultListList.add(ServiceLogicUtils.getCheckListByProcessIdAndCyCategoryId(ServiceLogicUtils.process_id_charge));
+            }
+
             createMissionBottom.setVisibility(View.GONE);
             if (missionInfo.getStatus().equals("1")) {
                 closeMissionBottom.setVisibility(View.VISIBLE);
@@ -168,7 +173,7 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                 closeMissionBottom.setVisibility(View.GONE);
             }
             edittextProductBatch.setText(missionInfo.getProductionBatch());
-            edittextChargeRemark.setText(missionInfo.getRemark());
+//            edittextChargeRemark.setText(missionInfo.getRemark());
             startTimeTV.setText(missionInfo.getBeginDate().substring("yyyy-MM-dd".length() + 1, missionInfo.getBeginDate().length()));
             if (missionInfo.getEndDate() != null) {
                 endTimeTV.setText(missionInfo.getEndDate().substring("yyyy-MM-dd".length() + 1, missionInfo.getEndDate().length()));
@@ -184,20 +189,6 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
             }
         }
 
-        edittextChargeRemark.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-
-                setMissionRemark(s.toString());
-
-            }
-        });
 
         edittextProductBatch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -254,15 +245,6 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                     purenessIndex++;
                 }
 
-//                int teamIndex = 0;
-//                for (String t : ServiceLogicUtils.getTeamList()) {
-//                    if (t.equals(getSelectedProductBatch().getTeam())) {
-//                        teamSpinner.setSelection(teamIndex);
-//                        break;
-//                    }
-//                    teamIndex++;
-//                }
-
             }
 
             @Override
@@ -294,6 +276,7 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                 if (CommonTools.isCameraCanUse()) {
                     Intent intent = new Intent(ChargeActivity.this, CaptureActivity.class);
                     intent.putExtra("mode", ServiceLogicUtils.scan_multi);
+                    intent.putExtra("isChargeScan", "1");
                     startActivityForResult(intent, REQUEST_CODE);
                 } else {
                     showToast("请打开此应用的摄像头权限！");
@@ -308,11 +291,18 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                 break;
             case R.id.cy_count:
                 if (missionInfo != null) {
-                    //todo
+
                     Intent intent = new Intent(ChargeActivity.this, ChargeCyListActivity.class);
-                    intent.putExtra("CyBeanlist", newMissionAllCyList);
-                    intent.putExtra("canCheck", "1");
-                    startActivityForResult(intent,REQUEST_CODE_2);
+                    intent.putExtra("CyNumberlist", missionInfo.getCylinderNumberList());
+                    if (missionInfo.getStatus().equals("1")) {
+                        intent.putExtra("canCheck", "1");
+                    }
+                    intent.putExtra("nextAreaList",nextAreaList);
+                    intent.putExtra("nextAreaIdList",nextAreaIdList);
+                    intent.putExtra("checkOKList",checkOKList);
+                    intent.putExtra("remarkList",remarkList);
+                    intent.putExtra("checkItemResultListList",checkItemResultListList);
+                    startActivityForResult(intent,REQUEST_CODE_3);
 
                 } else if (newMissionAllCyList.size() > 0) {
                     Intent intent = new Intent(ChargeActivity.this, ChargeCyListActivity.class);
@@ -413,15 +403,12 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
 
                 String batchStr = null;
                 String pureness = null;
-//                String team = null;
                 if (selectedProductBatch != null) {
                     batchStr = selectedProductBatch.getBatchNumber();
                     pureness = selectedProductBatch.getPureness();
-//                    team = selectedProductBatch.getTeam();
                 } else {
                     batchStr = edittextProductBatch.getText().toString();
                     pureness = ServiceLogicUtils.getPurenessList().get(purenessSpinner.getSelectedItemPosition()).getKeyValue();
-                    //                 team = ServiceLogicUtils.getTeamList().get
                 }
 
                 userPresenter.createChargeMission(beginTime,
@@ -461,22 +448,16 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
         dialog.show();
 
         final ArrayList<Map> aa = new ArrayList<>();
-        for (String cyId : missionInfo.getCylinderIdList()) {
+        for (int i = 0; i < missionInfo.getCylinderIdList().size();i++) {
+            String cyId = missionInfo.getCylinderIdList().get(i);
             HashMap c = new HashMap();
             c.put("cylinderId", cyId);
-            c.put("beforeColor", "1");
-            c.put("beforeAppearance", "1");
-            c.put("beforeSafety", "1");
-            c.put("beforeRegularInspectionDate", "1");
-            c.put("beforeResidualPressure", "1");
-            c.put("fillingIfNormal", "1");
-            c.put("afterPressure", "1");
-            c.put("afterCheckLeak", "1");
-            c.put("afterAppearance", "1");
-            c.put("afterTemperature", "1");
-            c.put("ifPass", "1");
-            c.put("companyAreaId", getNextAreaList().get(nextAreaSpinner.getSelectedItemPosition()).getAreaId());
-            c.put("remark","1");
+            c.put("companyAreaId",nextAreaIdList.get(i));
+            c.put("ifPass",checkOKList.get(i));
+            c.put("remark",remarkList.get(i));
+            for (CheckItemBean checkItemBean : checkItemResultListList.get(i)) {
+                c.put(checkItemBean.getApiParam(),checkItemBean.isState()?"1":"0");
+            }
             aa.add(c);
         }
 
@@ -486,7 +467,8 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
 
                 userPresenter.updateChargeMissionV2(missionInfo.getMissionId(),
                         missionRemark,
-                        getNextAreaList().get(nextAreaSpinner.getSelectedItemPosition()).getAreaId(),
+                        "1", //test
+  //                      getNextAreaList().get(nextAreaSpinner.getSelectedItemPosition()).getAreaId(),
                         endTime,
                         aa);
                 dialog.dismiss();
@@ -603,12 +585,17 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                 }
                 if (beans.size() > 0) {
                     getNextAreaList().addAll(beans);
-                    ArrayList<String> adapterData = new ArrayList<String>();
-                    for (ProcessNextAreaBean p : nextAreaList) {
-                        adapterData.add(p.getAreaName());
+//                    ArrayList<String> adapterData = new ArrayList<String>();
+//                    for (ProcessNextAreaBean p : nextAreaList) {
+//                        adapterData.add(p.getAreaName());
+//
+//                    }
+//                    nextAreaSpinnerAdapter.addData(adapterData);
+                    if(missionInfo!=null) {
+                        for (String cyNumber : missionInfo.getCylinderNumberList()) {
+                            nextAreaIdList.add(beans.get(0).getAreaId());
+                        }
                     }
-                    nextAreaSpinnerAdapter.addData(adapterData);
-
                 }
             }
 
@@ -790,6 +777,12 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                 scanCount = 0;
             }
             cyCountTV.setText("扫描：" + scanCount + "，散瓶：" + getNewMissionCyList().size() + "，集格：" + getNewMissionSetList().size() + "，总气瓶数：" + getNewMissionAllCyList().size());
+        } else if (requestCode == REQUEST_CODE_3) {
+
+            this.nextAreaIdList = bundle.getStringArrayList("nextAreaIdList");
+            this.checkOKList = bundle.getStringArrayList("checkOKList");
+            this.remarkList = bundle.getStringArrayList("remarkList");
+            this.checkItemResultListList = (ArrayList<ArrayList<CheckItemBean>>) bundle.getSerializable("checkItemResultListList");
         }
     }
 
@@ -894,5 +887,37 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
 
     public void setSelectedProductBatch(BatchNumberBean selectedProductBatch) {
         this.selectedProductBatch = selectedProductBatch;
+    }
+
+    public ArrayList<String> getNextAreaIdList() {
+        return nextAreaIdList;
+    }
+
+    public void setNextAreaIdList(ArrayList<String> nextAreaIdList) {
+        this.nextAreaIdList = nextAreaIdList;
+    }
+
+    public ArrayList<String> getCheckOKList() {
+        return checkOKList;
+    }
+
+    public void setCheckOKList(ArrayList<String> checkOKList) {
+        this.checkOKList = checkOKList;
+    }
+
+    public ArrayList<String> getRemarkList() {
+        return remarkList;
+    }
+
+    public void setRemarkList(ArrayList<String> remarkList) {
+        this.remarkList = remarkList;
+    }
+
+    public ArrayList<ArrayList<CheckItemBean>> getCheckItemResultListList() {
+        return checkItemResultListList;
+    }
+
+    public void setCheckItemResultListList(ArrayList<ArrayList<CheckItemBean>> checkItemResultListList) {
+        this.checkItemResultListList = checkItemResultListList;
     }
 }

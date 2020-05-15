@@ -1,9 +1,12 @@
 package com.org.gascylindermng.model.impl;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.org.gascylindermng.api.HttpRequestManage;
+import com.org.gascylindermng.api.HttpRequestManage2;
 import com.org.gascylindermng.api.HttpResponseResult;
 import com.org.gascylindermng.bean.ChargeMissionBean;
 import com.org.gascylindermng.bean.CompanyInfoBean;
@@ -23,10 +26,11 @@ import io.reactivex.Observable;
 
 public class UserModelImpl implements UserModel {
 
-    private HttpRequestService httpRequestService;
+    private HttpRequestService httpRequestService,httpRequestService2;
 
     public UserModelImpl() {
         httpRequestService = HttpRequestManage.getInstanc().create(HttpRequestService.class);
+        httpRequestService2 = HttpRequestManage2.getInstanc().create(HttpRequestService.class);
     }
 
     @Override
@@ -86,6 +90,23 @@ public class UserModelImpl implements UserModel {
                 SharedPreTools.remove("company");
             }
         }
+    }
+
+
+    @Override
+    public void saveNewLocalTransOrderCode(String code) {
+        if (TextUtils.isEmpty(code)) return;
+        ArrayList<String> list = (ArrayList<String>) SharedPreTools.query("localTransOrderCode", new ArrayList<String>());
+        list.add(0,code);
+        if (list.size() > 5) {
+            list.remove(5);
+        }
+        SharedPreTools.save("localTransOrderCode", list);
+    }
+
+    @Override
+    public ArrayList<String> getLocalTransOrderList() {
+        return (ArrayList<String>) SharedPreTools.query("localTransOrderCode", new ArrayList<String>());
     }
 
     @Override
@@ -255,5 +276,22 @@ public class UserModelImpl implements UserModel {
     @Override
     public Observable<HttpResponseResult>deleteChargeMissionByMissionId(Map<String, Object> params) {
         return httpRequestService.deleteChargeMissionByMissionId(params);
+    }
+
+    @Override
+    public Observable<HttpResponseResult>getPreChargeDetectionBatchList(Map<String, Object> params) {
+        return httpRequestService.getPreChargeDetectionBatchList(params);
+    }
+
+    @Override
+    public Observable<HttpResponseResult>getPostChargeDetectionBatchList(Map<String, Object> params) {
+        return httpRequestService.getPostChargeDetectionBatchList(params);
+    }
+
+
+
+    @Override
+    public Observable<HttpResponseResult>searchTransOrderNumber(Map<String, Object> params) {
+        return httpRequestService2.searchTransOrderNumber(params);
     }
 }

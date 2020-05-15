@@ -144,7 +144,8 @@ public class ChangeMediumActivity extends BaseActivity implements ApiCallback {
                                 listAdapter.cyInfo.getCyId(),
                                 listAdapter.remark,
                                 listAdapter.cyInfo.getCyMediumId(),
-                                listAdapter.mediumList.get(listAdapter.selectedNewMediumIndex).getMediumId(),listAdapter.getData());
+                                listAdapter.cyInfo.getCyMediumId(),
+                                listAdapter.getData());
                         dialog.dismiss();
                     }
                 });

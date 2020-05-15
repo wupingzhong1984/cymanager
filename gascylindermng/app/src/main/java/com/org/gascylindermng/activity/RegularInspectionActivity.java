@@ -114,8 +114,16 @@ public class RegularInspectionActivity extends BaseActivity implements ApiCallba
                         break;
                     }
                 }
+
+                if (listAdapter.checkOK &&
+                        (listAdapter.nextYear.length() != 4 || TextUtils.isEmpty(listAdapter.nextMonth) || listAdapter.nextMonth.length() > 2)) {
+
+                    showToast("请正确输入下检日期。");
+                    return;
+                }
+
                 if (itemOK && !listAdapter.checkOK && TextUtils.isEmpty(listAdapter.remark)) {
-                    showToast("请在备注中填写检测未通过的理由。");
+                    showToast("请在备注中补充检测未通过的理由。");
                     return;
                 }
 
@@ -136,9 +144,32 @@ public class RegularInspectionActivity extends BaseActivity implements ApiCallba
                     @Override
                     public void onClick(View v) {
 
+
+                        String nextYearStr = "";
+                        String nextMonthStr = "";
+                        String nextDayStr = "";
+
+                        if (listAdapter.checkOK) {
+                            nextYearStr = listAdapter.nextYear;
+                                int monthInt = Integer.valueOf(listAdapter.nextMonth);
+                                int dayInt = CommonTools.getMonthLastDay(Integer.valueOf(nextYearStr), monthInt);
+                                if (monthInt > 9) {
+                                    nextMonthStr = String.valueOf(monthInt);
+                                } else {
+                                    nextMonthStr = "0" + String.valueOf(monthInt);
+                                }
+                                if (dayInt > 9) {
+                                    nextDayStr = String.valueOf(dayInt);
+                                } else {
+                                    nextDayStr = "0" + String.valueOf(dayInt);
+                                }
+
+                        }
+
                         userPresenter.submitCyRegularInspectionRecord(
                                 listAdapter.cyInfo.getCyId(),
                                 listAdapter.checkOK,
+                                (listAdapter.checkOK ? nextYearStr + "-" + nextMonthStr + "-" + nextDayStr : null),
                                 listAdapter.remark,
                                 listAdapter.getData()
                         );

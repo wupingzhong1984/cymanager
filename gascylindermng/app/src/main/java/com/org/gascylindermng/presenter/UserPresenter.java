@@ -22,6 +22,7 @@ import com.org.gascylindermng.model.ChargeMission;
 import com.org.gascylindermng.model.UserModel;
 import com.org.gascylindermng.model.impl.ChargeMissionImpl;
 import com.org.gascylindermng.model.impl.UserModelImpl;
+import com.org.gascylindermng.tools.CommonTools;
 import com.org.gascylindermng.tools.ServiceLogicUtils;
 
 import org.json.JSONObject;
@@ -643,16 +644,24 @@ public class UserPresenter extends BasePresenter {
      *提交回厂验空结果
      * @param
      */
-    public void submitPrechargeCheckResult(String cylinderId,
+    public void submitPrechargeCheckResult(ArrayList<String> cyIdList,
                                            List<CheckItemBean> checkItems,
                                            boolean pass,
+                                           String isEmptyCy,
                                            String nextAreaId,
                                            String remark) {
 
         Map<String, Object> subParam = new HashMap<>();
+
+        StringBuilder cyStr = new StringBuilder();
+        for(String cyId : cyIdList) {
+            cyStr.append(cyId+",");
+        }
+        subParam.put("cylinderIdList", cyStr.substring(0,cyStr.length()-1));
+
         subParam.put("unitId",queryUser().getUnitId());
-        subParam.put("cylinderId", cylinderId);
         subParam.put("ifPass", pass?"1":"0");
+        subParam.put("empty",isEmptyCy);
         subParam.put("companyAreaId", nextAreaId);
         subParam.put("remark", remark);
         subParam.put("creator", queryUser().getEmployeeName());
@@ -1003,15 +1012,21 @@ public class UserPresenter extends BasePresenter {
      *提交充后验满结果
      * @param
      */
-    public void submitPostchargeCheckResult(String cylinderId,
+    public void submitPostchargeCheckResult(ArrayList<String> cyIdList,
                                             List<CheckItemBean> checkItems,
                                             boolean pass,
                                             String nextAreaId,
                                             String remark) {
 
         Map<String, Object> subParam = new HashMap<>();
+
+        StringBuilder cyStr = new StringBuilder();
+        for(String cyId : cyIdList) {
+            cyStr.append(cyId+",");
+        }
+        subParam.put("cylinderIdList", cyStr.substring(0,cyStr.length()-1));
+
         subParam.put("unitId",queryUser().getUnitId());
-        subParam.put("cylinderId", cylinderId);
         subParam.put("ifPass", pass?"1":"0");
         subParam.put("companyAreaId", nextAreaId);
         subParam.put("remark", remark);
@@ -1067,7 +1082,9 @@ public class UserPresenter extends BasePresenter {
                                             String supercargoId,
                                             String carId,
                                             String remark,
-                                            ArrayList<String> cyIdList) {
+                                            ArrayList<String> cyIdList,
+                                            String lng,
+                                            String lat) {
         Map<String, Object> subParam = new HashMap<>();
         subParam.put("unitId", queryUser().getUnitId());
         if (!TextUtils.isEmpty(transOrderId)) {
@@ -1128,6 +1145,11 @@ public class UserPresenter extends BasePresenter {
         Gson gson = new Gson();
         String jsonStr = gson.toJson(list);
         subParam.put("cylinderRecordList",  jsonStr);
+
+        if (!TextUtils.isEmpty(lat)) {
+            subParam.put("lat", lat);
+            subParam.put("lng", lng);
+        }
 
         Observable<HttpResponseResult> userObservable = userModel.submitTransmitReceiveRecord(subParam);
         userObservable.observeOn(AndroidSchedulers.mainThread())
@@ -1294,12 +1316,16 @@ public class UserPresenter extends BasePresenter {
      */
     public void submitCyRegularInspectionRecord(String cylinderId,
                                                 boolean pass,
+                                                String regularInspectionDate,
                                                 String remark,
                                                 List<CheckItemBean> checkItems) {
         Map<String, Object> subParam = new HashMap<>();
         subParam.put("unitId",queryUser().getUnitId());
         subParam.put("cylinderId", cylinderId);
         subParam.put("result", pass?"1":"0");
+        if (!TextUtils.isEmpty(regularInspectionDate)) {
+            subParam.put("regularInspectionDate", regularInspectionDate);
+        }
         subParam.put("remark", remark);
         subParam.put("creator", queryUser().getEmployeeName());
 
@@ -1584,10 +1610,16 @@ public class UserPresenter extends BasePresenter {
      */
     public void searchCylinderManufacturer(String manuCode) {
 
+        String finaStr = manuCode.toUpperCase();
         Map<String, Object> subParam = new HashMap<>();
         subParam.put("unitId",queryUser().getUnitId());
-        if (!TextUtils.isEmpty(manuCode)) {
-            subParam.put("code", manuCode);
+        if (!TextUtils.isEmpty(finaStr)) {
+
+            if(ServiceLogicUtils.isCyManufactureCode(finaStr)) {
+                subParam.put("code", finaStr);
+            } else {
+                subParam.put("licenseNo", finaStr);
+            }
         }
 
         Observable<HttpResponseResult> userObservable = userModel.searchCylinderManufacturer(subParam);
@@ -1747,7 +1779,7 @@ public class UserPresenter extends BasePresenter {
     }
 
     /***
-     *查询气瓶批次号
+     *查询集格和格中气瓶
      * @param
      */
     public void getSetWithCylinderListBySetId(String setId) {
@@ -1775,16 +1807,6 @@ public class UserPresenter extends BasePresenter {
                             String mData = object.toString();
                             SetBean setBean = gson.fromJson(mData,type);
 
-//                            ArrayList<LinkedTreeMap> cyList = (ArrayList<LinkedTreeMap>)((LinkedTreeMap)httpResult.getData()).get("cylinderList");
-//                            for (LinkedTreeMap c : cyList) {
-//                                Type type2 = new TypeToken<CylinderInfoBean>(){}.getType();
-//                                Gson gson2 = new Gson();
-//                                JSONObject object2 = new JSONObject(c);
-//                                String mData2 = object2.toString();
-//                                CylinderInfoBean cylinderInfoBean = gson2.fromJson(mData2,type2);
-//                                setBean.getCylinderList().add(cylinderInfoBean);
-//                            }
-
                             callback.successful("getSetWithCylinderListBySetId",setBean);
                         } else if(httpResult.getCode().equals("501")){
                             callback.failure("getSetWithCylinderListBySetId","needUpdate");
@@ -1806,7 +1828,7 @@ public class UserPresenter extends BasePresenter {
     }
 
     /***
-     *获取未完成的充装任务列表
+     *删除任务
      * @param
      */
     public void deleteChargeMissionByMissionId(String missionId) {
@@ -1853,4 +1875,135 @@ public class UserPresenter extends BasePresenter {
                 });
     }
 
+
+    /***
+     *查询订单号
+     * @param
+     */
+    public void searchTransOrderNumber(String number) {
+
+        Map<String, Object> subParam = new HashMap<>();
+        subParam.put("number",number);
+
+        Observable<HttpResponseResult> userObservable = userModel.searchTransOrderNumber(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            callback.successful("searchTransOrderNumber",httpResult.getData());
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("searchTransOrderNumber","needUpdate");
+                        } else {
+                            callback.failure("searchTransOrderNumber",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("searchTransOrderNumber",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
+
+    /***
+     *查询验空批次
+     * @param
+     */
+    public void getPreChargeDetectionBatchList() {
+
+        Map<String, Object> subParam = new HashMap<>();
+        subParam.put("unitId", queryUser().getUnitId());
+        subParam.put("creator", queryUser().getEmployeeName());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        subParam.put("begin", sdf.format(ServiceLogicUtils.getChargeClassBeginTime(new Date())));
+        subParam.put("end", sdf.format(new Date()));
+
+        Observable<HttpResponseResult> userObservable = userModel.getPreChargeDetectionBatchList(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            callback.successful("getPreChargeDetectionBatchList", httpResult.getData());
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("getPreChargeDetectionBatchList","needUpdate");
+                        } else {
+                            callback.failure("getPreChargeDetectionBatchList",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("getPreChargeDetectionBatchList",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
+
+    /***
+     *查询验满批次
+     * @param
+     */
+    public void getPostChargeDetectionBatchList() {
+
+        Map<String, Object> subParam = new HashMap<>();
+        subParam.put("unitId", queryUser().getUnitId());
+        subParam.put("creator", queryUser().getEmployeeName());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        subParam.put("begin", sdf.format(ServiceLogicUtils.getChargeClassBeginTime(new Date())));
+        subParam.put("end", sdf.format(new Date()));
+
+        Observable<HttpResponseResult> userObservable = userModel.getPostChargeDetectionBatchList(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            callback.successful("getPostChargeDetectionBatchList", httpResult.getData());
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("getPostChargeDetectionBatchList","needUpdate");
+                        } else {
+                            callback.failure("getPostChargeDetectionBatchList",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("getPostChargeDetectionBatchList",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
 }

@@ -2,6 +2,7 @@ package com.org.gascylindermng.adapter;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,37 +13,41 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.org.gascylindermng.R;
-import com.org.gascylindermng.activity.PrechargeCheckActivity;
 import com.org.gascylindermng.base.BaseAdapter;
 import com.org.gascylindermng.bean.CheckItemBean;
-import com.org.gascylindermng.bean.CylinderInfoBean;
-import com.org.gascylindermng.bean.ProcessBean;
 import com.org.gascylindermng.bean.ProcessNextAreaBean;
 
 import java.util.ArrayList;
 
-public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
+public class ChargeCheckAdapter extends BaseAdapter<CheckItemBean> {
 
-    public int scanCount;
-    public int setCount;
-    public int cyCount;
-    public int allCyCount;
-
-    public ArrayList<ProcessNextAreaBean> nextAreaList;
-
-    public Context context;
-    public boolean checkOK = true;
-    public boolean isEmptyCy = true;
+    public boolean checkOK;
     public String nextAreaId;
     public String remark;
 
+    private ArrayList<ProcessNextAreaBean> nextAreaList;
+    private Context context;
 
-    public PrechargeCheckAdapter(Context context,ArrayList<CheckItemBean> items) {
+    private String cyNumber;
+    private String setNumber;
+
+    public ChargeCheckAdapter(Context context,
+                              ArrayList<CheckItemBean> items,
+                              ArrayList<ProcessNextAreaBean> nextAreaList,
+                              String cyNum,
+                              String setNum,
+                              boolean check,
+                              String nextAreaId,
+                              String remark) {
         super(context);
         this.context = context;
-        this.remark = "";
-        this.nextAreaList = new ArrayList<ProcessNextAreaBean>();
         this.mData.addAll(items);
+        this.nextAreaList = nextAreaList;
+        this.cyNumber = cyNum;
+        this.setNumber = setNum;
+        checkOK = check;
+        this.nextAreaId = nextAreaId;
+        this.remark = remark;
     }
 
     @Override
@@ -53,7 +58,7 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
-            return R.layout.item_pre_pro_charge_header;
+            return R.layout.item_charge_check_head;
         } else if(position == mData.size()+1) {
             return R.layout.item_prechargecheck_bottom;
         } else {
@@ -65,6 +70,7 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
     public int getItemLayoutId(int getItemViewType) {
         return getItemViewType;
     }
+
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
@@ -93,26 +99,7 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
                 }
             });
 
-            final ImageView cyEmpty = (ImageView)viewHolder.get(R.id.empty_cy);
-            final ImageView cyFull = (ImageView)viewHolder.get(R.id.full_cy);
-            cyEmpty.setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View view) {
-                    isEmptyCy = true;
-                    cyEmpty.setImageResource(R.mipmap.item_check_on);
-                    cyFull.setImageResource(R.mipmap.item_check_off);
-                }
-            });
-            cyFull.setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View view) {
-                    isEmptyCy = false;
-                    cyEmpty.setImageResource(R.mipmap.item_check_off);
-                    cyFull.setImageResource(R.mipmap.item_check_on);
-                }
-            });
-
-            if (nextAreaList.size() > 0) {
+            if (nextAreaList != null && nextAreaList.size() > 0) {
 
                 MySimpleSpinnerAdapter spinnerAdapter = new MySimpleSpinnerAdapter(context);
                 ArrayList<String> adapterData = new ArrayList<String>();
@@ -122,7 +109,11 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
                 spinnerAdapter.addData(adapterData);
                 Spinner spinner = (Spinner)viewHolder.get(R.id.next_area_spinner);
                 spinner.setAdapter(spinnerAdapter);
-                spinner.setSelection(0, true);
+                for (int i = 0; i<nextAreaList.size();i++) {
+                    if (nextAreaList.get(i).getAreaId().equals(nextAreaId)) {
+                        spinner.setSelection(i, true);
+                    }
+                }
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -140,6 +131,9 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
             }
 
             EditText remarkET = (EditText)viewHolder.get(R.id.edittext_remark);
+            if (!TextUtils.isEmpty(remark)) {
+                remarkET.setText(remark);
+            }
             remarkET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -181,13 +175,18 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
         return view;
     }
 
+
     @Override
     public void handleItem(int itemViewType, int position, CheckItemBean item, ViewHolder holder, boolean isRecycle) {
 
         if (position == 0) {
 
-            TextView scanResultCount = (TextView)holder.get(R.id.scan_result_count);
-            scanResultCount.setText("扫描："+scanCount+" 散瓶："+cyCount+" 集格："+setCount+" 总气瓶数："+allCyCount);
+            TextView cyOrSet = (TextView)holder.get(R.id.check_cy_or_set);
+            if (!TextUtils.isEmpty(cyNumber)) {
+                cyOrSet.setText("气瓶编号："+cyNumber);
+            } else {
+                cyOrSet.setText("集格编号："+setNumber);
+            }
 
         } else if(position == mData.size()+1) {
             ImageView cb = holder.get(R.id.check_result_checkbox);
@@ -207,7 +206,40 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
                 cb.setImageResource(R.mipmap.item_check_off);
             }
         }
-
     }
+
+
+    public ArrayList<ProcessNextAreaBean> getNextAreaList() {
+        return nextAreaList;
+    }
+
+    public void setNextAreaList(ArrayList<ProcessNextAreaBean> nextAreaList) {
+        this.nextAreaList = nextAreaList;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public String getCyNumber() {
+        return cyNumber;
+    }
+
+    public void setCyNumber(String cyNumber) {
+        this.cyNumber = cyNumber;
+    }
+
+    public String getSetNumber() {
+        return setNumber;
+    }
+
+    public void setSetNumber(String setNumber) {
+        this.setNumber = setNumber;
+    }
+
 
 }

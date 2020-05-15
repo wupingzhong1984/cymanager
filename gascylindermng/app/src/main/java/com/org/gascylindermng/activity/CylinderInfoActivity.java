@@ -59,7 +59,7 @@ public class CylinderInfoActivity extends BaseActivity {
         cyCategoryTV.setText(bean.getCyCategoryName());
         workPressureTV.setText(bean.getWorkPressure());
         volumeTV.setText(bean.getVolume());
-        manuDateTV.setText(bean.getManuDate().substring(0,10));
+        manuDateTV.setText(bean.getManuDate().substring(0,7));
         nextRegularDateTV.setText(bean.getNextRegularInspectionDate().substring(0,7));
         expiryDateTV.setText(bean.getScrapDate().substring(0,7));
     }

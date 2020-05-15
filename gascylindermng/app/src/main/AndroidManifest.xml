@@ -23,7 +23,6 @@
     <uses-feature android:name="android.hardware.camera" /> <!-- 使用照相机权限 -->
     <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- 自动聚焦权限-->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-
     <application
         android:name=".api.MyAppContext"
         android:allowBackup="true"
@@ -140,7 +139,21 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation = "portrait"  >
         </activity>
-
+        <activity
+            android:name=".activity.ChargeCheckActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation = "portrait"  >
+        </activity>
+        <activity
+            android:name=".activity.PrechargeCheckBatchActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation = "portrait"  >
+        </activity>
+        <activity
+            android:name=".activity.PostchargeCheckBatchActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation = "portrait"  >
+        </activity>
 
 
         <activity

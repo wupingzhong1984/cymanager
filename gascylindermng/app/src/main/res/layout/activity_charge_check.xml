@@ -30,15 +30,6 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/start_scanner"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="添加气瓶"
-            android:textColor="@color/text_color"
-            android:background="@color/white"
-            android:textSize="18sp"/>
-        <Button
             android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

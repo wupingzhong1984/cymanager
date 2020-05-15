@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color"
                 android:textSize="16dp"
-                android:text="自有编码/钢瓶号："/>
+                android:text="钢瓶号/自有编码："/>
             <TextView
                 android:id="@+id/company_relate_code"
                 android:layout_width="match_parent"
@@ -59,35 +59,16 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color"
                 android:textSize="16dp"
-                android:text="充装介质："/>
+                android:text="介质/类型："/>
             <TextView
-                android:id="@+id/medium"
+                android:id="@+id/medium_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color"
                 android:textSize="16dp"
-                android:text="氧气"/>
+                android:text="氧气 / 钢制无缝气瓶"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color"
-                android:textSize="16dp"
-                android:text="气瓶类型："/>
-            <TextView
-                android:id="@+id/cy_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color"
-                android:textSize="16dp"
-                android:text="钢制无缝气瓶"/>
-        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,7 +78,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="下检日期："
+                android:text="下检日期（有效期）："
                 android:textColor="@color/text_color"
                 android:textSize="16dp"/>
 
@@ -119,7 +100,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="有效期(报废期)："
+                android:text="报废期："
                 android:textColor="@color/text_color"
                 android:textSize="16dp"/>
 
@@ -131,34 +112,45 @@
                 android:textColor="@color/text_color"
                 android:textSize="16dp"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/cy_list_delete_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 删除 "
+                android:textColor="@color/white"
+                android:background="@drawable/btn_shape_blue"
+                android:padding="5dp"
+                android:textSize="16dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/cy_list_edit_check_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text=" 检测编辑 "
+                android:textColor="@color/white"
+                android:background="@drawable/btn_shape_blue"
+                android:padding="5dp"
+                android:textSize="16dp"
+                android:visibility="gone"/>
+
+
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/text_color"/>
 
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="50dp"
-        android:layout_height="200dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="35dp">
-
-        <TextView
-            android:id="@+id/cy_list_delete_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:text=" 删除 "
-            android:textColor="@color/text_color"
-            android:background="@drawable/text_edittext"
-            android:padding="5dp"
-            android:textSize="16dp"
-            android:visibility="gone"/>
-
-    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"

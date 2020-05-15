@@ -160,6 +160,9 @@ public class ServiceLogicUtils {
 
         } else if (processId == process_id_change_medium) {
 
+            titleList.add("烘烤");
+            apiParamList.add("bake");
+
             titleList.add("抽真空");
             apiParamList.add("vacuo");
 
@@ -314,6 +317,9 @@ public class ServiceLogicUtils {
             cal.set(Calendar.MINUTE,0);
             cal.set(Calendar.SECOND,0);
         }
+        //test
+        //cal.add(Calendar.DATE,-2);
+
         Log.i("ChargeClassBeginTime:",cal.getTime().toString());
         return  cal.getTime();
     }
@@ -362,6 +368,16 @@ public class ServiceLogicUtils {
         }
 
         return valid;
+    }
+
+    //判断二维码是否合规有效
+    public static boolean isCyManufactureCode(String str) {
+
+        String temp = str.toUpperCase();
+        if (temp.contains("RZZ") || temp.contains("TS2210")) { //licenseNo format
+            return false;
+        }
+        return true;
     }
 }
 

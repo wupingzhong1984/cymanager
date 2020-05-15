@@ -69,7 +69,12 @@ public class CyListAdapter extends BaseAdapter<CylinderInfoBean> {
                     }
                 }
             });
+        } else {
+            delete.setVisibility(View.GONE);
         }
+
+        final TextView editCheck = (TextView)viewHolder.get(R.id.cy_list_edit_check_btn);
+        editCheck.setVisibility(View.GONE);
 
         handleItem(itemLayoutType, position, mData.get(position), viewHolder, isRecycle);
 
@@ -80,7 +85,11 @@ public class CyListAdapter extends BaseAdapter<CylinderInfoBean> {
     public void handleItem(int itemViewType, int position, CylinderInfoBean item, ViewHolder holder, boolean isRecycle) {
 
         TextView number = holder.get(R.id.platform_cy_code);
-        number.setText(item.getPlatformCyCode());
+        if (!TextUtils.isEmpty(item.getSetNumber())){
+            number.setText(item.getPlatformCyCode()+" 集格:"+item.getSetNumber());
+        } else {
+            number.setText(item.getPlatformCyCode());
+        }
 
         TextView code = holder.get(R.id.company_relate_code);
         if (pinlessObject.equals("0")) {
@@ -89,11 +98,8 @@ public class CyListAdapter extends BaseAdapter<CylinderInfoBean> {
             code.setText(item.getCompanyRelateCode());
         }
 
-        TextView medium = holder.get(R.id.medium);
-        medium.setText(item.getCyMediumName());
-
-        TextView category = holder.get(R.id.cy_category);
-        category.setText(item.getCyCategoryName());
+        TextView mediumCategory = holder.get(R.id.medium_category);
+        mediumCategory.setText(item.getCyMediumName() + " / " + item.getCyCategoryName());
 
         TextView next = holder.get(R.id.next_regular_date);
         next.setText(item.getNextRegularInspectionDate().substring(0,7));

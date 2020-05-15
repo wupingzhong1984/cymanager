@@ -567,16 +567,16 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
                     return;
                 }
 
-                if (TextUtils.isEmpty(year.getText().toString()) ||
-                        year.getText().toString().length() < 4 ||
-                        TextUtils.isEmpty(month.getText().toString())) {
+                if (year.getText().toString().length() != 4 ||
+                        TextUtils.isEmpty(month.getText().toString()) ||
+                        month.getText().toString().length() > 2) {
                     showToast("请正确输入气瓶生产日期。");
                     return;
                 }
 
-                if (TextUtils.isEmpty(nextYear.getText().toString()) ||
-                        nextYear.getText().toString().length() < 4 ||
-                        TextUtils.isEmpty(nextMonth.getText().toString())) {
+                if (nextYear.getText().toString().length() != 4 ||
+                        TextUtils.isEmpty(nextMonth.getText().toString()) ||
+                        nextMonth.getText().toString().length() > 2) {
                     showToast("请正确输入下检日期。");
                     return;
                 }

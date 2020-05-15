@@ -38,4 +38,13 @@ public class CheckItemBean implements Serializable {
     public void setApiParam(String apiParam) {
         this.apiParam = apiParam;
     }
+
+    @Override
+    public String toString() {
+        return "CheckItemBean{" +
+                "title='" + title + '\'' +
+                ", apiParam='" + apiParam + '\'' +
+                ", state=" + state +
+                '}';
+    }
 }

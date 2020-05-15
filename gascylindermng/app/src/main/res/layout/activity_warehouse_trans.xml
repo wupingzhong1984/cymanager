@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="50dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -184,211 +185,48 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="库区："
+                        android:text="发货单号(TS、XS)："
                         android:textColor="@color/text_color"
                         android:textSize="16dp"/>
 
-                    <EditText
-                        android:id="@+id/edittext_warehouse"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="34dp"
-                        android:textColor="@color/text_color"
-                        android:textSize="16dp"
-                        android:background="@drawable/text_edittext"/>
+                        android:background="@drawable/text_edittext">
 
+                        <EditText
+                            android:id="@+id/edittext_trans_order"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="45dp"
+                            android:layout_marginTop="1dp"
+                            android:textColor="@color/text_color"
+                            android:textSize="16dp"
+                            android:background="@color/white"/>
+
+                        <ImageView
+                            android:id="@+id/trans_order_scanner"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="5dp"
+                            android:src = "@mipmap/scanner_icon"
+                            android:layout_alignParentRight="true"
+                            android:visibility="gone"/>
+
+                    </RelativeLayout>
                 </LinearLayout>
-
                 <com.org.gascylindermng.view.WrapContentListView
-                    android:id="@+id/warehouse_listview"
+                    android:id="@+id/trans_order_listview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="35dp"
-                    android:layout_marginLeft="60dp"
+                    android:layout_marginLeft="120dp"
                     android:layout_marginRight="10dp"
                     android:background="@color/white"
                     android:visibility="invisible">
                 </com.org.gascylindermng.view.WrapContentListView>
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="运单号（发货单号）："
-                    android:textColor="@color/text_color"
-                    android:textSize="16dp"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="34dp"
-                    android:background="@drawable/text_edittext">
-
-                    <EditText
-                        android:id="@+id/edittext_trans_order"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="45dp"
-                        android:layout_marginTop="1dp"
-                        android:textColor="@color/text_color"
-                        android:textSize="16dp"
-                        android:background="@color/white"/>
-
-                    <ImageView
-                        android:id="@+id/trans_order_scanner"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginRight="5dp"
-                        android:src = "@mipmap/scanner_icon"
-                        android:layout_alignParentRight="true"
-                        android:visibility="gone"/>
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="车牌："
-                        android:textColor="@color/text_color"
-                        android:textSize="16dp"/>
-
-                    <EditText
-                        android:id="@+id/edittext_car_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:textColor="@color/text_color"
-                        android:textSize="16dp"
-                        android:background="@drawable/text_edittext"/>
-
-                </LinearLayout>
-
-                <com.org.gascylindermng.view.WrapContentListView
-                    android:id="@+id/car_number_listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/white"
-                    android:visibility="invisible">
-
-                </com.org.gascylindermng.view.WrapContentListView>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="司机："
-                        android:textColor="@color/text_color"
-                        android:textSize="16dp"/>
-
-                    <EditText
-                        android:id="@+id/edittext_driver"
-                        android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:textColor="@color/text_color"
-                        android:textSize="16dp"
-                        android:background="@drawable/text_edittext"/>
-
-                </LinearLayout>
-
-                <com.org.gascylindermng.view.WrapContentListView
-                    android:id="@+id/driver_listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/white"
-                    android:visibility="invisible">
-                </com.org.gascylindermng.view.WrapContentListView>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="押运员："
-                        android:textColor="@color/text_color"
-                        android:textSize="16dp"/>
-
-                    <EditText
-                        android:id="@+id/edittext_supercargo"
-                        android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:textColor="@color/text_color"
-                        android:textSize="16dp"
-                        android:background="@drawable/text_edittext"/>
-
-                </LinearLayout>
-
-                <com.org.gascylindermng.view.WrapContentListView
-                    android:id="@+id/supercargo_listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/white"
-                    android:visibility="invisible">
-
-                </com.org.gascylindermng.view.WrapContentListView>
-
             </RelativeLayout>
 
             <View
@@ -402,6 +240,7 @@
                 android:layout_height="50dp"/>
 
         </LinearLayout>
+
     </ScrollView>
 
     <LinearLayout

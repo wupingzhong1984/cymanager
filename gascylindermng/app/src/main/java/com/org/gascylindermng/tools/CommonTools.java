@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.org.gascylindermng.activity.PrechargeCheckActivity;
@@ -113,5 +114,44 @@ public class CommonTools {
             return true;
         }
         return false;
+    }
+
+    public static boolean lessFourHourBetweenNowAndDate(String time)  {
+
+        if(TextUtils.isEmpty(time)) {
+            return false;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String nowTimeStr = sdf.format(System.currentTimeMillis());
+        //每天毫秒数
+        long nd = 1000 * 24 * 60 * 60;
+        //每小时毫秒数
+        long nh = 1000 * 60 * 60;
+        //每分钟毫秒数
+        long nm = 1000 * 60;
+
+        try {
+            Date nowDate = sdf.parse(nowTimeStr);
+            Date date = sdf.parse(time);
+
+            long diff = nowDate.getTime() - date.getTime();
+
+            // 计算差多少天
+            long day = diff / nd;
+            // 计算差多少小时
+            long hour = diff % nd / nh;
+            // 计算差多少分钟
+            long min = diff % nd % nh / nm;
+
+            if(day == 0 && hour < 4){
+                return true;
+            } else {
+                return false;
+            }
+        } catch (ParseException e) {
+            return false;
+        }
+
     }
 }

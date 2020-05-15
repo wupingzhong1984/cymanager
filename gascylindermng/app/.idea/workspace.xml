@@ -245,52 +245,62 @@
     <session id="-997706459">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="11" />
+          <entry key="project.closed" value="30" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.12" value="2" />
-          <entry key="project.open.time.13" value="2" />
-          <entry key="project.open.time.14" value="4" />
-          <entry key="project.open.time.15" value="2" />
-          <entry key="project.open.time.16" value="2" />
-          <entry key="project.open.time.17" value="1" />
-          <entry key="project.open.time.18" value="1" />
-          <entry key="project.open.time.19" value="1" />
-          <entry key="project.open.time.20" value="1" />
+          <entry key="project.open.time.12" value="4" />
+          <entry key="project.open.time.13" value="5" />
+          <entry key="project.open.time.14" value="10" />
+          <entry key="project.open.time.15" value="6" />
+          <entry key="project.open.time.16" value="4" />
+          <entry key="project.open.time.17" value="3" />
+          <entry key="project.open.time.18" value="3" />
+          <entry key="project.open.time.19" value="4" />
+          <entry key="project.open.time.20" value="2" />
+          <entry key="project.open.time.21" value="2" />
           <entry key="project.open.time.22" value="1" />
+          <entry key="project.open.time.23" value="2" />
+          <entry key="project.open.time.24" value="1" />
           <entry key="project.open.time.27" value="2" />
+          <entry key="project.open.time.28" value="1" />
+          <entry key="project.open.time.32" value="2" />
+          <entry key="project.open.time.47" value="1" />
           <entry key="project.open.time.51" value="1" />
-          <entry key="project.opened" value="22" />
+          <entry key="project.opened" value="56" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="3" />
-          <entry key="gradle" value="13" />
-          <entry key="java" value="338" />
-          <entry key="xml" value="72" />
+          <entry key="gradle" value="23" />
+          <entry key="java" value="607" />
+          <entry key="pro" value="8" />
+          <entry key="properties" value="8" />
+          <entry key="xml" value="145" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="3" />
-          <entry key="Groovy" value="13" />
-          <entry key="JAVA" value="338" />
-          <entry key="XML" value="72" />
+          <entry key="Groovy" value="23" />
+          <entry key="JAVA" value="607" />
+          <entry key="ProGuard File" value="8" />
+          <entry key="Properties" value="8" />
+          <entry key="XML" value="145" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="gradle" value="13" />
-          <entry key="java" value="10446" />
-          <entry key="xml" value="614" />
+          <entry key="gradle" value="17" />
+          <entry key="java" value="16120" />
+          <entry key="xml" value="1204" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Groovy" value="13" />
-          <entry key="JAVA" value="10446" />
-          <entry key="XML" value="614" />
+          <entry key="Groovy" value="17" />
+          <entry key="JAVA" value="16120" />
+          <entry key="XML" value="1204" />
         </counts>
       </usages-collector>
     </session>
@@ -301,50 +311,49 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/BindCodeToCyActivity.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PrechargeCheckBatchActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="1113" column="60" selection-start-line="1113" selection-start-column="60" selection-end-line="1113" selection-end-column="60" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PostchargeCheckActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="219" column="98" selection-start-line="219" selection-start-column="98" selection-end-line="219" selection-end-column="98" />
+            <state relative-caret-position="510">
+              <caret line="112" column="88" selection-start-line="112" selection-start-column="88" selection-end-line="112" selection-end-column="88" />
               <folding>
-                <element signature="e#8992#9487#0" expanded="true" />
-                <element signature="e#9486#9487#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/tools/ServiceLogicUtils.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PrechargeCheckActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="32" selection-end-column="48" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/ProcessBean.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+            <state relative-caret-position="216">
+              <caret line="152" column="48" selection-start-line="152" selection-start-column="48" selection-end-line="152" selection-end-column="48" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/google/zxing/activity/CaptureActivity.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/PrechargeCheckAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="105" column="97" selection-start-line="105" selection-start-column="71" selection-end-line="105" selection-end-column="97" />
+            <state relative-caret-position="306">
+              <caret line="39" column="11" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/service/HttpRequestService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="313">
+              <caret line="157" column="19" selection-start-line="157" selection-start-column="19" selection-end-line="157" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/model/impl/UserModelImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="32" column="76" selection-start-line="32" selection-start-column="76" selection-end-line="32" selection-end-column="76" />
             </state>
           </provider>
         </entry>
@@ -352,13 +361,51 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/presenter/UserPresenter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="281" column="48" selection-start-line="281" selection-start-column="16" selection-end-line="281" selection-end-column="48" />
+            <state relative-caret-position="2451">
+              <caret line="1013" column="7" selection-start-line="1013" selection-start-column="7" selection-end-line="1013" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1804#1805#0" expanded="true" />
-                <element signature="e#1848#1849#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PostchargeCheckBatchActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="38" column="32" selection-start-line="38" selection-start-column="32" selection-end-line="38" selection-end-column="32" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/PrechargeCheckBatchListAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="485">
+              <caret line="55" column="39" selection-start-line="55" selection-start-column="39" selection-end-line="55" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_postchargecheckbatch.xml">
+          <provider editor-type-id="android-designer2" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-380">
+              <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/tools/CommonTools.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="31" column="40" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -371,43 +418,43 @@
         <option value="valueResourceFile" />
         <option value="resourceFile" />
         <option value="Interface" />
-        <option value="layoutResourceFile" />
         <option value="Class" />
+        <option value="layoutResourceFile" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>CyListAdapter</find>
-      <find>REQUEST_CODE</find>
-      <find>startActivityForResult</find>
-      <find>resultCode</find>
-      <find>CyBeanlist</find>
-      <find>setResult</find>
-      <find>0xA1</find>
-      <find>cyList</find>
-      <find>getCylinderInfoByCyCode</find>
-      <find>dial</find>
-      <find>LinearLayout llname</find>
-      <find>showToast</find>
-      <find>CyListActivity</find>
+      <find>lastScanCyPlatformCodeList</find>
+      <find>searchTransOrderNumber</find>
+      <find>searchCustomer</find>
+      <find>searchCarNumber</find>
+      <find>warehouseName</find>
+      <find>erpOrderInfo</find>
+      <find>getOrderInfoFromERP</find>
+      <find>transOrderList</find>
+      <find>searchWarehouse</find>
+      <find>searchEmployee</find>
+      <find>driverAndSurNameList</find>
+      <find>driverList</find>
+      <find>setErpOrderInfo</find>
+      <find>submitTransRecord</find>
+      <find>fullCy</find>
+      <find>cylinderIdList</find>
       <find>allCyCount</find>
-      <find>扫描失败</find>
-      <find>newMissionSetList</find>
-      <find>scanCount</find>
-      <find>getCyList</find>
-      <find>REQUEST_CODE_2</find>
-      <find>addcy</find>
-      <find>searchUnitsSet</find>
-      <find>addNumber</find>
-      <find>addCylinder</find>
-      <find>cyManuList</find>
-      <find>getSetWithCylinderListBySetId</find>
-      <find>userPresenter</find>
-      <find>getCylinderInfoByPlatformCyNumber</find>
-      <find>qr_scan_result_all_cy_list</find>
-      <find>getCompanyProjectAreaByCompanyProjectId</find>
-      <find>getCompanyProcessListByCompanyId</find>
+      <find>cylinderCount</find>
+      <find>cylinderNum</find>
+      <find>getUnitId</find>
+      <find>missionList</find>
+      <find>closeAndRefreshMissionList</find>
+      <find>startGps</find>
+      <find>getPostChargeDetectionBatchList</find>
+      <find>getPreChargeDetectionBatchList</find>
+      <find>submitPrechargeCheckResult</find>
+      <find>submitTransmitReceiveRecord</find>
+      <find>empty</find>
+      <find>pass</find>
+      <find>isEmptyCy</find>
     </findStrings>
     <dirStrings>
       <dir>F:\cymanager\gascylindermng\app\src\main\java\com\org\gascylindermng\bean</dir>
@@ -2687,65 +2734,64 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/google/zxing/decoding/DecodeFormatManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/google/zxing/camera/AutoFocusCallback.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/item_charge_head.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/Pureness.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/view_scan_success_dialog.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/BatchNumberBean.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/fragment_function.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/CyListAdapter.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/item_cylinder.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/ChargeCyListAdapter.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_prechargecheck.xml" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_charge_check.xml" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_bindcodetocy.xml" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/item_charge_check_head.xml" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_charge.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CheckItemBean.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/ChargeAdapter.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/item_prechargecheck_bottom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/SetBean.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/MainActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/activity_scanner.xml" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/item_regular_inspection_bottom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/BindCodeToCyActivity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/RegularInspectionActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeCheckActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/ChargeCheckAdapter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeCyListActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/tools/ServiceLogicUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChangeMediumActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ScrapActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/WarehouseTransActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/item_changemedium_bottom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/RegularInspectionAdapter.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_send.xml" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_receive.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/api/HttpRequestManage2.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/api/Constants.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/CylinderInfoActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/google/zxing/activity/CaptureActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_warehouse_trans.xml" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/item_prechargecheck_bottom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/PrechargeCheckAdapter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/PrePostchargeCheckBatchBean.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/model/UserModel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/ChargeMissionBean.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/model/impl/UserModelImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_prechargecheckbatch.xml" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/item_pre_charge_batch.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/ChargeMissionListAdapter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeMissionListActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PostchargeCheckActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/activity_postchargecheckbatch.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/fragment/FunctionFragment.java" />
+        <option value="$PROJECT_DIR$/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/SendCylinderActivity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ReceiveCylinderActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/RepairActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/tools/CommonTools.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/activity_charge.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/service/HttpRequestService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/model/impl/UserModelImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/model/UserModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/ChargeMissionListAdapter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CyCheckBean.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/presenter/UserPresenter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/tools/ServiceLogicUtils.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/activity_prechargecheck.xml" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/activity_bindcodetocy.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CyCheckRecordBean.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/ChargeMissionBean.java" />
-        <option value="$PROJECT_DIR$/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeCylistActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeMissionListActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/item_charge_mission.xml" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/item_cylinder.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/google/zxing/activity/CaptureActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/PrechargeCheckAdapter.java" />
-        <option value="$PROJECT_DIR$/src/main/res/layout/item_pre_pro_charge_header.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/CyListAdapter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/CyListActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeCyListActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PrechargeCheckActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/WarehouseTransActivity.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/ChargeCyListAdapter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CyManufacturerBean.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/BindCodeToCyActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PostchargeCheckActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PrechargeCheckBatchActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PostchargeCheckBatchActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/service/HttpRequestService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PrechargeCheckActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/presenter/UserPresenter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/PrechargeCheckBatchListAdapter.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-203" />
-    <option name="y" value="62" />
-    <option name="width" value="1690" />
-    <option name="height" value="989" />
+    <option name="y" value="53" />
+    <option name="width" value="1906" />
+    <option name="height" value="931" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -2753,9 +2799,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -2791,6 +2837,14 @@
             </path>
             <path>
               <item name="app" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="com" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="gascylindermng" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="app" type="1abcf292:AndroidViewProjectNode" />
               <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
             </path>
           </expand>
@@ -2803,8 +2857,8 @@
     <property name="ExportApk.ApkPath" value="E:\svn_app\branches\gascylindermng\app" />
     <property name="ExportApk.BuildVariants" value="release" />
     <property name="ExportApk.SignV1" value="true" />
-    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://E:/svn_app/branches/gascylindermng/app/src/main/java/com/org/gascylindermng/api/MyAppContext.java" />
-    <property name="android.project.structure.last.selected" value="SDK Location" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://F:/cymanager/gascylindermng/app/src/main/java/com/org/gascylindermng/tools/CommonTools.java" />
+    <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="android.sdk.path" value="D:/config/android-sdk-windows" />
     <property name="device.picker.selection" value="JVR6R19528001062" />
@@ -2813,14 +2867,15 @@
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/src/main/java/com/google/zxing/activity/CaptureActivity.java" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\svn_app\branches\gascylindermng\app\src\main\res\xml" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.org.gascylindermng.tools" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\svn_app\branches\gascylindermng\app\src\main\res\layout" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.org.gascylindermng.api" />
+      <recent name="com.org.gascylindermng.tools" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\svn_app\branches\gascylindermng\app\src\main\res\xml" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -2896,6 +2951,9 @@
       </method>
     </configuration>
   </component>
+  <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -2919,26 +2977,26 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-203" y="62" width="1690" height="989" extended-state="0" />
+    <frame x="0" y="53" width="1906" height="931" extended-state="0" />
     <layout>
       <window_info id="Captures" order="0" sideWeight="0.5014837" side_tool="true" weight="0.23203169" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.5495868" visible="true" weight="0.1993865" />
-      <window_info id="Structure" order="2" sideWeight="0.45041323" side_tool="true" visible="true" weight="0.1993865" />
+      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.5401554" visible="true" weight="0.1695558" />
+      <window_info id="Structure" order="2" sideWeight="0.45984456" side_tool="true" visible="true" weight="0.1695558" />
       <window_info id="Favorites" order="3" sideWeight="0.4287834" side_tool="true" weight="0.23203169" />
       <window_info id="Build Variants" order="4" sideWeight="0.4287834" side_tool="true" weight="0.23203169" />
       <window_info id="Image Layers" order="5" />
       <window_info id="Designer" order="6" />
       <window_info id="Capture Tool" order="7" />
       <window_info anchor="bottom" id="Version Control" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.47404203" weight="0.5172798" />
-      <window_info anchor="bottom" id="TODO" order="2" sideWeight="0.49196538" weight="0.46376812" />
-      <window_info anchor="bottom" id="Find" order="3" sideWeight="0.487021" weight="0.43396226" />
+      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.47404203" weight="0.3840105" />
+      <window_info anchor="bottom" id="TODO" order="2" sideWeight="0.49196538" weight="0.46264744" />
+      <window_info anchor="bottom" id="Find" order="3" sideWeight="0.487021" weight="0.27915633" />
       <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.512979" side_tool="true" weight="0.2008427" />
-      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.41594562" visible="true" weight="0.12530121" />
-      <window_info anchor="bottom" id="Android Profiler" order="6" show_stripe_button="false" sideWeight="0.4882571" weight="0.45261985" />
-      <window_info anchor="bottom" id="Run" order="7" sideWeight="0.38009888" weight="0.26978818" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.48887515" weight="0.21686748" />
-      <window_info active="true" anchor="bottom" id="Debug" order="9" sideWeight="0.6897404" visible="true" weight="0.23373494" />
+      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.41594562" weight="0.6749672" />
+      <window_info anchor="bottom" id="Android Profiler" order="6" sideWeight="0.4882571" weight="0.6513761" />
+      <window_info anchor="bottom" id="Run" order="7" sideWeight="0.38009888" weight="0.30569947" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.48887515" weight="0.5399738" />
+      <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.6897404" weight="0.17038009" />
       <window_info anchor="right" id="Assistant" order="0" weight="0.329559" />
       <window_info anchor="right" id="Device File Explorer" order="1" side_tool="true" weight="0.22761194" />
       <window_info anchor="right" id="Capture Analysis" order="2" />
@@ -2946,7 +3004,7 @@
       <window_info anchor="right" id="Theme Preview" order="4" />
       <window_info anchor="right" id="Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Hierarchy" order="7" visible="true" weight="0.108510636" />
+      <window_info anchor="right" id="Hierarchy" order="7" visible="true" weight="0.10797546" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -2968,32 +3026,26 @@
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/SendCylinderActivity.java</url>
-          <line>511</line>
-          <properties />
-          <option name="timeStamp" value="103" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PrechargeCheckActivity.java</url>
-          <line>146</line>
+          <line>152</line>
           <properties />
           <option name="timeStamp" value="130" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeActivity.java</url>
-          <line>616</line>
+          <line>603</line>
           <properties />
           <option name="timeStamp" value="137" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/WarehouseTransActivity.java</url>
-          <line>606</line>
+          <line>760</line>
           <properties />
           <option name="timeStamp" value="142" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/presenter/UserPresenter.java</url>
-          <line>584</line>
+          <line>585</line>
           <properties />
           <option name="timeStamp" value="144" />
         </line-breakpoint>
@@ -3005,31 +3057,19 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/google/zxing/activity/CaptureActivity.java</url>
-          <line>265</line>
+          <line>277</line>
           <properties />
           <option name="timeStamp" value="147" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ReceiveCylinderActivity.java</url>
-          <line>687</line>
-          <properties />
-          <option name="timeStamp" value="154" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/SendCylinderActivity.java</url>
-          <line>667</line>
-          <properties />
-          <option name="timeStamp" value="170" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/SendCylinderActivity.java</url>
-          <line>915</line>
+          <line>1107</line>
           <properties />
           <option name="timeStamp" value="171" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ReceiveCylinderActivity.java</url>
-          <line>935</line>
+          <line>1090</line>
           <properties />
           <option name="timeStamp" value="172" />
         </line-breakpoint>
@@ -3041,133 +3081,122 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/tools/ServiceLogicUtils.java</url>
-          <line>274</line>
+          <line>277</line>
           <properties />
           <option name="timeStamp" value="184" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/tools/ServiceLogicUtils.java</url>
-          <line>272</line>
+          <line>275</line>
           <properties />
           <option name="timeStamp" value="186" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeActivity.java</url>
-          <line>707</line>
+          <line>694</line>
           <properties />
           <option name="timeStamp" value="188" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeActivity.java</url>
-          <line>701</line>
+          <line>688</line>
           <properties />
           <option name="timeStamp" value="200" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/tools/ServiceLogicUtils.java</url>
-          <line>322</line>
+          <line>328</line>
           <properties />
           <option name="timeStamp" value="206" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/google/zxing/activity/CaptureActivity.java</url>
-          <line>762</line>
+          <line>934</line>
           <properties />
           <option name="timeStamp" value="207" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeActivity.java</url>
-          <line>482</line>
-          <properties />
-          <option name="timeStamp" value="213" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeActivity.java</url>
-          <line>479</line>
-          <properties />
-          <option name="timeStamp" value="215" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeActivity.java</url>
-          <line>163</line>
-          <properties />
-          <option name="timeStamp" value="216" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PrechargeCheckActivity.java</url>
-          <line>175</line>
-          <properties />
-          <option name="timeStamp" value="225" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeActivity.java</url>
-          <line>426</line>
+          <line>413</line>
           <properties />
           <option name="timeStamp" value="227" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PrechargeCheckActivity.java</url>
-          <line>86</line>
-          <properties />
-          <option name="timeStamp" value="229" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/presenter/UserPresenter.java</url>
-          <line>571</line>
+          <line>572</line>
           <properties />
           <option name="timeStamp" value="230" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeActivity.java</url>
+          <line>449</line>
+          <properties />
+          <option name="timeStamp" value="236" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/ChargeCheckAdapter.java</url>
+          <line>149</line>
+          <properties />
+          <option name="timeStamp" value="237" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeCheckActivity.java</url>
+          <line>85</line>
+          <properties />
+          <option name="timeStamp" value="238" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/SendCylinderActivity.java</url>
+          <line>918</line>
+          <properties />
+          <option name="timeStamp" value="253" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/RegularInspectionActivity.java</url>
+          <line>168</line>
+          <properties />
+          <option name="timeStamp" value="254" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/WarehouseTransActivity.java</url>
+          <line>688</line>
+          <properties />
+          <option name="timeStamp" value="255" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/WarehouseTransActivity.java</url>
+          <line>1022</line>
+          <properties />
+          <option name="timeStamp" value="256" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PostchargeCheckActivity.java</url>
+          <line>186</line>
+          <properties />
+          <option name="timeStamp" value="257" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/base/BaseAdapter.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CylinderInfoBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1332">
-          <caret line="88" column="45" selection-start-line="88" selection-start-column="45" selection-end-line="88" selection-end-column="64" />
+        <state relative-caret-position="-144">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CyCategoryBean.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CyChargeCheckRecordBean.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
-          <caret line="7" column="28" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="51" />
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/config/android-sdk-windows/sources/android-28/android/app/Activity.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CyManufacturerBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="5400" column="22" selection-start-line="5400" selection-start-column="22" selection-end-line="5400" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/item_prechargecheck_bottom.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/SendCylinderActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="948" selection-start-line="948" selection-end-line="952" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="67" column="31" selection-start-line="67" selection-start-column="31" selection-end-line="67" selection-end-column="31" />
-          <folding>
-            <element signature="e#1976#2311#0" expanded="true" />
-            <element signature="e#2310#2311#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/model/UserModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="26" column="9" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
+        <state relative-caret-position="72">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -3178,92 +3207,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/config/android-sdk-windows/sources/android-28/android/text/TextWatcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_bindcodetocy.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="463">
-          <caret line="562" column="50" lean-forward="true" selection-start-line="562" selection-start-column="50" selection-end-line="562" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_charge.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="122" column="40" selection-start-line="122" selection-start-column="40" selection-end-line="122" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CheckItemBean.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CySetBean.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
-          <caret line="6" column="26" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CyChargeCheckRecordBean.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/EmployeeBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+        <state relative-caret-position="72">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PrePostChargeCyListActivity.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/AndroidManifest.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/ProcessBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="85" column="46" selection-start-line="85" selection-start-column="46" selection-end-line="85" selection-end-column="46" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-manifest" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/ChargeMissionBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="60" column="70" selection-start-line="60" selection-start-column="70" selection-end-line="60" selection-end-column="70" />
+        <state relative-caret-position="72">
+          <caret line="6" column="25" selection-start-line="6" selection-start-column="25" selection-end-line="9" selection-end-column="37" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeMissionListActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/ProcessNextAreaBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1663">
-          <caret line="233" lean-forward="true" selection-start-line="233" selection-end-line="233" />
+        <state relative-caret-position="72">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/item_charge_mission.xml">
-      <provider editor-type-id="android-designer2" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/Pureness.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-167">
-          <caret line="121" column="4" lean-forward="true" selection-start-line="121" selection-start-column="4" selection-end-line="141" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/ChargeMissionListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="72" column="5" lean-forward="true" selection-start-line="47" selection-start-column="4" selection-end-line="72" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://D:/config/android-sdk-windows/sources/android-28/java/lang/String.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="652">
-          <caret line="174" column="66" selection-start-line="174" selection-start-column="53" selection-end-line="174" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-fragment-28.0.0.aar/114f00d5b9627f53a50203b49ad4dd2e/jars/classes.jar!/android/support/v4/app/FragmentActivity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="431" column="16" selection-start-line="431" selection-start-column="16" selection-end-line="431" selection-end-column="16" />
+        <state relative-caret-position="36">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -3274,83 +3249,279 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CylinderInfoBean.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/WarehouseBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="17" column="36" selection-start-line="17" selection-start-column="19" selection-end-line="17" selection-end-column="36" />
+        <state relative-caret-position="72">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/generated/source/apt/debug/com/org/gascylindermng/activity/CylinderInfoActivity_ViewBinding.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/UrlEntity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
+        <state relative-caret-position="72">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CompanyInfoBean.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/PrePostchargeCheckBatchBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="23" column="18" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
+        <state relative-caret-position="298">
+          <caret line="64" column="18" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_prechargecheck.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="34" column="42" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/item_check.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-252">
-          <caret line="1" selection-start-line="1" selection-end-line="10" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/item_pre_pro_charge_header.xml">
-      <provider editor-type-id="android-designer2" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/ChargeMissionBean.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="15" column="35" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
+          <caret line="21" column="35" selection-start-line="21" selection-start-column="35" selection-end-line="21" selection-end-column="35" />
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/config/android-sdk-windows/sources/android-24/android/widget/AdapterView.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/model/UserModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="313" selection-start-line="313" selection-end-line="313" />
+        <state relative-caret-position="172">
+          <caret line="64" column="57" selection-start-line="64" selection-start-column="57" selection-end-line="64" selection-end-column="57" />
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/config/android-sdk-windows/sources/android-24/android/widget/AbsListView.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/base/BaseAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="1202" selection-start-line="1202" selection-end-line="1202" />
+        <state relative-caret-position="197">
+          <caret line="30" column="22" selection-start-line="30" selection-start-column="22" selection-end-line="30" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/CyListAdapter.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/ChangeMediumAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+        <state relative-caret-position="-306">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/PrechargeCheckAdapter.java">
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_charge_list.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="61" column="33" selection-start-line="61" selection-start-column="33" selection-end-line="61" selection-end-column="33" />
+        <state relative-caret-position="430">
+          <caret line="55" column="17" lean-forward="true" selection-start-line="1" selection-end-line="55" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/PostchargeCheckBatchListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/item_charge_mission.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="1240">
+          <caret line="152" column="17" lean-forward="true" selection-start-line="1" selection-end-line="152" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/ChargeMissionListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="92" column="5" lean-forward="true" selection-start-line="74" selection-start-column="4" selection-end-line="92" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/item_pre_charge_batch.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="65" column="38" selection-start-line="65" selection-start-column="33" selection-end-line="65" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeCyListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3410">
+          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeMissionListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="111" selection-start-line="111" selection-end-line="111" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PostchargeCheckActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="199" column="25" selection-start-line="199" selection-start-column="25" selection-end-line="199" selection-end-column="25" />
+          <folding>
+            <element signature="e#6343#6533#0" expanded="true" />
+            <element signature="e#6532#6533#0" expanded="true" />
+            <element signature="e#7565#7807#0" expanded="true" />
+            <element signature="e#7806#7807#0" expanded="true" />
+            <element signature="e#7852#8072#0" expanded="true" />
+            <element signature="e#8071#8072#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="864">
-          <caret line="97" column="25" selection-start-line="97" selection-start-column="16" selection-end-line="97" selection-end-column="25" />
+        <state relative-caret-position="179">
+          <caret line="484" column="4" selection-start-line="484" selection-start-column="4" selection-end-line="491" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#21105#21285#0" expanded="true" />
+            <element signature="e#21284#21285#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_prechargecheckbatch.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="42" lean-forward="true" selection-end-line="55" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/fragment/FunctionFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1044">
+          <caret line="88" column="49" selection-start-line="88" selection-start-column="49" selection-end-line="88" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../build.gradle">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../settings.gradle">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/tools/ServiceLogicUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="34" column="36" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/base/BaseActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-181">
+          <caret line="35" column="56" lean-forward="true" selection-start-line="35" selection-start-column="56" selection-end-line="35" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/config/android-sdk-windows/sources/android-28/android/location/LocationManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="553" column="16" selection-start-line="553" selection-start-column="16" selection-end-line="553" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ReceiveCylinderActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-267">
+          <caret line="561" column="17" selection-start-line="561" selection-start-column="17" selection-end-line="561" selection-end-column="17" />
+          <folding>
+            <element signature="e#17166#17167#0" expanded="true" />
+            <element signature="e#17219#17220#0" expanded="true" />
+            <element signature="e#24512#24702#0" expanded="true" />
+            <element signature="e#24701#24702#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/BindCodeToCyActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8550">
+          <caret line="524" column="20" selection-start-line="524" selection-start-column="20" selection-end-line="531" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="66" selection-start-line="13" selection-start-column="66" selection-end-line="13" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/tools/CommonTools.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="31" column="40" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/SendCylinderActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="527" column="94" lean-forward="true" selection-start-line="527" selection-start-column="94" selection-end-line="527" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/WarehouseTransActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="474">
+          <caret line="543" selection-start-line="543" selection-end-line="543" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_postchargecheckbatch.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-380">
+          <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/api/HttpRequestManage2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1779">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/service/HttpRequestService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="157" column="19" selection-start-line="157" selection-start-column="19" selection-end-line="157" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/model/impl/UserModelImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="32" column="76" selection-start-line="32" selection-start-column="76" selection-end-line="32" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/PrechargeCheckAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="39" column="11" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PrechargeCheckBatchActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="112" column="88" selection-start-line="112" selection-start-column="88" selection-end-line="112" selection-end-column="88" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -3359,134 +3530,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PrechargeCheckActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5778">
-          <caret line="377" column="5" selection-start-line="377" selection-start-column="5" selection-end-line="377" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/ChargeCyListActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2268">
-          <caret line="148" column="32" selection-start-line="148" selection-start-column="32" selection-end-line="148" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/item_cylinder.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2646">
-          <caret line="147" column="47" selection-start-line="147" selection-start-column="29" selection-end-line="147" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_cylist.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://D:/config/android-sdk-windows/sources/android-28/android/text/TextUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="479" column="26" selection-start-line="479" selection-start-column="26" selection-end-line="479" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CySetBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-105">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/service/HttpRequestService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="78" column="20" selection-start-line="78" selection-start-column="11" selection-end-line="78" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/CyListActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="81" column="49" selection-start-line="81" selection-start-column="49" selection-end-line="81" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/ChargeCyListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="43" column="33" selection-start-line="43" selection-start-column="33" selection-end-line="43" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/CyManufacturerBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="74" column="30" selection-start-line="74" selection-start-column="30" selection-end-line="74" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/google/zxing/activity/CaptureActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="105" column="97" selection-start-line="105" selection-start-column="71" selection-end-line="105" selection-end-column="97" />
+        <state relative-caret-position="216">
+          <caret line="152" column="48" selection-start-line="152" selection-start-column="48" selection-end-line="152" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/presenter/UserPresenter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="281" column="48" selection-start-line="281" selection-start-column="16" selection-end-line="281" selection-end-column="48" />
+        <state relative-caret-position="2451">
+          <caret line="1013" column="7" selection-start-line="1013" selection-start-column="7" selection-end-line="1013" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1804#1805#0" expanded="true" />
-            <element signature="e#1848#1849#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/BindCodeToCyActivity.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PostchargeCheckBatchActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="1113" column="60" selection-start-line="1113" selection-start-column="60" selection-end-line="1113" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/activity/PostchargeCheckActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="219" column="98" selection-start-line="219" selection-start-column="98" selection-end-line="219" selection-end-column="98" />
+        <state relative-caret-position="225">
+          <caret line="38" column="32" selection-start-line="38" selection-start-column="32" selection-end-line="38" selection-end-column="32" />
           <folding>
-            <element signature="e#8992#9487#0" expanded="true" />
-            <element signature="e#9486#9487#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/tools/ServiceLogicUtils.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/adapter/PrechargeCheckBatchListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="24" column="4" selection-start-line="24" selection-start-column="4" selection-end-line="32" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/org/gascylindermng/bean/ProcessBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        <state relative-caret-position="485">
+          <caret line="55" column="39" selection-start-line="55" selection-start-column="39" selection-end-line="55" selection-end-column="39" />
         </state>
       </provider>
     </entry>

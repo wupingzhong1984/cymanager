@@ -13,7 +13,9 @@ import com.org.gascylindermng.activity.BindCodeToCyActivity;
 import com.org.gascylindermng.activity.ChangeMediumActivity;
 import com.org.gascylindermng.activity.ChargeMissionListActivity;
 import com.org.gascylindermng.activity.PostchargeCheckActivity;
+import com.org.gascylindermng.activity.PostchargeCheckBatchActivity;
 import com.org.gascylindermng.activity.PrechargeCheckActivity;
+import com.org.gascylindermng.activity.PrechargeCheckBatchActivity;
 import com.org.gascylindermng.activity.ReceiveCylinderActivity;
 import com.org.gascylindermng.activity.RegularInspectionActivity;
 import com.org.gascylindermng.activity.RepairActivity;
@@ -72,7 +74,7 @@ public class FunctionFragment extends BaseFragment {
                     showRules();
                     return;
                 }
-                intent.setClass(getActivity(), PrechargeCheckActivity.class);
+                intent.setClass(getActivity(), PrechargeCheckBatchActivity.class);
                 startActivity(intent);
                 break;
             case R.id.function_2:
@@ -88,7 +90,7 @@ public class FunctionFragment extends BaseFragment {
                     showRules();
                     return;
                 }
-                intent.setClass(getActivity(), PostchargeCheckActivity.class);
+                intent.setClass(getActivity(), PostchargeCheckBatchActivity.class);
                 startActivity(intent);
                 break;
             case R.id.function_4:

@@ -189,56 +189,56 @@ public class ChargeAdapter extends BaseAdapter<CheckItemBean> {
         } else if (position == mData.size()+1) {
 
    //         this.boomHolder = viewHolder;
-            if (nextAreaList.size() > 0) {
+//            if (nextAreaList.size() > 0) {
+//
+//                MySimpleSpinnerAdapter spinnerAdapter = new MySimpleSpinnerAdapter(context);
+//                ArrayList<String> adapterData = new ArrayList<String>();
+//                for (ProcessNextAreaBean p : nextAreaList) {
+//                    adapterData.add(p.getAreaName());
+//                }
+//                spinnerAdapter.addData(adapterData);
+//                Spinner spinner = (Spinner)viewHolder.get(R.id.next_area_spinner);
+//                spinner.setAdapter(spinnerAdapter);
+//                spinner.setSelection(0, true);
+//                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+//                        ProcessNextAreaBean pB = nextAreaList.get(position);
+//                        nextAreaId = pB.getAreaId();
+//                    }
+//
+//                    @Override
+//                    public void onNothingSelected(AdapterView<?> parent) {
+//
+//                    }
+//                });
+//
+//            }
 
-                MySimpleSpinnerAdapter spinnerAdapter = new MySimpleSpinnerAdapter(context);
-                ArrayList<String> adapterData = new ArrayList<String>();
-                for (ProcessNextAreaBean p : nextAreaList) {
-                    adapterData.add(p.getAreaName());
-                }
-                spinnerAdapter.addData(adapterData);
-                Spinner spinner = (Spinner)viewHolder.get(R.id.next_area_spinner);
-                spinner.setAdapter(spinnerAdapter);
-                spinner.setSelection(0, true);
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                        ProcessNextAreaBean pB = nextAreaList.get(position);
-                        nextAreaId = pB.getAreaId();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-
-            }
-
-            EditText remarkET = (EditText)viewHolder.get(R.id.edittext_charge_remark);
-            remarkET.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                    if(missionInfo == null) {
-                        remark = s.toString().trim();
-                    } else {
-                        missionInfo.setRemark(s.toString().trim());
-                    }
-  //                  notifyDataSetChanged();
-                }
-            });
+//            EditText remarkET = (EditText)viewHolder.get(R.id.edittext_charge_remark);
+//            remarkET.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//
+//                    if(missionInfo == null) {
+//                        remark = s.toString().trim();
+//                    } else {
+//                        missionInfo.setRemark(s.toString().trim());
+//                    }
+//  //                  notifyDataSetChanged();
+//                }
+//            });
 
             handleItem(itemLayoutType, position, null, viewHolder, isRecycle);
         } else {
@@ -311,12 +311,12 @@ public class ChargeAdapter extends BaseAdapter<CheckItemBean> {
             checkTitle.setText("本次充装气瓶数："+count+" 个");
 
         } else if(position == mData.size()+1) {
-            TextView textView = holder.get(R.id.edittext_charge_remark);
-            if (missionInfo == null) {
-                textView.setText(TextUtils.isEmpty(getRemark())?"":getRemark());
-            } else {
-                textView.setText(TextUtils.isEmpty(missionInfo.getRemark())?"":missionInfo.getRemark());
-            }
+//            TextView textView = holder.get(R.id.edittext_charge_remark);
+//            if (missionInfo == null) {
+//                textView.setText(TextUtils.isEmpty(getRemark())?"":getRemark());
+//            } else {
+//                textView.setText(TextUtils.isEmpty(missionInfo.getRemark())?"":missionInfo.getRemark());
+//            }
 
         } else {
             TextView checkTitle = holder.get(R.id.check_title);

@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="26dp">
+        android:layout_marginTop="26dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,12 +45,13 @@
         android:layout_marginLeft="108dp"
         android:layout_marginRight="28dp"
         android:background="@color/white"
-        android:popupBackground="@color/white"/>
+        android:popupBackground="@color/white"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="26dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"

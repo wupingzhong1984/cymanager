@@ -150,6 +150,7 @@
                    android:layout_marginLeft="5dp"
                    android:textColor="@color/text_color"
                    android:textSize="16dp"
+                   android:hint="输入代码或许可证编号搜索"
                    android:background="@drawable/text_edittext"/>
            </LinearLayout>
 
@@ -552,7 +553,7 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:layout_marginTop="215dp"
-               android:layout_marginLeft="128dp"
+               android:layout_marginLeft="50dp"
                android:layout_marginRight="28dp"
                android:background="@color/white">
 

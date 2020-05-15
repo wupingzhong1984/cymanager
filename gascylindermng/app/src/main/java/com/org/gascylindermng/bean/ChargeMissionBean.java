@@ -49,14 +49,14 @@ public class ChargeMissionBean implements Serializable {
     @SerializedName("yqDetectionVoList")
     private ArrayList<LinkedHashMap> cyCheckList;
 
-//    private ArrayList<String> cylinderNumberList; //0001xxxxx
 
+    private ArrayList<String> cylinderNumberList; //0001xxxxx
     private ArrayList<CylinderInfoBean> cyInfoList;
-
     private ArrayList<CyChargeCheckRecordBean> cyCheckRecordList;
 
     public ChargeMissionBean(){
 
+        this.cylinderNumberList = new ArrayList<String>();
         this.cyInfoList = new ArrayList<CylinderInfoBean>();
         this.cyCheckRecordList = new ArrayList<CyChargeCheckRecordBean>();
     }
@@ -174,13 +174,13 @@ public class ChargeMissionBean implements Serializable {
         this.cyInfoList = cyInfoList;
     }
 
-//    public ArrayList<String> getCylinderNumberList() {
-//        return cylinderNumberList;
-//    }
-//
-//    public void setCylinderNumberList(ArrayList<String> cylinderNumberList) {
-//        this.cylinderNumberList = cylinderNumberList;
-//    }
+    public ArrayList<String> getCylinderNumberList() {
+        return cylinderNumberList;
+    }
+
+    public void setCylinderNumberList(ArrayList<String> cylinderNumberList) {
+        this.cylinderNumberList = cylinderNumberList;
+    }
 
 
     public ArrayList<CyChargeCheckRecordBean> getCyCheckRecordList() {
@@ -207,7 +207,7 @@ public class ChargeMissionBean implements Serializable {
                 ", team='" + team + '\'' +
                 ", cylinderIdList=" + cylinderIdList +
                 ", cyCheckList=" + cyCheckList +
- //               ", cylinderNumberList=" + cylinderNumberList +
+                ", cylinderNumberList=" + cylinderNumberList +
                 ", cyInfoList=" + cyInfoList +
                 '}';
     }

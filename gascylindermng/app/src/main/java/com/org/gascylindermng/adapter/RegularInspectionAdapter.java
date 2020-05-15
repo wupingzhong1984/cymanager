@@ -3,6 +3,7 @@ package com.org.gascylindermng.adapter;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ public class RegularInspectionAdapter extends BaseAdapter<CheckItemBean> {
     public Context context;
     public boolean checkOK = true;
     public String remark;
+    public String nextYear;
+    public String nextMonth;
 
     private UserPresenter userPresenter;
 
@@ -91,6 +94,68 @@ public class RegularInspectionAdapter extends BaseAdapter<CheckItemBean> {
                     } else {
                         cb.setImageResource(R.mipmap.item_check_on);
                         checkOK = true;
+                    }
+                }
+            });
+
+            final EditText nextYearET = (EditText)viewHolder.get(R.id.next_year);
+            final EditText nextMonthET = (EditText)viewHolder.get(R.id.next_month);
+            nextYearET.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (!TextUtils.isEmpty(s.toString())) {
+                        nextYear = s.toString();
+                        if (s.toString().length() == 4) {
+                            nextMonthET.requestFocus();
+                        }
+                    }
+                }
+            });
+
+
+            nextMonthET.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (!TextUtils.isEmpty(s.toString())) {
+                        nextMonth = s.toString();
+                    }
+                }
+            });
+
+            nextYearET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        nextYearET.setText("");
+                    }
+                }
+            });
+
+            nextMonthET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        nextMonthET.setText("");
                     }
                 }
             });

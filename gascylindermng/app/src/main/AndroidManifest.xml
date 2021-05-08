@@ -154,7 +154,16 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation = "portrait"  >
         </activity>
-
+        <activity
+            android:name=".activity.StockOutActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation = "portrait">
+        </activity>
+        <activity
+            android:name=".activity.StockOutListActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation = "portrait"  >
+        </activity>
 
         <activity
             android:name="com.google.zxing.activity.CaptureActivity"

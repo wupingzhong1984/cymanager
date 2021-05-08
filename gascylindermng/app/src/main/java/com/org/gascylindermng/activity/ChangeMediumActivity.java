@@ -42,6 +42,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_OTHER_SCAN_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_SET_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_CY_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST;
+
 public class ChangeMediumActivity extends BaseActivity implements ApiCallback {
 
     @BindView(R.id.title_name)
@@ -240,7 +245,7 @@ public class ChangeMediumActivity extends BaseActivity implements ApiCallback {
         //扫描结果回调
         if (resultCode == RESULT_OK) { //RESULT_OK = -1
             Bundle bundle = data.getExtras();
-            ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
+            ArrayList<String> result = bundle.getStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST);
             if (result == null || result.size() == 0) {
                 return;
             }

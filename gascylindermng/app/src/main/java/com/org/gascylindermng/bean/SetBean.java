@@ -21,10 +21,20 @@ public class SetBean implements Serializable {
     }
 
     public String getSetId() {
+
+        if(setId.equals("0"))
+            return null;
+
         return setId;
     }
 
     public void setSetId(String setId) {
+
+        if (setId.equals("0")) {
+            this.setId = null;
+            return;
+        }
+
         this.setId = setId;
     }
 

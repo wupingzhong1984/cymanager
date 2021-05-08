@@ -31,12 +31,13 @@ public class ServiceLogicUtils {
     public static int process_id_regular_inspection = 7; //定期检查
     public static int process_id_change_medium = 8; //气瓶维护
     public static int process_id_scrap = 9; //报废
+    public static int process_id_analyse = 10; //分析
 
-    public static int user_position_siji = 1; //司机
-    public static int user_position_yayunyuan = 2; //押运员
-    public static int user_position_shoufa = 3; //收发
-    public static int user_position_shenchan = 4; //生产
-    public static int user_position_jiance = 5; //检测
+//    public static int user_position_siji = 1; //司机
+//    public static int user_position_yayunyuan = 2; //押运员
+//    public static int user_position_shoufa = 3; //收发
+//    public static int user_position_shenchan = 4; //生产
+//    public static int user_position_jiance = 5; //检测
 
     public static String getPositionNameByPositionInt(String position) {
 
@@ -210,6 +211,11 @@ public class ServiceLogicUtils {
         p4.setText("4N");
         list.add(p4);
 
+        Pureness p7 = new Pureness();
+        p7.setKeyValue("7");
+        p7.setText("4.5N");
+        list.add(p7);
+
         Pureness p5 = new Pureness();
         p5.setKeyValue("5");
         p5.setText("5N");
@@ -219,6 +225,8 @@ public class ServiceLogicUtils {
         p6.setKeyValue("6");
         p6.setText("6N");
         list.add(p6);
+
+
 
         return list;
     }
@@ -264,7 +272,7 @@ public class ServiceLogicUtils {
                     lastScanCyPlatformNumberList.add(code);
                 }
             }
-        } else {//条码
+        } else {//条码，其它二维码
 
         }
     }
@@ -318,7 +326,7 @@ public class ServiceLogicUtils {
             cal.set(Calendar.SECOND,0);
         }
         //test
-        //cal.add(Calendar.DATE,-2);
+ //       cal.add(Calendar.DATE,-2);
 
         Log.i("ChargeClassBeginTime:",cal.getTime().toString());
         return  cal.getTime();

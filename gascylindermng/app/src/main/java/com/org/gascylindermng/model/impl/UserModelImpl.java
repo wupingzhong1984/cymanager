@@ -175,6 +175,11 @@ public class UserModelImpl implements UserModel {
     }
 
     @Override
+    public Observable<HttpResponseResult> getChargeMissionListAndNotFinished(Map<String, Object> params) {
+        return httpRequestService.getChargeMissionListAndNotFinished(params);
+    }
+
+    @Override
     public Observable<HttpResponseResult> updateChargeMission(Map<String, Object> params) {
         return httpRequestService.updateChargeMission(params);
     }
@@ -293,5 +298,15 @@ public class UserModelImpl implements UserModel {
     @Override
     public Observable<HttpResponseResult>searchTransOrderNumber(Map<String, Object> params) {
         return httpRequestService2.searchTransOrderNumber(params);
+    }
+
+    @Override
+    public Observable<HttpResponseResult>submitStockOutRecord(Map<String, Object> params) {
+        return httpRequestService.submitStockOutRecord(params);
+    }
+
+    @Override
+    public Observable<HttpResponseResult>getStockOutRecord(Map<String, Object> params) {
+        return httpRequestService.getStockOutRecord(params);
     }
 }

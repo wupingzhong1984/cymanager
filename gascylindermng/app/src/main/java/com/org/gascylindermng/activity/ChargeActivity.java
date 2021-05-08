@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -25,7 +26,6 @@ import com.org.gascylindermng.base.BaseActivity;
 import com.org.gascylindermng.bean.BatchNumberBean;
 import com.org.gascylindermng.bean.ChargeMissionBean;
 import com.org.gascylindermng.bean.CheckItemBean;
-import com.org.gascylindermng.bean.CySetBean;
 import com.org.gascylindermng.bean.CylinderInfoBean;
 import com.org.gascylindermng.bean.ProcessBean;
 import com.org.gascylindermng.bean.ProcessNextAreaBean;
@@ -51,6 +51,10 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_OTHER_SCAN_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_SET_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_CY_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST;
 
 public class ChargeActivity extends BaseActivity implements ApiCallback {
 
@@ -82,6 +86,10 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
 //    Spinner nextAreaSpinner;
     @BindView(R.id.medium_name)
     TextView mediumName;
+    @BindView(R.id.submit)
+    Button submit;
+    @BindView(R.id.submit2)
+    Button submit2;
 
 
     //打开扫描界面请求码
@@ -178,7 +186,7 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
             if (missionInfo.getEndDate() != null) {
                 endTimeTV.setText(missionInfo.getEndDate().substring("yyyy-MM-dd".length() + 1, missionInfo.getEndDate().length()));
             }
-            cyCountTV.setText("扫描：" + scanCount + "，散瓶：" + getNewMissionCyList().size() + "，集格：" + getNewMissionSetList().size() + "，总气瓶数：" + missionInfo.getCylinderCount());
+            cyCountTV.setText("扫描：" + scanCount + "，散瓶：" + getNewMissionCyList().size() + "，集格：" + getNewMissionSetList().size() + "，总气瓶数：" + missionInfo.getCylinderCount()+"  >");
             mediumName.setText(missionInfo.getMediemName());
             int purenessIndex = 0;
             for (Pureness p : ServiceLogicUtils.getPurenessList()) {
@@ -192,10 +200,12 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
 
         edittextProductBatch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(final Editable s) {
@@ -297,18 +307,18 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                     if (missionInfo.getStatus().equals("1")) {
                         intent.putExtra("canCheck", "1");
                     }
-                    intent.putExtra("nextAreaList",nextAreaList);
-                    intent.putExtra("nextAreaIdList",nextAreaIdList);
-                    intent.putExtra("checkOKList",checkOKList);
-                    intent.putExtra("remarkList",remarkList);
-                    intent.putExtra("checkItemResultListList",checkItemResultListList);
-                    startActivityForResult(intent,REQUEST_CODE_3);
+                    intent.putExtra("nextAreaList", nextAreaList);
+                    intent.putExtra("nextAreaIdList", nextAreaIdList);
+                    intent.putExtra("checkOKList", checkOKList);
+                    intent.putExtra("remarkList", remarkList);
+                    intent.putExtra("checkItemResultListList", checkItemResultListList);
+                    startActivityForResult(intent, REQUEST_CODE_3);
 
                 } else if (newMissionAllCyList.size() > 0) {
                     Intent intent = new Intent(ChargeActivity.this, ChargeCyListActivity.class);
                     intent.putExtra("CyBeanlist", newMissionAllCyList);
                     intent.putExtra("canDeleteCy", "1");
-                    startActivityForResult(intent,REQUEST_CODE_2);
+                    startActivityForResult(intent, REQUEST_CODE_2);
                 }
                 break;
             case R.id.charge_start:
@@ -417,6 +427,8 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                         !TextUtils.isEmpty(missionRemark) ? missionRemark : null,
                         cyIdList);
                 dialog.dismiss();
+                submit.setClickable(false);
+                showLoading("提交中...", "提交成功", "提交失败");
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -448,15 +460,15 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
         dialog.show();
 
         final ArrayList<Map> aa = new ArrayList<>();
-        for (int i = 0; i < missionInfo.getCylinderIdList().size();i++) {
+        for (int i = 0; i < missionInfo.getCylinderIdList().size(); i++) {
             String cyId = missionInfo.getCylinderIdList().get(i);
             HashMap c = new HashMap();
             c.put("cylinderId", cyId);
-            c.put("companyAreaId",nextAreaIdList.get(i));
-            c.put("ifPass",checkOKList.get(i));
-            c.put("remark",remarkList.get(i));
+            c.put("companyAreaId", nextAreaIdList.get(i));
+            c.put("ifPass", checkOKList.get(i));
+            c.put("remark", remarkList.get(i));
             for (CheckItemBean checkItemBean : checkItemResultListList.get(i)) {
-                c.put(checkItemBean.getApiParam(),checkItemBean.isState()?"1":"0");
+                c.put(checkItemBean.getApiParam(), checkItemBean.isState() ? "1" : "0");
             }
             aa.add(c);
         }
@@ -468,10 +480,12 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                 userPresenter.updateChargeMissionV2(missionInfo.getMissionId(),
                         missionRemark,
                         "1", //test
-  //                      getNextAreaList().get(nextAreaSpinner.getSelectedItemPosition()).getAreaId(),
+                        //                      getNextAreaList().get(nextAreaSpinner.getSelectedItemPosition()).getAreaId(),
                         endTime,
                         aa);
                 dialog.dismiss();
+                submit2.setClickable(false);
+                showLoading("提交中...", "提交成功", "提交失败");
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -494,6 +508,8 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
     @Override
     public <T> void successful(String api, T success) {
 
+        submit.setClickable(true);
+        submit2.setClickable(true);
         if (api.equals("searchBatchNumber")) {
 
             selectedProductBatch = null;
@@ -525,18 +541,12 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
 
         } else if (api.equals("createChargeMission")) {
 
-            HttpResponseResult httpResponseResult = (HttpResponseResult) success;
-            if (!httpResponseResult.getCode().equals("200")) {
-                super.showToast(httpResponseResult.getMessage());
-            } else {
-                showToast("创建成功");
-                new Handler().postDelayed(new Runnable() {
+            loadingDialog.loadSuccess();
+            new Handler().postDelayed(new Runnable() {
                     @Override
-                    public void run() {
-                        closeAndRefreshMissionList();
+                    public void run() { closeAndRefreshMissionList();
                     }
                 }, 1500);
-            }
 
         } else if (api.equals("getCompanyProcessListByCompanyId")) {
 
@@ -591,7 +601,7 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
 //
 //                    }
 //                    nextAreaSpinnerAdapter.addData(adapterData);
-                    if(missionInfo!=null) {
+                    if (missionInfo != null) {
                         for (String cyNumber : missionInfo.getCylinderNumberList()) {
                             nextAreaIdList.add(beans.get(0).getAreaId());
                         }
@@ -664,7 +674,7 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
 
         } else if (api.equals("updateDetection")) {
 
-            showToast("提交成功");
+            loadingDialog.loadSuccess();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -674,7 +684,7 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
 
         } else if (api.equals("updateChargeMissionV2")) {
 
-            showToast("提交成功");
+            loadingDialog.loadSuccess();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -686,15 +696,19 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
 
     @Override
     public <T> void failure(String api, T failure) {
+
+        submit.setClickable(true);
+        submit2.setClickable(true);
+        if (api.equals("updateDetection") || api.equals("updateChargeMissionV2")) {
+            loadingDialog.setFailedText("提交失败，" + (String) failure);
+            loadingDialog.loadFailed();
+        } else {
+            showToast("接口报错，" + (String) failure);
+        }
         if (failure instanceof String && ((String) failure).equals("needUpdate")) {
 
             super.updateApp();
             return;
-        }
-        if (api.equals("updateDetection") || api.equals("updateChargeMissionV2")) {
-            showToast("提交失败，" + (String) failure);
-        } else {
-            showToast("接口报错，" + (String) failure);
         }
     }
 
@@ -706,22 +720,22 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
         Bundle bundle = data.getExtras();
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                    ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
+                ArrayList<String> result = bundle.getStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST);
                 if (result != null && result.size() > 0) {
                     scanCount += result.size();
                 }
 
-                ArrayList<SetBean> setList = (ArrayList<SetBean>) bundle.getSerializable("qr_scan_result_set_list");
+                ArrayList<SetBean> setList = (ArrayList<SetBean>) bundle.getSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST);
                 if (setList != null && setList.size() > 0) {
                     getNewMissionSetList().addAll(setList);
                 }
 
-                ArrayList<CylinderInfoBean> cyList = (ArrayList<CylinderInfoBean>) bundle.getSerializable("qr_scan_result_cy_list");
+                ArrayList<CylinderInfoBean> cyList = (ArrayList<CylinderInfoBean>) bundle.getSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST);
                 if (cyList != null && cyList.size() > 0) {
                     getNewMissionCyList().addAll(cyList);
                 }
 
-                ArrayList<CylinderInfoBean> allCyList = (ArrayList<CylinderInfoBean>) bundle.getSerializable("qr_scan_result_all_cy_list");
+                ArrayList<CylinderInfoBean> allCyList = (ArrayList<CylinderInfoBean>) bundle.getSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST);
                 if (allCyList != null && allCyList.size() > 0) {
                     getNewMissionAllCyList().addAll(allCyList);
 
@@ -729,20 +743,20 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                         mediumName.setText(getNewMissionAllCyList().get(0).getCyMediumName());
                     }
                 }
-                cyCountTV.setText("扫描：" + scanCount + "，散瓶：" + getNewMissionCyList().size() + "，集格：" + getNewMissionSetList().size() + "，总气瓶数：" + getNewMissionAllCyList().size());
+                cyCountTV.setText("扫描：" + scanCount + "，散瓶：" + getNewMissionCyList().size() + "，集格：" + getNewMissionSetList().size() + "，总气瓶数：" + getNewMissionAllCyList().size()+"  >");
             } else {
                 //showToast("扫描失败");
             }
         } else if (requestCode == REQUEST_CODE_2) {
 
-            ArrayList<CylinderInfoBean> result = (ArrayList<CylinderInfoBean>)bundle.getSerializable("CyBeanlist");
+            ArrayList<CylinderInfoBean> result = (ArrayList<CylinderInfoBean>) bundle.getSerializable("CyBeanlist");
             newMissionAllCyList.clear();
             if (result != null && result.size() > 0) {
                 newMissionAllCyList.addAll(result);
             }
             if (newMissionAllCyList.size() > 0) {
 
-                for (int i = newMissionSetList.size()-1; i > -1; i--) {
+                for (int i = newMissionSetList.size() - 1; i > -1; i--) {
                     boolean hasSet = false;
                     for (CylinderInfoBean c : newMissionAllCyList) {
                         if (!TextUtils.isEmpty(c.getSetId()) && c.getSetId().equals(newMissionSetList.get(i).getSetId())) {
@@ -755,7 +769,7 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                     }
                 }
 
-                for (int i = newMissionCyList.size()-1; i > -1; i--) {
+                for (int i = newMissionCyList.size() - 1; i > -1; i--) {
 
                     boolean hasCy = false;
                     for (CylinderInfoBean c : newMissionAllCyList) {
@@ -776,7 +790,7 @@ public class ChargeActivity extends BaseActivity implements ApiCallback {
                 newMissionSetList.clear();
                 scanCount = 0;
             }
-            cyCountTV.setText("扫描：" + scanCount + "，散瓶：" + getNewMissionCyList().size() + "，集格：" + getNewMissionSetList().size() + "，总气瓶数：" + getNewMissionAllCyList().size());
+            cyCountTV.setText("扫描：" + scanCount + "，散瓶：" + getNewMissionCyList().size() + "，集格：" + getNewMissionSetList().size() + "，总气瓶数：" + getNewMissionAllCyList().size()+"  >");
         } else if (requestCode == REQUEST_CODE_3) {
 
             this.nextAreaIdList = bundle.getStringArrayList("nextAreaIdList");

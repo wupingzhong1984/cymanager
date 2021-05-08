@@ -64,6 +64,11 @@ public interface HttpRequestService {
     Observable<HttpResponseResult> getChargeMissionList(@FieldMap Map<String, Object> params);
 
     @FormUrlEncoded
+    @POST("getDetectionMissionVoListInDateAndNotFinishedByEmployeeId")
+    Observable<HttpResponseResult> getChargeMissionListAndNotFinished(@FieldMap Map<String, Object> params);
+
+
+    @FormUrlEncoded
     @POST("updateDetection")
     Observable<HttpResponseResult> updateChargeMission(@FieldMap Map<String, Object> params);
 
@@ -166,4 +171,12 @@ public interface HttpRequestService {
     @FormUrlEncoded
     @POST("getAfterDetectionListByEmployeeId")
     Observable<HttpResponseResult> getPostChargeDetectionBatchList(@FieldMap Map<String, Object> params);
+
+    @FormUrlEncoded
+    @POST("addOutStock")
+    Observable<HttpResponseResult> submitStockOutRecord(@FieldMap Map<String, Object> params);
+
+    @FormUrlEncoded
+    @POST("getOutStock")
+    Observable<HttpResponseResult> getStockOutRecord(@FieldMap Map<String, Object> params);
 }

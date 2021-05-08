@@ -57,6 +57,10 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.impl.client.LaxRedirectStrategy;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_OTHER_SCAN_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_SET_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_CY_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST;
 
 public class WarehouseTransActivity extends BaseActivity implements ApiCallback {
     @BindView(R.id.title_name)
@@ -1062,7 +1066,7 @@ public class WarehouseTransActivity extends BaseActivity implements ApiCallback 
         if (resultCode == RESULT_OK) { //RESULT_OK = -1
 
             Bundle bundle = data.getExtras();
-            ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
+            ArrayList<String> result = bundle.getStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST);
 
             if (requestCode == REQUEST_CODE_1) {
                 if(result != null && result.size() > 0) {
@@ -1076,7 +1080,7 @@ public class WarehouseTransActivity extends BaseActivity implements ApiCallback 
                 }
             } else if (requestCode == REQUEST_CODE_3) {
 
-                ArrayList<CylinderInfoBean> allCyList = (ArrayList<CylinderInfoBean>)bundle.getSerializable("qr_scan_result_all_cy_list");
+                ArrayList<CylinderInfoBean> allCyList = (ArrayList<CylinderInfoBean>)bundle.getSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST);
                 if (allCyList != null && allCyList.size() > 0) {
                     cyList.addAll(allCyList);
                 }

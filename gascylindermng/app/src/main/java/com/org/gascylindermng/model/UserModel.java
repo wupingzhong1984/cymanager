@@ -52,6 +52,7 @@ public interface UserModel {
     Observable<HttpResponseResult> submitPrechargeCheckResult(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> createChargeMission(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> getChargeMissionList(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> getChargeMissionListAndNotFinished(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> getChargeMissionByMissionId(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> updateChargeMission(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> updateChargeMissionV2(@FieldMap Map<String, Object> params);
@@ -77,4 +78,7 @@ public interface UserModel {
     Observable<HttpResponseResult> searchCylinderManufacturer(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> searchBatchNumber(@FieldMap Map<String, Object> params);
     Observable<HttpResponseResult> searchTransOrderNumber(@FieldMap Map<String, Object> params);
+
+    Observable<HttpResponseResult> submitStockOutRecord(@FieldMap Map<String, Object> params);
+    Observable<HttpResponseResult> getStockOutRecord(@FieldMap Map<String, Object> params);
 }

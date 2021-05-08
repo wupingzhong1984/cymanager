@@ -21,11 +21,24 @@ public class CySetBean implements Serializable {
     @SerializedName("quantity") //气瓶数量
     private int quantity;
 
+    @SerializedName("regularInspectionDate") //集格框过期时间，非必要
+    private int regularInspectionDate;
+
     public String getSetId() {
+
+        if(setId.equals("0"))
+            return null;
+
         return setId;
     }
 
     public void setSetId(String setId) {
+
+        if (setId.equals("0")) {
+            this.setId = null;
+            return;
+        }
+
         this.setId = setId;
     }
 
@@ -61,6 +74,14 @@ public class CySetBean implements Serializable {
         this.setNumber = setNumber;
     }
 
+    public int getRegularInspectionDate() {
+        return regularInspectionDate;
+    }
+
+    public void setRegularInspectionDate(int regularInspectionDate) {
+        this.regularInspectionDate = regularInspectionDate;
+    }
+
     @Override
     public String toString() {
         return "CySetBean{" +
@@ -69,6 +90,7 @@ public class CySetBean implements Serializable {
                 ", unitId='" + unitId + '\'' +
                 ", setName='" + setName + '\'' +
                 ", quantity=" + quantity +
+                ", regularInspectionDate=" + regularInspectionDate +
                 '}';
     }
 }

@@ -21,6 +21,7 @@ import com.org.gascylindermng.activity.RegularInspectionActivity;
 import com.org.gascylindermng.activity.RepairActivity;
 import com.org.gascylindermng.activity.ScrapActivity;
 import com.org.gascylindermng.activity.SendCylinderActivity;
+import com.org.gascylindermng.activity.StockOutListActivity;
 import com.org.gascylindermng.activity.WarehouseTransActivity;
 import com.org.gascylindermng.base.BaseFragment;
 import com.org.gascylindermng.presenter.UserPresenter;
@@ -64,8 +65,19 @@ public class FunctionFragment extends BaseFragment {
         showToast("办公人员无权操作");
     }
 
-    @OnClick({R.id.function_1, R.id.function_2, R.id.function_3, R.id.function_4, R.id.function_5,
-            R.id.function_6, R.id.function_7, R.id.function_8, R.id.function_9, R.id.function_10, R.id.function_11, R.id.bar_right_icon})
+    @OnClick({R.id.function_1,
+            R.id.function_2,
+            R.id.function_3,
+            R.id.function_4,
+            R.id.function_5,
+            R.id.function_6,
+            R.id.function_7,
+            R.id.function_8,
+            R.id.function_9,
+            R.id.function_10,
+            R.id.function_11,
+            R.id.function_12,
+            R.id.bar_right_icon})
     public void onViewClicked(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -153,7 +165,14 @@ public class FunctionFragment extends BaseFragment {
                 intent.setClass(getActivity(), ScrapActivity.class);
                 startActivity(intent);
                 break;
-
+            case R.id.function_12:
+                if (userPresenter.queryUser().getPosition().equals("8")) {
+                    showRules();
+                    return;
+                }
+                intent.setClass(getActivity(), StockOutListActivity.class);
+                startActivity(intent);
+                break;
             case R.id.bar_right_icon:
               //  intent.setClass(getActivity(), RegularInspectionActivity.class);
               //  startActivity(intent);

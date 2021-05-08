@@ -16,7 +16,7 @@
         android:layout_height="50dp"
         android:textColor="@color/text_color"
         android:textSize="16dp"
-        android:text="扫描：0，散瓶：0，集格：0，总气瓶数：0"
+        android:text="扫描：0，散瓶：0，集格：0，总气瓶数：0  >"
         android:gravity="center"/>
 
     <View

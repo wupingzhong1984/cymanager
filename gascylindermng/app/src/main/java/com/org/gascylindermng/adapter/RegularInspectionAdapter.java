@@ -113,12 +113,11 @@ public class RegularInspectionAdapter extends BaseAdapter<CheckItemBean> {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if (!TextUtils.isEmpty(s.toString())) {
                         nextYear = s.toString();
                         if (s.toString().length() == 4) {
                             nextMonthET.requestFocus();
                         }
-                    }
+
                 }
             });
 
@@ -136,9 +135,7 @@ public class RegularInspectionAdapter extends BaseAdapter<CheckItemBean> {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if (!TextUtils.isEmpty(s.toString())) {
                         nextMonth = s.toString();
-                    }
                 }
             });
 
@@ -146,7 +143,10 @@ public class RegularInspectionAdapter extends BaseAdapter<CheckItemBean> {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
-                        nextYearET.setText("");
+                        if (!TextUtils.isEmpty(nextYearET.toString())) {
+                            nextYearET.setText("");
+                            nextYear = "";
+                        }
                     }
                 }
             });
@@ -155,7 +155,10 @@ public class RegularInspectionAdapter extends BaseAdapter<CheckItemBean> {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {
-                        nextMonthET.setText("");
+                        if (!TextUtils.isEmpty(nextMonthET.toString())) {
+                            nextMonthET.setText("");
+                            nextMonth = "";
+                        }
                     }
                 }
             });

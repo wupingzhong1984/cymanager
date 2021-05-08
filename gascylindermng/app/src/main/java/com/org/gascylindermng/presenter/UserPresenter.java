@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -768,7 +769,7 @@ public class UserPresenter extends BasePresenter {
     }
 
     /***
-     *获取未完成的充装任务列表
+     *获取从某天起的充装任务列表
      * @param
      */
     public void getChargeMissionList(String beginDate) {
@@ -809,6 +810,10 @@ public class UserPresenter extends BasePresenter {
                 });
     }
 
+    /***
+     *获取从某时段内的充装任务列表
+     * @param
+     */
     public void getChargeMissionListNow() {
 
         Map<String, Object> subParam = new HashMap<>();
@@ -850,7 +855,54 @@ public class UserPresenter extends BasePresenter {
     }
 
     /***
-     *获取未完成的充装任务列表
+     *获取从某时段内的以及未完成的充装任务列表
+     * @param
+     */
+    public void getChargeMissionListAndNotFinished() {
+
+        Map<String, Object> subParam = new HashMap<>();
+        subParam.put("employeeId", queryUser().getId());
+        subParam.put("unitId",queryUser().getUnitId());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        subParam.put("begin", sdf.format(ServiceLogicUtils.getChargeClassBeginTime(new Date())));
+        subParam.put("end", sdf.format(new Date()));
+
+        Observable<HttpResponseResult> userObservable = userModel.getChargeMissionListAndNotFinished(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            callback.successful("getChargeMissionListAndNotFinished", httpResult.getData());
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("getChargeMissionListAndNotFinished","needUpdate");
+                        } else {
+                            callback.failure("getChargeMissionListAndNotFinished",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("getChargeMissionListAndNotFinished",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
+
+
+
+    /***
+     *获取的充装任务详情
      * @param
      */
     public void getChargeMissionByMissionId(String missionId) {
@@ -1998,6 +2050,115 @@ public class UserPresenter extends BasePresenter {
                     @Override
                     public void onError(Throwable e) {
                         callback.failure("getPostChargeDetectionBatchList",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
+
+
+    /***
+     *提交出货记录
+     * @param
+     */
+    public void submitStockOutRecord(ArrayList<String> cyIdList,
+                                     String shipNumber,
+                                     String remark) {
+
+        Map<String, Object> subParam = new HashMap<>();
+
+        subParam.put("unitId", queryUser().getUnitId());
+        subParam.put("employeeId", queryUser().getId());
+        if(cyIdList.size() == 1) {
+            subParam.put("cylinderId", cyIdList.get(0));
+        } else {
+            StringBuilder cyStr = new StringBuilder();
+            for(String cyId : cyIdList) {
+                cyStr.append(cyId+",");
+            }
+            subParam.put("cylinderIdList", cyStr.substring(0,cyStr.length()-1));
+        }
+        subParam.put("shipNumber", shipNumber);
+
+        if (!TextUtils.isEmpty(remark)) {
+            subParam.put("remark", remark);
+        }
+        Observable<HttpResponseResult> userObservable = userModel.submitStockOutRecord(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            callback.successful("submitStockOutRecord",httpResult);
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("submitStockOutRecord","needUpdate");
+                        } else {
+                            callback.failure("submitStockOutRecord",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("submitStockOutRecord",errorMassage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dispose();
+                    }
+                });
+    }
+
+    /***
+     *查询出货批次
+     * @param
+     */
+    public void getStockOutRecord() {
+
+        Map<String, Object> subParam = new HashMap<>();
+        subParam.put("unitId", queryUser().getUnitId());
+        subParam.put("employeeId", queryUser().getId());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.roll(Calendar.DATE, -3);
+        subParam.put("begin", sdf.format(calendar.getTime()));
+        calendar.setTime(new Date());
+        calendar.roll(Calendar.DATE, 1);
+        subParam.put("end", sdf.format(calendar.getTime()));
+
+        Observable<HttpResponseResult> userObservable = userModel.getStockOutRecord(subParam);
+        userObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<HttpResponseResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        setDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResponseResult httpResult) {
+                        if (httpResult.getCode().equals("200")) {
+                            callback.successful("getStockOutRecord", httpResult.getData());
+                        } else if(httpResult.getCode().equals("501")){
+                            callback.failure("getStockOutRecord","needUpdate");
+                        } else {
+                            callback.failure("getStockOutRecord",httpResult.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.failure("getStockOutRecord",errorMassage(e));
                     }
 
                     @Override

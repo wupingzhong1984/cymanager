@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,6 +44,10 @@ import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_OTHER_SCAN_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_SET_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_CY_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST;
 
 public class PrechargeCheckActivity extends BaseActivity implements ApiCallback {
 
@@ -50,6 +55,8 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
     TextView titleName;
     @BindView(R.id.listview)
     WrapContentListView listview;
+    @BindView(R.id.submit)
+    Button submit;
 
     //打开扫描界面请求码
     private int REQUEST_CODE = 0x01;
@@ -80,7 +87,9 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
         this.newSetList = new ArrayList<SetBean>();
         this.newAllCyList = new ArrayList<CylinderInfoBean>();
 
-        listAdapter = new PrechargeCheckAdapter(this,ServiceLogicUtils.getCheckListByProcessIdAndCyCategoryId(ServiceLogicUtils.process_id_precharge_check));
+        listAdapter = new PrechargeCheckAdapter(this,
+                ServiceLogicUtils.getCheckListByProcessIdAndCyCategoryId(ServiceLogicUtils.process_id_precharge_check),
+                true);
         listview.setAdapter(listAdapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -109,6 +118,7 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
                 if (CommonTools.isCameraCanUse()) {
                     Intent intent = new Intent(PrechargeCheckActivity.this, CaptureActivity.class);
                     intent.putExtra("mode", ServiceLogicUtils.scan_multi);
+                    intent.putExtra("cy_info_hold_sec","3000");
                     startActivityForResult(intent, REQUEST_CODE);
                 } else {
                     showToast("请打开此应用的摄像头权限！");
@@ -158,6 +168,8 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
                                 listAdapter.nextAreaId,
                                 listAdapter.remark);
                         dialog.dismiss();
+                        submit.setClickable(false);
+                        showLoading("提交中...", "提交成功", "提交失败");
                     }
                 });
                 btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -174,14 +186,14 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
     public <T> void successful(String api, T success) {
 
         if (api.equals("submitPrechargeCheckResult")) {
-            HttpResponseResult httpResponseResult = (HttpResponseResult) success;
-            if (!httpResponseResult.getCode().equals("200")) {
-                showToast("提交失败，" + httpResponseResult.getMessage() + "，请重新尝试提交。");
-            } else {
+
+            loadingDialog.loadSuccess();
+            submit.setClickable(true);
+
                 LinearLayout llname = (LinearLayout) this.getLayoutInflater()
                         .inflate(R.layout.view_common_dialog, null);
                 final TextView textView = (TextView) llname.findViewById(R.id.message);
-                textView.setText("提交成功。");
+                textView.setText("提交成功。"+((HttpResponseResult)success).getMessage());
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 final AlertDialog dialog = builder.setView(llname).create();
@@ -200,9 +212,8 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
                         dialog.dismiss();
                         closeAndRefreshBatchList();
                     }
-                }, 1500);
+                }, 2000);
 
-            }
         } else if (api.equals("getCompanyProcessListByCompanyId")) {
 
             List<LinkedTreeMap> datas = (List<LinkedTreeMap>) success;
@@ -257,15 +268,18 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
 
     @Override
     public <T> void failure(String api, T failure) {
+
+        submit.setClickable(true);
+        if (api.equals("submitPrechargeCheckResult")) {
+            loadingDialog.setFailedText("提交失败，" + (String) failure);
+            loadingDialog.loadFailed();
+        } else {
+            showToast("接口报错，" + (String) failure);
+        }
         if (failure instanceof String && ((String)failure).equals("needUpdate")) {
 
             super.updateApp();
             return;
-        }
-        if (api.equals("submitPrechargeCheckResult")) {
-            showToast("提交失败，" + (String) failure + "，请重新尝试提交。");
-        } else {
-            showToast("接口报错，" + (String) failure);
         }
     }
 
@@ -285,24 +299,24 @@ public class PrechargeCheckActivity extends BaseActivity implements ApiCallback 
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
 
-                ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
+                ArrayList<String> result = bundle.getStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST);
                 if (result != null && result.size() > 0) {
                     listAdapter.scanCount += result.size();
                 }
 
-                ArrayList<SetBean> setList = (ArrayList<SetBean>) bundle.getSerializable("qr_scan_result_set_list");
+                ArrayList<SetBean> setList = (ArrayList<SetBean>) bundle.getSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST);
                 if (setList != null && setList.size() > 0) {
                     getNewSetList().addAll(setList);
                     listAdapter.setCount = getNewSetList().size();
                 }
 
-                ArrayList<CylinderInfoBean> cyList = (ArrayList<CylinderInfoBean>) bundle.getSerializable("qr_scan_result_cy_list");
+                ArrayList<CylinderInfoBean> cyList = (ArrayList<CylinderInfoBean>) bundle.getSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST);
                 if (cyList != null && cyList.size() > 0) {
                     getNewCyList().addAll(cyList);
                     listAdapter.cyCount = getNewCyList().size();
                 }
 
-                ArrayList<CylinderInfoBean> allCyList = (ArrayList<CylinderInfoBean>) bundle.getSerializable("qr_scan_result_all_cy_list");
+                ArrayList<CylinderInfoBean> allCyList = (ArrayList<CylinderInfoBean>) bundle.getSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST);
                 if (allCyList != null && allCyList.size() > 0) {
                     getNewAllCyList().addAll(allCyList);
                     listAdapter.allCyCount = getNewAllCyList().size();

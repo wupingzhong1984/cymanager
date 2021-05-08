@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -36,13 +37,15 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
     public String nextAreaId;
     public String remark;
 
+    private boolean canEmpty;
 
-    public PrechargeCheckAdapter(Context context,ArrayList<CheckItemBean> items) {
+    public PrechargeCheckAdapter(Context context,ArrayList<CheckItemBean> items,boolean canEmpty) {
         super(context);
         this.context = context;
         this.remark = "";
         this.nextAreaList = new ArrayList<ProcessNextAreaBean>();
         this.mData.addAll(items);
+        this.canEmpty = canEmpty;
     }
 
     @Override
@@ -95,6 +98,7 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
 
             final ImageView cyEmpty = (ImageView)viewHolder.get(R.id.empty_cy);
             final ImageView cyFull = (ImageView)viewHolder.get(R.id.full_cy);
+            final LinearLayout emOrFull = (LinearLayout)viewHolder.get(R.id.empty_or_full);
             cyEmpty.setOnClickListener(new View.OnClickListener() {
 
                 public void onClick(View view) {
@@ -111,6 +115,10 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
                     cyFull.setImageResource(R.mipmap.item_check_on);
                 }
             });
+
+            if (!canEmpty) {
+                emOrFull.setVisibility(View.GONE);
+            }
 
             if (nextAreaList.size() > 0) {
 
@@ -187,7 +195,7 @@ public class PrechargeCheckAdapter extends BaseAdapter<CheckItemBean> {
         if (position == 0) {
 
             TextView scanResultCount = (TextView)holder.get(R.id.scan_result_count);
-            scanResultCount.setText("扫描："+scanCount+" 散瓶："+cyCount+" 集格："+setCount+" 总气瓶数："+allCyCount);
+            scanResultCount.setText("扫描："+scanCount+" 散瓶："+cyCount+" 集格："+setCount+" 总气瓶数："+allCyCount+"  >");
 
         } else if(position == mData.size()+1) {
             ImageView cb = holder.get(R.id.check_result_checkbox);

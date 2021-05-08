@@ -83,7 +83,7 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
     private void requestMissionList() {
         loading("加载中","取得成功","取得失败");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        userPresenter.getChargeMissionListNow();
+        userPresenter.getChargeMissionListAndNotFinished();
         //userPresenter.getChargeMissionList("2020-01-15"); //test
     }
 
@@ -100,7 +100,7 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
             }
             todayBottleCount.setText("今日充装：" + cyCount + "（集格以集格内瓶数算）");
 
-        } else if (api.equals("getChargeMissionList") && !(success instanceof String)) {
+        } else if (api.equals("getChargeMissionListAndNotFinished") && !(success instanceof String)) {
 
             loadingDialog.loadSuccess();
             missionList.clear();
@@ -217,22 +217,22 @@ public class ChargeMissionListActivity extends BaseActivity implements ApiCallba
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
 
             Bundle bundle = data.getExtras();
             String refresh = bundle.getString("needRefresh");
             if (refresh != null && refresh.equals("1")) {
-                new Thread() {
-                    @Override
-                    public void run() {
+//                new Thread() {
+//                    @Override
+//                    public void run() {
                         //在子线程中进行下载操作
                         requestMissionList();
-                    }
-                }.start();
+//                    }
+//                }.start();
             }
         }
 
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

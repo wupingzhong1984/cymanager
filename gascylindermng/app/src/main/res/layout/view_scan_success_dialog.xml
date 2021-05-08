@@ -33,6 +33,16 @@
             />
     </LinearLayout>
 
-
+    <Button
+        android:id="@+id/scan_dialog_btn"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="确  定"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_shape_blue"
+        android:layout_gravity="center">
+    </Button>
 
 </LinearLayout>

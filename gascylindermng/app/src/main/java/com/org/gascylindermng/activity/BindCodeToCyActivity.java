@@ -50,6 +50,10 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_OTHER_SCAN_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_SET_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_CY_LIST;
+import static com.google.zxing.activity.CaptureActivity.INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST;
 
 public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
 
@@ -1097,21 +1101,21 @@ public class BindCodeToCyActivity extends BaseActivity implements ApiCallback {
         if (resultCode == RESULT_OK) { //RESULT_OK = -1
             Bundle bundle = data.getExtras();
 
-            ArrayList<String> result = bundle.getStringArrayList("qr_scan_result");
+            ArrayList<String> result = bundle.getStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST);
             if (result == null || result.size() == 0) {
                 return;
             }
             if (requestCode == REQUEST_CODE_1) {
 
                 String cyNumber = result.get(0);
-                ArrayList<CylinderInfoBean> cys = (ArrayList<CylinderInfoBean>)bundle.getSerializable("qr_scan_result_all_cy_list");
+                ArrayList<CylinderInfoBean> cys = (ArrayList<CylinderInfoBean>)bundle.getSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST);
                 if (cys != null && cys.size() > 0) {
                     LinearLayout llname = (LinearLayout) getLayoutInflater()
                             .inflate(R.layout.view_scan_success_dialog, null);
                     final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
                     img.setImageResource(R.mipmap.scan_success);
                     final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
-                    text.setText("该二维码："+ cyNumber+", 已绑定气瓶。");
+                    text.setText("该二维码："+ cyNumber+", 已绑定气瓶，请更换并重新提交。");
                     AlertDialog.Builder builder = new AlertDialog.Builder(BindCodeToCyActivity.this);
                     final AlertDialog dialog = builder.setView(llname).create();
                     dialog.show();

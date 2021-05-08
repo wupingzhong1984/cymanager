@@ -32,6 +32,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -103,14 +104,14 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
     private String photo_path;
     private Bitmap scanBitmap;
     public static final int RESULT_CODE_QR_SCAN = 0xA1; //ok
-    public static final String INTENT_EXTRA_KEY_QR_SCAN_LIST = "qr_scan_result";
+    public static final String INTENT_EXTRA_KEY_OTHER_SCAN_LIST = "other_scan_result";
     public static final String INTENT_EXTRA_KEY_QR_SCAN_SET_LIST = "qr_scan_result_set_list";
     public static final String INTENT_EXTRA_KEY_QR_SCAN_CY_LIST = "qr_scan_result_cy_list";
     public static final String INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST = "qr_scan_result_all_cy_list";
 
     private boolean multiScan = false;
     private boolean isChargeScan = false;
-    private ArrayList<String> resultList;
+    private ArrayList<String> otherScanList; //eg order id
     private ArrayList<SetBean> setList;
     private ArrayList<CylinderInfoBean> cyInfoList;
     private ArrayList<CylinderInfoBean> allCyInfoList;
@@ -119,6 +120,14 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
     private String lastScanCyNum;
 
     private UserPresenter userPresenter;
+
+
+    //delay sec
+    private static final int ACTIVITY_DISAPEAR_DELAY_SEC = 500;
+    private static final int SCAN_RESTART_DELAY_SEC = 500;
+    private static final int ERROR_HOLD_SEC = 3000;
+    private int CY_INFO_HOLD_SEC = 3000;
+
 
     /**
      * Called when the activity is first created.
@@ -142,14 +151,14 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
         });
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
-        this.resultList = new ArrayList<String>();
+        this.otherScanList = new ArrayList<String>();
         this.setList = new ArrayList<SetBean>();
         this.cyInfoList = new ArrayList<CylinderInfoBean>();
         this.allCyInfoList = new ArrayList<CylinderInfoBean>();
 
         Intent resultIntent = new Intent();
         Bundle bundle = new Bundle();
-        bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+        bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
         bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
         bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST,getCyInfoList());
         bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -170,7 +179,12 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
             isChargeScan = false;
         }
 
-        scanResultCount.setText("扫描："+getResultList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
+        String sec = (String) getIntent().getSerializableExtra("cy_info_hold_sec");
+        if (!TextUtils.isEmpty(sec)) {
+            CY_INFO_HOLD_SEC = Integer.valueOf(sec);
+        }
+
+        scanResultCount.setText("扫描："+getOtherScanList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
     }
 
     @Override
@@ -201,7 +215,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
 //                                handler.sendMessage(m);
                                 Intent resultIntent = new Intent();
                                 Bundle bundle = new Bundle();
-                                bundle.putString(INTENT_EXTRA_KEY_QR_SCAN_LIST, result.getText());
+                                bundle.putString(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, result.getText());
 //                                Logger.d("saomiao",result.getText());
 //                                bundle.putParcelable("bitmap",result.get);
                                 resultIntent.putExtras(bundle);
@@ -329,12 +343,13 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
             AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
             final AlertDialog dialog = builder.setView(llname).create();
             dialog.show();
-            new Handler().postDelayed(new Runnable() {
+            final Button btn = (Button) llname.findViewById(R.id.scan_dialog_btn);
+            btn.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void run() {
+                public void onClick(View v) {
                     dialog.dismiss();
                 }
-            }, 1200);
+            });
 
         } else {
 
@@ -351,18 +366,19 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                         LinearLayout llname = (LinearLayout) getLayoutInflater()
                                 .inflate(R.layout.view_scan_success_dialog, null);
                         final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
-                        img.setImageResource(R.mipmap.scan_success);
+                        img.setImageResource(R.mipmap.scan_fail);
                         final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
                         text.setText("重复集格！");
                         AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
                         final AlertDialog dialog = builder.setView(llname).create();
                         dialog.show();
-                        new Handler().postDelayed(new Runnable() {
+                        final Button btn = (Button) llname.findViewById(R.id.scan_dialog_btn);
+                        btn.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void run() {
+                            public void onClick(View v) {
                                 dialog.dismiss();
                             }
-                        }, 1500);
+                        });
                         this.lastScanSetId = null;
 
                         if (multiScan && handler != null) {
@@ -381,7 +397,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                                         System.out.println("exception...");
                                     }
                                 }
-                            }, 2000);
+                            }, SCAN_RESTART_DELAY_SEC);
 
                         } else {
 
@@ -390,7 +406,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                                 public void run() {
                                     CaptureActivity.this.finish();
                                 }
-                            }, 2000);
+                            }, ACTIVITY_DISAPEAR_DELAY_SEC);
                         }
                         return;
                     }
@@ -417,18 +433,19 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                         LinearLayout llname = (LinearLayout) getLayoutInflater()
                                 .inflate(R.layout.view_scan_success_dialog, null);
                         final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
-                        img.setImageResource(R.mipmap.scan_success);
+                        img.setImageResource(R.mipmap.scan_fail);
                         final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
                         text.setText("重复散瓶！");
                         AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
                         final AlertDialog dialog = builder.setView(llname).create();
                         dialog.show();
-                        new Handler().postDelayed(new Runnable() {
+                        final Button btn = (Button) llname.findViewById(R.id.scan_dialog_btn);
+                        btn.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void run() {
+                            public void onClick(View v) {
                                 dialog.dismiss();
                             }
-                        }, 1500);
+                        });
                         this.lastScanCyNum = null;
 
                         if (multiScan && handler != null) {
@@ -447,7 +464,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                                         System.out.println("exception...");
                                     }
                                 }
-                            }, 2000);
+                            }, SCAN_RESTART_DELAY_SEC);
 
                         } else {
 
@@ -456,7 +473,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                                 public void run() {
                                     CaptureActivity.this.finish();
                                 }
-                            }, 2000);
+                            }, ACTIVITY_DISAPEAR_DELAY_SEC);
                         }
                         return;
                     }
@@ -480,8 +497,8 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
 
                 Intent resultIntent = new Intent();
                 Bundle bundle = new Bundle();
-                getResultList().add(resultString);
-                bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+                getOtherScanList().add(resultString);
+                bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
                 bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
                 bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST,getCyInfoList());
                 bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -489,14 +506,14 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                 resultIntent.putExtras(bundle);
                 this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
 
-                scanResultCount.setText("扫描："+getResultList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
+                scanResultCount.setText("扫描："+getOtherScanList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
 
                 LinearLayout llname = (LinearLayout) getLayoutInflater()
                         .inflate(R.layout.view_scan_success_dialog, null);
                 final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
                 img.setImageResource(R.mipmap.scan_success);
                 final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
-                text.setText("非气瓶/集格二维码！");
+                text.setText("扫描结果："+resultString);
                 AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
                 final AlertDialog dialog = builder.setView(llname).create();
                 dialog.show();
@@ -505,7 +522,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                     public void run() {
                         dialog.dismiss();
                     }
-                }, 1500);
+                }, 2000);
 
                 if (multiScan && handler != null) {
 
@@ -523,7 +540,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                                 System.out.println("exception...");
                             }
                         }
-                    }, 2000);
+                    }, SCAN_RESTART_DELAY_SEC);
 
                 } else {
 
@@ -532,7 +549,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                         public void run() {
                             CaptureActivity.this.finish();
                         }
-                    }, 2000);
+                    }, ACTIVITY_DISAPEAR_DELAY_SEC);
                 }
             }
         }
@@ -643,8 +660,8 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                 if (set.getCylinderList() == null || set.getCylinderList().size() == 0) {
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
-                    getResultList().add(getLastScanSetId());
-                    bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+                    getOtherScanList().add(getLastScanSetId());
+                    bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST,getCyInfoList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -652,28 +669,29 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                     resultIntent.putExtras(bundle);
                     this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
 
-                    scanResultCount.setText("扫描："+getResultList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
+                    scanResultCount.setText("扫描："+getOtherScanList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
 
                     LinearLayout llname = (LinearLayout) getLayoutInflater()
                             .inflate(R.layout.view_scan_success_dialog, null);
                     final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
-                    img.setImageResource(R.mipmap.scan_success);
+                    img.setImageResource(R.mipmap.scan_fail);
                     final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
                     text.setText("该集格未绑定气瓶，无法使用！");
                     AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
                     final AlertDialog dialog = builder.setView(llname).create();
                     dialog.show();
-                    new Handler().postDelayed(new Runnable() {
+                    final Button btn = (Button) llname.findViewById(R.id.scan_dialog_btn);
+                    btn.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void run() {
+                        public void onClick(View v) {
                             dialog.dismiss();
                         }
-                    }, 2000);
+                    });
                 } else if (isChargeScan && CommonTools.lessFourHourBetweenNowAndDate(set.getCylinderList().get(0).getLastFillTime())) {
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
-                    getResultList().add(getLastScanSetId());
-                    bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+                    getOtherScanList().add(getLastScanSetId());
+                    bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST,getCyInfoList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -681,29 +699,30 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                     resultIntent.putExtras(bundle);
                     this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
 
-                    scanResultCount.setText("扫描："+getResultList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
+                    scanResultCount.setText("扫描："+getOtherScanList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
 
                     LinearLayout llname = (LinearLayout) getLayoutInflater()
                             .inflate(R.layout.view_scan_success_dialog, null);
                     final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
-                    img.setImageResource(R.mipmap.scan_success);
+                    img.setImageResource(R.mipmap.scan_fail);
                     final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
                     text.setText("该集格4小时内已充装。");
                     AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
                     final AlertDialog dialog = builder.setView(llname).create();
                     dialog.show();
-                    new Handler().postDelayed(new Runnable() {
+                    final Button btn = (Button) llname.findViewById(R.id.scan_dialog_btn);
+                    btn.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void run() {
+                        public void onClick(View v) {
                             dialog.dismiss();
                         }
-                    }, 2000);
+                    });
                 } else if (isChargeScan && getAllCyInfoList().size()>0 && !getAllCyInfoList().get(0).getCyMediumId().equals(set.getCylinderList().get(0).getCyMediumId())) {
 
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
-                    getResultList().add(getLastScanCyNum());
-                    bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+                    getOtherScanList().add(getLastScanCyNum());
+                    bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST,getCyInfoList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -711,34 +730,35 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                     resultIntent.putExtras(bundle);
                     this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
 
-                    scanResultCount.setText("扫描："+getResultList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
+                    scanResultCount.setText("扫描："+getOtherScanList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
 
                     LinearLayout llname = (LinearLayout) getLayoutInflater()
                             .inflate(R.layout.view_scan_success_dialog, null);
                     final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
-                    img.setImageResource(R.mipmap.scan_success);
+                    img.setImageResource(R.mipmap.scan_fail);
                     final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
                     text.setText("该集格气瓶介质id："+set.getCylinderList().get(0).getCyMediumId()+"与任务介质id："+getAllCyInfoList().get(0).getCyMediumId()+"不同，无法添加。");
                     AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
                     final AlertDialog dialog = builder.setView(llname).create();
                     dialog.show();
-                    new Handler().postDelayed(new Runnable() {
+                    final Button btn = (Button) llname.findViewById(R.id.scan_dialog_btn);
+                    btn.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void run() {
+                        public void onClick(View v) {
                             dialog.dismiss();
                         }
-                    }, 2000);
+                    });
 
                 } else {
 
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
-                    getResultList().add(getLastScanSetId());
+                    getOtherScanList().add(getLastScanSetId());
                     getSetList().add(set);
                     for (CylinderInfoBean c : set.getCylinderList()) {
                         getAllCyInfoList().add(c);
                     }
-                    bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+                    bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST, getCyInfoList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -746,7 +766,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                     resultIntent.putExtras(bundle);
                     this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
 
-                    scanResultCount.setText("扫描：" + getResultList().size() + " 散瓶：" + getCyInfoList().size() + " 集格：" + getSetList().size() + " 总气瓶数：" + getAllCyInfoList().size());
+                    scanResultCount.setText("扫描：" + getOtherScanList().size() + " 散瓶：" + getCyInfoList().size() + " 集格：" + getSetList().size() + " 总气瓶数：" + getAllCyInfoList().size());
 
                     LinearLayout llname = (LinearLayout) getLayoutInflater()
                             .inflate(R.layout.view_scan_success_dialog, null);
@@ -763,14 +783,14 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                         public void run() {
                             dialog.dismiss();
                         }
-                    }, 2000);
+                    }, CY_INFO_HOLD_SEC);
                 }
             } else {
 
                 Intent resultIntent = new Intent();
                 Bundle bundle = new Bundle();
-                getResultList().add(getLastScanSetId());
-                bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+                getOtherScanList().add(getLastScanSetId());
+                bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
                 bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
                 bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST,getCyInfoList());
                 bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -778,23 +798,24 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                 resultIntent.putExtras(bundle);
                 this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
 
-                scanResultCount.setText("扫描："+getResultList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
+                scanResultCount.setText("扫描："+getOtherScanList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
 
                 LinearLayout llname = (LinearLayout) getLayoutInflater()
                         .inflate(R.layout.view_scan_success_dialog, null);
                 final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
-                img.setImageResource(R.mipmap.scan_success);
+                img.setImageResource(R.mipmap.scan_fail);
                 final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
                 text.setText("未知集格！");
                 AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
                 final AlertDialog dialog = builder.setView(llname).create();
                 dialog.show();
-                new Handler().postDelayed(new Runnable() {
+                final Button btn = (Button) llname.findViewById(R.id.scan_dialog_btn);
+                btn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void run() {
+                    public void onClick(View v) {
                         dialog.dismiss();
                     }
-                }, 2000);
+                });
             }
 
             if (multiScan && handler != null) {
@@ -813,7 +834,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                             System.out.println("exception...");
                         }
                     }
-                }, 2000);
+                }, SCAN_RESTART_DELAY_SEC);
 
             } else {
 
@@ -822,7 +843,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                     public void run() {
                         CaptureActivity.this.finish();
                     }
-                }, 2000);
+                }, ACTIVITY_DISAPEAR_DELAY_SEC);
             }
 
         } else if (api.equals("getCylinderInfoByPlatformCyNumber")) {
@@ -835,8 +856,8 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
 
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
-                    getResultList().add(getLastScanCyNum());
-                    bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+                    getOtherScanList().add(getLastScanCyNum());
+                    bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST,getCyInfoList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -844,30 +865,31 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                     resultIntent.putExtras(bundle);
                     this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
 
-                    scanResultCount.setText("扫描："+getResultList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
+                    scanResultCount.setText("扫描："+getOtherScanList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
 
                     LinearLayout llname = (LinearLayout) getLayoutInflater()
                             .inflate(R.layout.view_scan_success_dialog, null);
                     final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
-                    img.setImageResource(R.mipmap.scan_success);
+                    img.setImageResource(R.mipmap.scan_fail);
                     final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
                     text.setText("该气瓶4小时内已充装。");
                     AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
                     final AlertDialog dialog = builder.setView(llname).create();
                     dialog.show();
-                    new Handler().postDelayed(new Runnable() {
+                    final Button btn = (Button) llname.findViewById(R.id.scan_dialog_btn);
+                    btn.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void run() {
+                        public void onClick(View v) {
                             dialog.dismiss();
                         }
-                    }, 2000);
+                    });
 
                 } else if (isChargeScan && getAllCyInfoList().size()>0 && !getAllCyInfoList().get(0).getCyMediumId().equals(cy.getCyMediumId())) {
 
                     Intent resultIntent = new Intent();
                     Bundle bundle = new Bundle();
-                    getResultList().add(getLastScanCyNum());
-                    bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+                    getOtherScanList().add(getLastScanCyNum());
+                    bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST,getCyInfoList());
                     bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -875,32 +897,33 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                     resultIntent.putExtras(bundle);
                     this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
 
-                    scanResultCount.setText("扫描："+getResultList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
+                    scanResultCount.setText("扫描："+getOtherScanList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
 
                     LinearLayout llname = (LinearLayout) getLayoutInflater()
                             .inflate(R.layout.view_scan_success_dialog, null);
                     final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
-                    img.setImageResource(R.mipmap.scan_success);
+                    img.setImageResource(R.mipmap.scan_fail);
                     final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
                     text.setText("该气瓶介质id："+cy.getCyMediumId()+"与任务介质id："+getAllCyInfoList().get(0).getCyMediumId()+"不同，无法添加。");
                     AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
                     final AlertDialog dialog = builder.setView(llname).create();
                     dialog.show();
-                    new Handler().postDelayed(new Runnable() {
+                    final Button btn = (Button) llname.findViewById(R.id.scan_dialog_btn);
+                    btn.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void run() {
+                        public void onClick(View v) {
                             dialog.dismiss();
                         }
-                    }, 2000);
+                    });
 
                 } else{
 
                         Intent resultIntent = new Intent();
                         Bundle bundle = new Bundle();
-                        getResultList().add(getLastScanCyNum());
+                        getOtherScanList().add(getLastScanCyNum());
                         getCyInfoList().add(cy);
                         getAllCyInfoList().add(cy);
-                        bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+                        bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
                         bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
                         bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST, getCyInfoList());
                         bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -908,14 +931,14 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                         resultIntent.putExtras(bundle);
                         this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
 
-                        scanResultCount.setText("扫描：" + getResultList().size() + "，散瓶：" + getCyInfoList().size() + "，集格：" + getSetList().size() + "，总气瓶数：" + getAllCyInfoList().size());
+                        scanResultCount.setText("扫描：" + getOtherScanList().size() + "，散瓶：" + getCyInfoList().size() + "，集格：" + getSetList().size() + "，总气瓶数：" + getAllCyInfoList().size());
 
                         LinearLayout llname = (LinearLayout) getLayoutInflater()
                                 .inflate(R.layout.view_scan_success_dialog, null);
                         final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
                         img.setImageResource(R.mipmap.scan_success);
                         final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
-                        text.setText("气瓶扫描成功！标签号：" + cy.getPlatformCyCode() +
+                        text.setText("气瓶扫描成功！" + cy.getPlatformCyCode() +
                                 " 介质：" + cy.getCyMediumName() +
                                 " 过期时间：" + cy.getNextRegularInspectionDate().substring(0, 7));
                         lastMsg.setText(text.getText().toString());
@@ -927,15 +950,15 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                             public void run() {
                                 dialog.dismiss();
                             }
-                        }, 2000);
+                        }, CY_INFO_HOLD_SEC);
                     
                 }
             } else {
 
                 Intent resultIntent = new Intent();
                 Bundle bundle = new Bundle();
-                getResultList().add(getLastScanCyNum());
-                bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+                getOtherScanList().add(getLastScanCyNum());
+                bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
                 bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
                 bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST,getCyInfoList());
                 bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -943,23 +966,24 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                 resultIntent.putExtras(bundle);
                 this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
 
-                scanResultCount.setText("扫描："+getResultList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
+                scanResultCount.setText("扫描："+getOtherScanList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
 
                 LinearLayout llname = (LinearLayout) getLayoutInflater()
                         .inflate(R.layout.view_scan_success_dialog, null);
                 final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
                 img.setImageResource(R.mipmap.scan_success);
                 final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
-                text.setText("未知气瓶！请绑定气瓶信息");
+                text.setText("该二维码无气瓶数据。");
                 AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
                 final AlertDialog dialog = builder.setView(llname).create();
                 dialog.show();
-                new Handler().postDelayed(new Runnable() {
+                final Button btn = (Button) llname.findViewById(R.id.scan_dialog_btn);
+                btn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void run() {
+                    public void onClick(View v) {
                         dialog.dismiss();
                     }
-                }, 2000);
+                });
             }
 
             if (multiScan && handler != null) {
@@ -978,7 +1002,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                             System.out.println("exception...");
                         }
                     }
-                }, 2000);
+                }, SCAN_RESTART_DELAY_SEC);
 
             } else {
 
@@ -987,7 +1011,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                     public void run() {
                         CaptureActivity.this.finish();
                     }
-                }, 2000);
+                }, ACTIVITY_DISAPEAR_DELAY_SEC);
             }
         }
     }
@@ -1005,27 +1029,28 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
             LinearLayout llname = (LinearLayout) getLayoutInflater()
                     .inflate(R.layout.view_scan_success_dialog, null);
             final ImageView img = (ImageView) llname.findViewById(R.id.scan_dialog_icon);
-            img.setImageResource(R.mipmap.scan_success);
+            img.setImageResource(R.mipmap.scan_fail);
             final TextView text = (TextView) llname.findViewById(R.id.scan_dialog_text);
-            text.setText("未知气瓶/集格！");
+            text.setText("获取气瓶/集格信息失败！");
             AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
             final AlertDialog dialog = builder.setView(llname).create();
             dialog.show();
-            new Handler().postDelayed(new Runnable() {
+            final Button btn = (Button) llname.findViewById(R.id.scan_dialog_btn);
+            btn.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void run() {
+                public void onClick(View v) {
                     dialog.dismiss();
                 }
-            }, 2000);
+            });
 
             Intent resultIntent = new Intent();
             Bundle bundle = new Bundle();
             if (getLastScanCyNum() != null) {
-                getResultList().add(getLastScanCyNum());
+                getOtherScanList().add(getLastScanCyNum());
             } else {
-                getResultList().add(getLastScanSetId());
+                getOtherScanList().add(getLastScanSetId());
             }
-            bundle.putStringArrayList(INTENT_EXTRA_KEY_QR_SCAN_LIST, getResultList());
+            bundle.putStringArrayList(INTENT_EXTRA_KEY_OTHER_SCAN_LIST, getOtherScanList());
             bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_SET_LIST, getSetList());
             bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_CY_LIST,getCyInfoList());
             bundle.putSerializable(INTENT_EXTRA_KEY_QR_SCAN_ALL_CY_LIST, getAllCyInfoList());
@@ -1034,7 +1059,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
             setLastScanCyNum(null);
             setLastScanSetId(null);
 
-            scanResultCount.setText("扫描："+getResultList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
+            scanResultCount.setText("扫描："+getOtherScanList().size()+" 散瓶："+getCyInfoList().size()+" 集格："+getSetList().size()+" 总气瓶数："+getAllCyInfoList().size());
 
             if (multiScan && handler != null) {
 
@@ -1052,7 +1077,7 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                             System.out.println("exception...");
                         }
                     }
-                }, 2000);
+                }, SCAN_RESTART_DELAY_SEC);
 
             } else {
 
@@ -1061,17 +1086,17 @@ public class CaptureActivity extends AppCompatActivity implements Callback, ApiC
                     public void run() {
                         CaptureActivity.this.finish();
                     }
-                }, 2000);
+                }, ACTIVITY_DISAPEAR_DELAY_SEC);
             }
         }
     }
 
-    public ArrayList<String> getResultList() {
-        return resultList;
+    public ArrayList<String> getOtherScanList() {
+        return otherScanList;
     }
 
-    public void setResultList(ArrayList<String> resultList) {
-        this.resultList = resultList;
+    public void setOtherScanList(ArrayList<String> otherScanList) {
+        this.otherScanList = otherScanList;
     }
 
     public ArrayList<SetBean> getSetList() {
